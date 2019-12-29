@@ -1,0 +1,5 @@
+D:\thimo\Documents\EPITA\ThirteenProject\.mono\temp\bin\Tools\ThirteenProject.dll
+D:\thimo\Documents\EPITA\ThirteenProject\.mono\temp\bin\Tools\ThirteenProject.pdb
+D:\thimo\Documents\EPITA\ThirteenProject\.mono\temp\obj\Tools\ThirteenProject.csprojAssemblyReference.cache
+D:\thimo\Documents\EPITA\ThirteenProject\.mono\temp\obj\Tools\ThirteenProject.dll
+D:\thimo\Documents\EPITA\ThirteenProject\.mono\temp\obj\Tools\ThirteenProject.pdb
