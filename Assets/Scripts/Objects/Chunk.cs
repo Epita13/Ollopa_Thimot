@@ -6,7 +6,8 @@ using System.Collections.Generic;
 public class Chunk
 {
     /* Constante */
-    private const int chunk_size = 16;
+    public static readonly int chunk_size = 16;
+
     private const int chunk_max = 140;
     private const int chunk_min = -40;
     private const int sea_level = 0;
@@ -25,8 +26,9 @@ public class Chunk
         this.chunk_x = chunk_x;
         this.chunk_left = chunk_left;
         this.chunk_right = chunk_right;
-        this.chunk_mid = GetChunkYGround();
         blocks = InitBlocksList();
+        this.chunk_mid = GetChunkYGround();
+        Generate();
     }
 
     public void Generate()
@@ -51,12 +53,11 @@ public class Chunk
                 }
             }
         }
-        DrawCells();
     }
 
-    private void DrawCells()
+    public void Draw()
     {
-        TileMap Ground = World.Tileset_Ground;
+        TileMap Ground = World.tilemp_blocks;
         foreach (var colon in blocks)
         {
             foreach (var block in colon)
@@ -84,6 +85,7 @@ public class Chunk
         }
         return tmp;
     }
+
     private bool IsInvert()
     {
         return chunk_right!=null;

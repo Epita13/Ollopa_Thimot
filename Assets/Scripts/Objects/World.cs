@@ -2,37 +2,45 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class World
+public static class World
 {
-    public static TileMap Tileset_Ground;
+    public static TileMap tilemp_blocks;
     public static Random random;
 
     
-    private int world_size;
-    private List<Chunk> chunks;
+    public static int size;
+    public static List<Chunk> chunks;
 
-
-    public World(int world_size)
+    /// Initialise le monde et le calcule.
+    public static void Init(int size, TileMap tilemp_blocks, int seed = -1)
     {
-        random = new Random();
-        this.world_size = world_size;
-        chunks = new List<Chunk>();
+        // Random et seed
+        if (seed==-1)
+            World.random = new Random();
+        else
+            World.random = new Random(seed);
+        World.size = size;
+        World.tilemp_blocks = tilemp_blocks;
+        World.chunks = new List<Chunk>();
+        World.Generate();
     }
-
-    public void InitTilemaps(TileMap Ground)
-    {
-        Tileset_Ground = Ground;
-    }
-
-    public void CreateWorld()
+    
+    /// Calcule le monde en fonction des parametres.
+    private static void Generate()
     {
         Chunk previus_chunk = null;
-        for (int x = 0; x < world_size; x++)
+        for (int x = 0; x < size; x++)
         {
-            Chunk instance_chunk = new Chunk(x*16, previus_chunk);
-            instance_chunk.Generate();
+            Chunk instance_chunk = new Chunk(x*Chunk.chunk_size, previus_chunk);
             previus_chunk = instance_chunk;
             chunks.Add(instance_chunk);
         }
+    }
+
+    /// Dessine le monde sur la scene.
+    public static void Draw()
+    {
+        foreach (Chunk chunk in chunks)
+            chunk.Draw();
     }
 }

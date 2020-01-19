@@ -4,7 +4,6 @@ using System;
 public class Block
 {
 
-    /* Variables */
     public int x,y;
     public int tileId;
 

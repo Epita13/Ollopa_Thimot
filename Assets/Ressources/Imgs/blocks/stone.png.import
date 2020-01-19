@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/stone.png-ea73de5a733473ae8790a2d99e63f5dc.stex"
+path="res://.import/stone.png-697b62b504ba8ac6e93530564c94affd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Ressources/Imgs/stone.png"
-dest_files=[ "res://.import/stone.png-ea73de5a733473ae8790a2d99e63f5dc.stex" ]
+source_file="res://Assets/Ressources/Imgs/blocks/stone.png"
+dest_files=[ "res://.import/stone.png-697b62b504ba8ac6e93530564c94affd.stex" ]
 
 [params]
 

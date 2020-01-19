@@ -11,9 +11,8 @@ public class SceneGenerationScript : Node
     public override void _Ready()
     {
         TileMap ground = (TileMap)GetTree().GetRoot().GetNode("SceneGeneration").GetNode("Ground");
-        World w = new World(100);
-        w.InitTilemaps(ground);
-        w.CreateWorld(); 
+        World.Init(10, ground);
+        World.Draw();
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.

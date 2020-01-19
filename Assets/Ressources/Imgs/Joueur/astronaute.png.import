@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/grass.png-6de4c242e4c4da542d9fc212e94170ad.stex"
+path="res://.import/astronaute.png-aad58a656194623cbccc1936b76cfda3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Ressources/Imgs/grass.png"
-dest_files=[ "res://.import/grass.png-6de4c242e4c4da542d9fc212e94170ad.stex" ]
+source_file="res://Assets/Ressources/Imgs/Joueur/astronaute.png"
+dest_files=[ "res://.import/astronaute.png-aad58a656194623cbccc1936b76cfda3.stex" ]
 
 [params]
 
