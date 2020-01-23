@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\thimo\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\thimo\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_ThirteenProject.-1842856486.00" t="ExcludeRecursive" />
+    <e p="D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot" t="IncludeRecursive">
+      <e p=".mono\temp\bin" t="ExcludeRecursive" />
+      <e p=".mono\temp\obj" t="ExcludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Objects" t="Include">
+          <e p="Player" t="Include">
+            <e p="PlayerMouvements.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Scenes" t="Include">
+          <e p="Liquid" t="Include">
+            <e p="Liquid.cs" t="Include" />
+            <e p="Liquid_2.cs" t="Include" />
+          </e>
+          <e p="SceneGeneration" t="Include">
+            <e p="SceneGenerationScript.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="Objects" t="Include">
+            <e p="Block.cs" t="Include" />
+            <e p="Building.cs" t="Include" />
+            <e p="Chunk.cs" t="Include" />
+            <e p="Player.cs" t="Include" />
+            <e p="World.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Properties" t="Include">
+        <e p="AssemblyInfo.cs" t="Include" />
+      </e>
+      <e p="ThirteenProject.csproj" t="IncludeRecursive" />
+      <e p="ThirteenProject.sln" t="IncludeFlat" />
+    </e>
+  </component>
+</project>
