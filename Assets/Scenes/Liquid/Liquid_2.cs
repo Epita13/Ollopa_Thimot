@@ -39,13 +39,16 @@ public class Liquid_2 : TileMap
      public override void _Process(float delta)
      {
          Sdelta += delta;
+         for (int i = 0; i < 5; i++)
+         {
+             
+         }
          if (Sdelta >= 1)
          {
              Dessin();
              Sdelta = 0;
          }
-             
-          ground2.SetCell(60,0,1,false);
+         
      }
 
      private void Dessin()

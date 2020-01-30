@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/water01.png-ae0fe2841fc2bef02b5065f05d302aa2.stex"
+path="res://.import/SolarPanelEnergy.png-94510e96cfa22c1bf426d99d8b1fa0f2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Ressources/Imgs/Liquid/water01.png"
-dest_files=[ "res://.import/water01.png-ae0fe2841fc2bef02b5065f05d302aa2.stex" ]
+source_file="res://Assets/Ressources/Imgs/Buildings/SolarPanel/SolarPanelEnergy.png"
+dest_files=[ "res://.import/SolarPanelEnergy.png-94510e96cfa22c1bf426d99d8b1fa0f2.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/water01.png-ae0fe2841fc2bef02b5065f05d302aa2.stex"
+path="res://.import/laser.png-2e01af401ac204054858e262ad4abec1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Ressources/Imgs/Liquid/water01.png"
-dest_files=[ "res://.import/water01.png-ae0fe2841fc2bef02b5065f05d302aa2.stex" ]
+source_file="res://Assets/Ressources/Imgs/Items/laser.png"
+dest_files=[ "res://.import/laser.png-2e01af401ac204054858e262ad4abec1.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
@@ -30,5 +30,5 @@ process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=false
+detect_3d=true
 svg/scale=1.0

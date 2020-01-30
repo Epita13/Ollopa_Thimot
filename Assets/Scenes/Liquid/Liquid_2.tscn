@@ -1,8 +1,31 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Objects/Tilesets/BlocksTileset.tres" type="TileSet" id=1]
-[ext_resource path="res://Assets/Objects/Tilesets/water.tres" type="TileSet" id=2]
-[ext_resource path="res://Assets/Scenes/Liquid/Liquid_2.cs" type="Script" id=3]
+[ext_resource path="res://Assets/Ressources/Imgs/Liquid/water02.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Ressources/Imgs/Liquid/water01.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Scenes/Liquid/Liquid_2.cs" type="Script" id=4]
+
+[sub_resource type="TileSet" id=1]
+0/name = "water02.png 0"
+0/texture = ExtResource( 2 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 16, 15 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shapes = [  ]
+0/z_index = 0
+1/name = "water01.png 1"
+1/texture = ExtResource( 3 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 16, 16 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shapes = [  ]
+1/z_index = 0
 
 [node name="Ground" type="TileMap"]
 tile_set = ExtResource( 1 )
@@ -14,9 +37,9 @@ __meta__ = {
 }
 
 [node name="Liquid" type="TileMap" parent="."]
-tile_set = ExtResource( 2 )
+tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 collision_use_kinematic = true
 format = 1
-tile_data = PoolIntArray( 589871, 1610612738, 0, 589872, 1610612738, 0, 655375, 1610612738, 0, 655407, 1610612738, 0, 720912, 1610612738, 0, 720943, 1610612738, 0, 786448, 1610612738, 0, 786479, 1610612738, 0, 786480, 1610612738, 0, 851985, 1610612738, 0, 852016, 1610612738, 0, 917521, 1610612738, 0, 917552, 1610612738, 0, 983057, 1610612738, 0, 983088, 1610612738, 0, 1048593, 1610612738, 0, 1048624, 1610612738, 0, 1114129, 1610612738, 0, 1114130, 1610612738, 0, 1114160, 1610612738, 0, 1179666, 1610612738, 0, 1179696, 1610612738, 0, 1245202, 1610612738, 0, 1310738, 1610612738, 0, 1376274, 1610612738, 0, 1376275, 1610612738, 0, 1441811, 1610612738, 0, 1507347, 1610612738, 0, 1572883, 1610612738, 0, 1638419, 1610612738, 0, 1703955, 1610612738, 0, 1703974, 0, 0, 1769492, 1610612738, 0, 1769493, 1610612738, 0, 1769509, 1610612738, 0, 1769510, 1610612738, 0, 1769511, 1610612738, 0, 1835029, 1610612738, 0, 1835030, 1610612738, 0, 1835031, 1610612738, 0, 1835032, 1610612738, 0, 1835033, 1610612738, 0, 1835034, 1610612738, 0, 1835035, 1610612738, 0, 1835036, 1610612738, 0, 1835037, 1610612738, 0, 1835038, 1610612738, 0, 1835039, 1610612738, 0, 1835040, 1610612738, 0, 1835041, 1610612738, 0, 1835042, 1610612738, 0, 2162729, 0, 0 )
-script = ExtResource( 3 )
+tile_data = PoolIntArray( 1507374, 0, 0, 1507375, 0, 0, 1507376, 0, 0, 1572902, 0, 0, 1572903, 0, 0, 1572904, 0, 0, 1572905, 0, 0, 1572906, 0, 0, 1572907, 0, 0, 1572908, 0, 0, 1572909, 0, 0, 1638437, 0, 0, 1638444, 1, 0, 1638445, 1, 0, 1638446, 1, 0, 1638447, 1, 0, 1638448, 1, 0, 1638449, 1, 0, 1638450, 1, 0, 1638451, 1, 0, 1638452, 1, 0, 1638453, 1, 0 )
+script = ExtResource( 4 )

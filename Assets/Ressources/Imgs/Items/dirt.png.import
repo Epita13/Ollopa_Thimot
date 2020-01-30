@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/water01.png-ae0fe2841fc2bef02b5065f05d302aa2.stex"
+path="res://.import/dirt.png-16f9c1b97bef4e0c7e2f1447532e4528.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Ressources/Imgs/Liquid/water01.png"
-dest_files=[ "res://.import/water01.png-ae0fe2841fc2bef02b5065f05d302aa2.stex" ]
+source_file="res://Assets/Ressources/Imgs/Items/dirt.png"
+dest_files=[ "res://.import/dirt.png-16f9c1b97bef4e0c7e2f1447532e4528.stex" ]
 
 [params]
 

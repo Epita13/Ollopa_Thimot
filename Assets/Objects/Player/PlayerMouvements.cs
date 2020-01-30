@@ -54,14 +54,21 @@ public class PlayerMouvements : KinematicBody2D
 
         MoveAndSlide(vel,UP);
     }
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
+
+
   public override void _Process(float delta)
   {
       Player.RemoveEnergy(2*delta);
-      Player.PrintEnergy();
       if(Player.energy==0)
-      {
+        {
           canMove = false;
-      }
+        }
+    if (Input.IsActionJustPressed("mouse1")){
+
+        Vector2 pos = GetGlobalMousePosition();
+        SolarPanel sp = (SolarPanel)Building.prefabs[Building.Type.SolarPanel].Instance();
+        sp.Place(pos);
+        
+    }
   }
 }
