@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/water02.png-bb5bf482e720c9d781845a7c12d48cfa.stex"
+path="res://.import/corps forreuse (1).png-3ac4ba47eff322a55204c3dd59a17d2d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Ressources/Imgs/Liquid/water02.png"
-dest_files=[ "res://.import/water02.png-bb5bf482e720c9d781845a7c12d48cfa.stex" ]
+source_file="res://Assets/Ressources/Imgs/Buildings/Drill/corps forreuse (1).png"
+dest_files=[ "res://.import/corps forreuse (1).png-3ac4ba47eff322a55204c3dd59a17d2d.stex" ]
 
 [params]
 

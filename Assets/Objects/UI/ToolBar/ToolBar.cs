@@ -18,11 +18,11 @@ public class ToolBar : Node
     {
             if (Input.IsActionJustPressed("ui_toolbar_right"))
             {
-                index = (index+1)%Usable.nbUsable;
+                index = (index+1)%Usable.nbUsables;
                 SendRefresh();
             }else if (Input.IsActionJustPressed("ui_toolbar_left"))
             {
-                index = (Usable.nbUsable + (index-1))%Usable.nbUsable;
+                index = (Usable.nbUsables + (index-1))%Usable.nbUsables;
                 SendRefresh();
             }
     }
@@ -32,8 +32,8 @@ public class ToolBar : Node
         displayTools[2] = index;
         for (int i = 1; i < 3; i++)
         {
-            displayTools[2+i] = (index+i)%Usable.nbUsable;
-            displayTools[2-i] = (Usable.nbUsable+(index-i))%Usable.nbUsable;
+            displayTools[2+i] = (index+i)%Usable.nbUsables;
+            displayTools[2-i] = (Usable.nbUsables+(index-i))%Usable.nbUsables;
         }
         EmitSignal("Refresh", displayTools);
     }

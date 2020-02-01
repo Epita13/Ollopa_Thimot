@@ -16,12 +16,14 @@ public class Building : Node2D
     // Enumeration : Type de batiment disponible
     public enum Type
     {
-        SolarPanel
+        SolarPanel,
+		Storage
     }
     // Dictionaire : Stock les scnenes batiment en fonction du type de batiment
     public static Dictionary<Type, PackedScene> prefabs = new Dictionary<Type, PackedScene>
     {
-        {Type.SolarPanel, GD.Load<PackedScene>("res://Assets/Objects/Buildings/SolarPanel/SolarPanel.tscn")}
+        {Type.SolarPanel, GD.Load<PackedScene>("res://Assets/Objects/Buildings/SolarPanel/SolarPanel.tscn")},
+		{Type.Storage, GD.Load<PackedScene>("res://Assets/Objects/Buildings/Storage/Storage.tscn")}
     };
 
 

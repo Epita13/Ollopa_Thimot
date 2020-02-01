@@ -8,13 +8,32 @@
       <e p=".mono\temp\obj" t="ExcludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Objects" t="Include">
+          <e p="Buildings" t="Include">
+            <e p="Rafinery" t="Include">
+              <e p="Rafinery.cs" t="Include" />
+            </e>
+            <e p="SolarPanel" t="Include">
+              <e p="SolarPanel.cs" t="Include" />
+            </e>
+            <e p="Storage" t="Include">
+              <e p="Storage.cs" t="Include" />
+            </e>
+          </e>
           <e p="Player" t="Include">
             <e p="PlayerMouvements.cs" t="Include" />
+          </e>
+          <e p="UI" t="Include">
+            <e p="TestsTemporaire" t="Include">
+              <e p="ValuesPanel.cs" t="Include" />
+            </e>
+            <e p="ToolBar" t="Include">
+              <e p="ItemBox.cs" t="Include" />
+              <e p="ToolBar.cs" t="Include" />
+            </e>
           </e>
         </e>
         <e p="Scenes" t="Include">
           <e p="Liquid" t="Include">
-            <e p="Liquid.cs" t="Include" />
             <e p="Liquid_2.cs" t="Include" />
           </e>
           <e p="SceneGeneration" t="Include">
@@ -26,8 +45,18 @@
             <e p="Block.cs" t="Include" />
             <e p="Building.cs" t="Include" />
             <e p="Chunk.cs" t="Include" />
+            <e p="Item.cs" t="Include" />
+            <e p="Liquid.cs" t="Include" />
             <e p="Player.cs" t="Include" />
+            <e p="PlayerState.cs" t="Include" />
+            <e p="StorageItems.cs" t="Include" />
+            <e p="StorageLiquids.cs" t="Include" />
+            <e p="StorageUsables.cs" t="Include" />
+            <e p="Usable.cs" t="Include" />
             <e p="World.cs" t="Include" />
+          </e>
+          <e p="Tools" t="Include">
+            <e p="SlideBar.cs" t="Include" />
           </e>
         </e>
       </e>

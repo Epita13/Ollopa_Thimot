@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Usable
 {
-    public static int nbUsable = 2;
+    public static int nbUsables = 2;
     public enum Type{
         laser,
         dirt
@@ -18,8 +18,8 @@ public class Usable
 
     public static Dictionary<int, Texture> textures = new Dictionary<int, Texture>
     {
-        {(int)Type.laser, GD.Load<Texture>("res://Assets/Ressources/Imgs/Items/laser.png")},
-        {(int)Type.dirt, GD.Load<Texture>("res://Assets/Ressources/Imgs/Items/dirt.png")}
+        {(int)Type.laser, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/laser.png")},
+        {(int)Type.dirt, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/dirt.png")}
     };
 
     public static Dictionary<int, Category> category = new Dictionary<int, Category>
