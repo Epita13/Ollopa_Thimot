@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Assets/Objects/Tilesets/BlocksTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/Objects/Tilesets/Liquid.tres" type="TileSet" id=2]
-[ext_resource path="res://Assets/Scenes/Liquid/Liquid_2.cs" type="Script" id=4]
+[ext_resource path="res://Assets/Scripts/Liquid_2.cs" type="Script" id=4]
 
 [node name="Ground" type="TileMap"]
 position = Vector2( -1.42325, -0.696655 )
@@ -19,4 +19,5 @@ tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
 collision_use_kinematic = true
 format = 1
+tile_data = PoolIntArray( 131084, 8, 0, 131085, 8, 0, 131086, 8, 0, 131087, 8, 0, 131088, 8, 0, 131089, 8, 0, 131090, 8, 0, 131091, 8, 0, 131092, 8, 0, 131093, 8, 0, 196621, 8, 0, 196622, 8, 0, 196623, 8, 0, 196630, 8, 0, 196631, 8, 0, 196632, 8, 0, 262160, 8, 0, 262161, 8, 0, 262162, 8, 0, 262163, 8, 0, 262164, 8, 0, 262165, 8, 0, 262166, 8, 0, 262167, 8, 0, 262168, 8, 0 )
 script = ExtResource( 4 )

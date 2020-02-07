@@ -33,14 +33,12 @@
           </e>
         </e>
         <e p="Scenes" t="Include">
-          <e p="Liquid" t="Include">
-            <e p="Liquid_2.cs" t="Include" />
-          </e>
           <e p="SceneGeneration" t="Include">
             <e p="SceneGenerationScript.cs" t="Include" />
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="Liquid_2.cs" t="Include" />
           <e p="Objects" t="Include">
             <e p="Block.cs" t="Include" />
             <e p="Building.cs" t="Include" />

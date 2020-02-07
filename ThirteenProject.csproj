@@ -58,11 +58,11 @@
     <Compile Include="Assets\Objects\UI\TestsTemporaire\ValuesPanel.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ItemBox.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ToolBar.cs" />
-    <Compile Include="Assets\Scenes\Liquid\Liquid_2.cs" />
     <Compile Include="Assets\Scenes\SceneGeneration\SceneGenerationScript.cs" />
     <Compile Include="Assets\Scripts/Objects/Block.cs" />
     <Compile Include="Assets\Scripts/Objects/World.cs" />
     <Compile Include="Assets\Scripts/Objects/Chunk.cs" />
+    <Compile Include="Assets\Scripts\Liquid_2.cs" />
     <Compile Include="Assets\Scripts\Objects\Building.cs" />
     <Compile Include="Assets\Scripts\Objects\Item.cs" />
     <Compile Include="Assets\Scripts\Objects\Liquid.cs" />
