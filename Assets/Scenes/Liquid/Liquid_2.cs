@@ -15,12 +15,14 @@ public class Liquid_2 : TileMap
 	private TileMap ground;
 	private TileMap waterMap;
 	private int capacity = 8;
+	private int width = 50;		//Hauteur et largeur de la matrice qui gere l'eau
+	private int height = 50;
 	public enum Type 
 	{ WATER, OIL }
 
 	
 	
-	public override void _Ready() /*doit appeller chaque tilemap presente sur le jeux, pas encore fait, surement mettre une liste*/
+	public override void _Ready() /*Ground est la Tilemap des blocks et watermap celle de l'eau*/
 	{
 	   ground = (TileMap) this.GetParent();
 	   waterMap = this;
@@ -28,14 +30,14 @@ public class Liquid_2 : TileMap
 	
 	public override void _Process(float delta)
 	 {
-		 Sdelta += delta;
-		 
-		 if (Sdelta >= 1)
-		 {
-			 DrawWaterLevel();
-			 Sdelta = 0;
-		 }
+		 DrawWaterLevel();
 	 }
+
+	public void PlaceWater(int x, int y)
+	{
+		if (waterMap.GetCell(x, y) == -1)
+			waterMap.SetCell(x, y, 8);
+	}
 	 
 	 public void DrawWaterLevel()
 	 {
@@ -51,7 +53,7 @@ public class Liquid_2 : TileMap
 	 {
 		 /*Recuperation des emplacements de blocks et d'eau sur toutes les TileMap*/
 
-		 int[,] map = new int[500, 500];		//a modifier pour prendre la taille window*/
+		 int[,] map = new int[width, height];
 		 for(int x = 0; x <= map.GetUpperBound(0); x++)
 		 {
 			 for (int y = 0; y <= map.GetUpperBound(1); y++)
@@ -69,55 +71,41 @@ public class Liquid_2 : TileMap
 		 return map;
 	 }
 
-	 private int[,] HorizontalWater(int[,] map)		/*Bug qui vient je ne sais pas d'où*/
+	 private int[,] HorizontalWater(int[,] map)
 	 {
 		 /*Calcule la difference d'eau avec les tuiles voisines d'une tuiles contenant de l'eau.
 		  Redefinit ensuite le nouveau niveau en fonction des blocks deja present*/
 		 
-		 int[,] mapbuffer = (int[,]) map.Clone(); //Sert de tampon pour enregistrer les nouvelles valeurs sans ecraser les anciennes
-
-		 for (int z = 12; z <= 22; z++)
-			 GD.Print(map[z,8]);
-		 GD.Print(' ');
 		 for (int x = 0; x < map.GetUpperBound(0); x++)
 		 {
 			 for (int y = 0; y < map.GetUpperBound(1); y++)
 			 {
-				 if (map[x, y] > 0)
+				 if (map[x, y] > 1)
 				 {
-					int differenceLeft = Difference(map, x, y, 'L');
-					int differenceRight = Difference(map, x, y, 'R');
-					
-					if (x > 0 && x < map.GetUpperBound(0) && map[x - 1, y] != 0 && map[x + 1, y] != 0)
-					{
-						if (differenceLeft > differenceRight)
-						{
-							
-							Mouvement(map,  ref mapbuffer, x,y, 'L');
-						}
-						else if (differenceLeft < differenceRight )
-						{
-							
-							Mouvement(map, ref mapbuffer, x,y, 'R');
-						}
-						else if (differenceLeft == differenceRight && differenceLeft != 0)
-						{
-							
-							Mouvement(map, ref mapbuffer, x,y, 'R');
-						}
-					}
-					else if ((x == 0 || map[x - 1, y] == 0) && map[x + 1, y] != 0 && differenceRight != 0)
-					{
-						Mouvement(map, ref mapbuffer, x,y, 'R');
-					}
-					else if ((map[x + 1, y] == 0 || x == map.GetUpperBound(0)) && map[x - 1, y] != 0 && differenceLeft != 0)
-					{
-						Mouvement(map, ref mapbuffer, x,y, 'L');
-					}
+					 int differenceLeft = Difference(map, x, y, 'L');
+					 int differenceRight = Difference(map, x, y, 'R');
+
+					 if (x > 0 && x < map.GetUpperBound(0) && map[x - 1, y] != 0 && map[x + 1, y] != 0)
+					 {
+						 /*Cas standard, pas de bloc ou mur ni a gauche, ni a droite*/
+						 if (differenceLeft > differenceRight)
+							 Mouvement(ref map, x, y, 'L');
+						 else if (differenceLeft < differenceRight)
+							 Mouvement(ref map, x, y, 'R');
+						 else if (differenceLeft == differenceRight && differenceLeft != 0)
+							 Mouvement(ref map, x, y, 'R');
+					 }
+					 else if ((x == 0 || map[x - 1, y] == 0) && map[x + 1, y] != 0 && differenceRight != 0)
+						 /*Cas bloc ou mur a gauche et PAS a gauche*/
+						 Mouvement(ref map, x, y, 'R');
+					 else if ((map[x + 1, y] == 0 || x == map.GetUpperBound(0)) && map[x - 1, y] != 0 &&
+					          differenceLeft != 0)
+						 /*Cas block ou mur a gauche et PAS a droite*/
+						 Mouvement(ref map, x, y, 'L');
 				 }
 			 }
 		 }
-		 return mapbuffer;
+		 return map;
 	 }  
 	 
 	 private int[,] VerticalWater(int[,] map)
@@ -180,28 +168,35 @@ public class Liquid_2 : TileMap
 	 {
 		 /*Calcule la difference d'eau avec le block de droite ou de gauche selon side*/
 		 int dif = 0;
-		 if (side == 'R')
+		 switch (side)
 		 {
-			 if (x < map.GetUpperBound(0))
+			 case 'R':
 			 {
-				 if (map[x + 1, y] > 0 && map[x, y] > map[x + 1, y])
-					 dif = map[x, y] - map[x + 1, y];
-				 else if (map[x + 1, y] == -1)
-					 dif = map[x,y];
+				 if (x < map.GetUpperBound(0))
+				 {
+					 if (map[x + 1, y] > 0 && map[x, y] > map[x + 1, y])
+						 dif = map[x, y] - map[x + 1, y];
+					 else if (map[x + 1, y] == -1)
+						 dif = map[x,y];
+				 }
+
+				 break;
 			 }
-		 }
-		 else if (side == 'L')
-		 {
-			 if (x > 0)
+			 case 'L':
 			 {
-				if (map[x - 1, y] > 0 && map[x, y] > map[x - 1, y])
-					dif = map[x, y] - map[x - 1, y];
-				else if (map[x - 1, y] == -1)
-					dif = map[x,y]; 
+				 if (x > 0)
+				 {
+					 if (map[x - 1, y] > 0 && map[x, y] > map[x - 1, y])
+						 dif = map[x, y] - map[x - 1, y];
+					 else if (map[x - 1, y] == -1)
+						 dif = map[x,y]; 
+				 }
+
+				 break;
 			 }
+			 default:
+				 throw new ArgumentException("Character different of 'R' or 'L' from Difference");
 		 }
-		 else
-			throw new ArgumentException("Character different of 'R' or 'L' from Difference");
 
 		 if (dif < 0)
 			 dif = 0;
@@ -209,29 +204,34 @@ public class Liquid_2 : TileMap
 		 return dif;
 	 }
 
-	 private void Mouvement(int[,] map,ref int[,] mapbuffer, int x, int y, char side) 
+	 private void Mouvement(ref int[,] map, int x, int y, char side) 
 	 {
 		 /*Deplace horizontalement 1 d'eau selon side*/
-		 if (side == 'R')
+		 switch (side)
 		 {
-			 if (map[x + 1, y] == -1)
-				 mapbuffer[x + 1, y] = 1;
-			 else 
-				 mapbuffer[x + 1, y]++;
+			 case 'R':
+			 {
+				 if (map[x + 1, y] == -1)
+					 map[x + 1, y] = 1;
+				 else 
+					 map[x + 1, y]++;
+				 break;
+			 }
+			 case 'L':
+			 {
+				 if (map[x - 1, y] == -1)
+					 map[x - 1, y] = 1;
+				 else
+					 map[x - 1, y]++;
+				 break;
+			 }
+			 default:
+				 throw new ArgumentException("Character different of 'R' or 'L' from Mouvement");
 		 }
-		 else if (side == 'L')
-		 {
-			 if (map[x - 1, y] == -1)
-				 mapbuffer[x - 1, y] = 1;
-			 else
-				 mapbuffer[x - 1, y]++;
-		 }
-		 else
-			 throw new ArgumentException("Character different of 'R' or 'L' from Mouvement");
 		 
-		 mapbuffer[x, y]--;
-		 if (mapbuffer[x, y] == 0)
-			 mapbuffer[x, y] = -1;
+		 map[x, y]--;
+		 if (map[x, y] == 0)
+			 map[x, y] = -1;
 		 
 	 }
 }
