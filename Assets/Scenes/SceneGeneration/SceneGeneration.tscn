@@ -19,7 +19,6 @@ scale = Vector2( 1000, 0.1 )
 texture = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-editor/display_folded = true
 position = Vector2( 493.294, -350.015 )
 
 [node name="Camera2D2" type="Camera2D" parent="Player"]

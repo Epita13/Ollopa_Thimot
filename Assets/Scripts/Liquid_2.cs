@@ -11,21 +11,19 @@ public class Liquid_2 : TileMap
 	 défini par capacity. Pour fonctionner correctement le TileSet associé doit contenir au minimum un sprite pour chaque
 	 niveau. Numeroté de 1 a capacity. le sprite 0 doit OBLIGATOIREMENT etre un sprite transparent*/
 	
-	private float Sdelta = 0;
-	private TileMap ground;
 	private TileMap waterMap;
 	private int capacity = 8;
 	private int width = 50;		//Hauteur et largeur de la matrice qui gere l'eau
 	private int height = 50;
+	public static int nbLiquids = 3;
 	public enum Type 
-	{ WATER, OIL }
+	{ Water, Oil, Fuel }
 
 	
 	
 	public override void _Ready() /*Ground est la Tilemap des blocks et watermap celle de l'eau*/
 	{
-	   ground = (TileMap) this.GetParent();
-	   waterMap = this;
+		waterMap = this;
 	}
 	
 	public override void _Process(float delta)
@@ -58,7 +56,7 @@ public class Liquid_2 : TileMap
 		 {
 			 for (int y = 0; y <= map.GetUpperBound(1); y++)
 			 {
-				 if (ground.GetCell(x, y) != -1)
+				 if (Block.GetIDTile(World.GetBlock(x,y).type) != -1)
 					 map[x, y] = 0;
 				 else
 					 map[x, y] = -1;

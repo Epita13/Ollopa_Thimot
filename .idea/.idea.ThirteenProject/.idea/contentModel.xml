@@ -43,6 +43,7 @@
             <e p="Block.cs" t="Include" />
             <e p="Building.cs" t="Include" />
             <e p="Chunk.cs" t="Include" />
+            <e p="Convertions.cs" t="Include" />
             <e p="Item.cs" t="Include" />
             <e p="Liquid.cs" t="Include" />
             <e p="Player.cs" t="Include" />

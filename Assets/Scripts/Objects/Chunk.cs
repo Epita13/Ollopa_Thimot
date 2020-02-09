@@ -6,55 +6,56 @@ using System.Collections.Generic;
 public class Chunk
 {
     /* Constante */
-    public static readonly int chunk_size = 16;
+    public static readonly int size = 16;
+    public int id;
 
-    private const int chunk_max = 140;
-    private const int chunk_min = -40;
-    private const int sea_level = 0;
-    private const float mult_amplified = 0.7F;
-    private const int chunk_minLimit_generation = -2;
+    public const int chunkMax = 100;
+    public const int chunkMin = 0;
+    public const int height = (chunkMax-chunkMin)+1;
+    public const int seaLevel = chunkMin + 20;
+    public const int minYGeneration = seaLevel - 5;
+    public const int maxYGeneration = seaLevel + 20;
 
 
-    private int chunk_mid;
     private List<List<Block>> blocks;
-    private int chunk_x;
 
-    private Chunk chunk_left;
-    private Chunk chunk_right;
-
-    public Chunk(int chunk_x, Chunk chunk_left = null, Chunk chunk_right = null){
-        this.chunk_x = chunk_x;
-        this.chunk_left = chunk_left;
-        this.chunk_right = chunk_right;
-        blocks = InitBlocksList();
-        this.chunk_mid = GetChunkYGround();
+    public Chunk(int id)
+    {
+        this.id = id;
         Generate();
     }
 
     public void Generate()
     {
 
-        FonctionCourbe courbe = null;
-        courbe = new FonctionCourbe(chunk_size, IsInvert(), chunk_mid, chunk_minLimit_generation, mult_amplified);
-
-        for (int x = 0; x < chunk_size; x++)
+        OpenSimplexNoise noise = World.noise;
+        blocks = new List<List<Block>>();
+        
+        for (int x = 0; x < size; x++)
         {
-            int ground_colon = courbe.Get(x);
-            for (int y = chunk_min; y <= chunk_max; y++)
+            int maximumY = GetMaximumY(x, noise);
+            blocks.Add(new List<Block>());
+            for (int y = chunkMin; y <= chunkMax; y++)
             {
-                /*Temporaire*/
-                if (y == ground_colon)
-                    blocks[x].Add(new Block(1,x+chunk_x,y));
-                else if (y < ground_colon && y>ground_colon-4)
-                    blocks[x].Add(new Block(2,x+chunk_x,y));
-                else if (y <= ground_colon-4){
-                    //draw cell
-                    blocks[x].Add(new Block(0,x+chunk_x,y));
+                if (y<=maximumY-6)
+                {
+                    blocks[x].Add(new Block(Block.Type.Stone, x+(id*size), y));
+                }else if (y<=maximumY-1)
+                {
+                    blocks[x].Add(new Block(Block.Type.Dirt, x+(id*size), y));
+                }else if (y==maximumY)
+                {
+                    blocks[x].Add(new Block(Block.Type.Grass, x+(id*size), y));
+                }else
+                {
+                    blocks[x].Add(new Block(Block.Type.Air, x+(id*size), y));
                 }
             }
         }
+        
     }
 
+    /// Affiche le chunk sur le tilemap de la scene
     public void Draw()
     {
         TileMap Ground = World.tilemp_blocks;
@@ -62,97 +63,79 @@ public class Chunk
         {
             foreach (var block in colon)
             {
-                Ground.SetCell(block.x, -block.y, block.tileId);
+                DrawBlock(block);
+            }
+        }
+    }
+
+    /// Cache le chunk du tilemap de la scene
+    public void Hide()
+    {
+        TileMap Ground = World.tilemp_blocks;
+        foreach (var colon in blocks)
+        {
+            foreach (var block in colon)
+            {
+                HideBlock(block);
             }
         }
     }
 
 
-    private int GetChunkYGround()
+    private int GetMaximumY(int x, OpenSimplexNoise noise)
     {
-        if (chunk_left==null && chunk_right==null)
-            return sea_level + 5;
-        if (chunk_left!=null)
-            return chunk_left.GetRightMaxY();
-        return chunk_right.GetLeftMaxY();
+        float rayon = (World.size*size) / (2*Mathf.Pi);
+        float step = (2*Mathf.Pi)/ (World.size*size);
+        float angle = (x+(id*size))*step;
+        Vector2 point = new Vector2(Mathf.Cos(angle)*rayon, Mathf.Sin(angle)*rayon);
+        float grayLevel = noise.GetNoise2dv(point) + 1.0f; // [0,2.0]
+        float a = (maxYGeneration-minYGeneration)/2; // coeficient directeur
+        float b = minYGeneration; // image a l'origine
+        return (int)((a*grayLevel)+b);
+
     }
 
-    private List<List<Block>> InitBlocksList()
+    /// Retourne le blocks de la coordonée (coordonées locales). retourne null si il n'y a pas de block
+    public Block GetBlock(int x, int y)
     {
-        List<List<Block>> tmp = new List<List<Block>>();
-        for (int i = 0; i < chunk_size; i++){
-            tmp.Add(new List<Block>());
-        }
-        return tmp;
+        if (x<0 || x>=size || y<0 || y>(chunkMax-chunkMin))
+            return null;
+        return blocks[x][y];
     }
 
-    private bool IsInvert()
+    /// Ajoute un block au Chunk (coordonées locales)
+    public void AddBlock(int x, int y, Block.Type type)
     {
-        return chunk_right!=null;
+        if (x<0 || x>=size || y<0 || y>(chunkMax-chunkMin))
+            return;
+        blocks[x][y] = new Block(type, x+(id*size), y);
+        DrawBlock(blocks[x][y]);
     }
 
-    private int GetMaxYColon(int x)
-    {   
-        List<Block> lst = blocks[x];
-        return lst[lst.Count-1].y;
-    }
-    public int GetLeftMaxY()
+    /// Enleve un block au Chunk (coordonées locales)
+    public void RemoveBlock(int x, int y)
     {
-        return GetMaxYColon(0);
-    }
-    public int GetRightMaxY()
-    {
-        return GetMaxYColon(chunk_size-1);
+        if (x<0 || x>=size || y<0 || y>(chunkMax-chunkMin))
+            return;
+        HideBlock(blocks[x][y]);
+        blocks[x][y] = new Block(Block.Type.Air, x+(id*size), y);
     }
 
-}
+    /// Affiche un block au Chunk
+    public void DrawBlock(Block b)
+    {
+        World.tilemp_blocks.SetCell(b.x, -b.y+height, Block.GetIDTile(b.type));
+    }
 
+    /// Cache un block au Chunk
+    public void HideBlock(Block b)
+    {
+        World.tilemp_blocks.SetCell(b.x, -b.y+height, Block.GetIDTile(Block.Type.Air));
+    }
 
-class FonctionCourbe
-{
-        float distance; // Distance en radian
-        float begin; // Debut en radian
-        float mult; // multiplicateur en fonction de la distance
-        double step;
-        int chunk_mid;
+    public static int GetLocaleX(int x)
+    {
+        return x % size;
+    }
 
-        int chunk_size; // taille en x du chunk
-        int min_generation;
-    public FonctionCourbe(int chunk_size, bool invert, int chunk_theoric_mid, int min_generation, float mult_amplified)
-    {
-        this.chunk_size = chunk_size;
-        this.min_generation = min_generation;
-        do {
-        distance = (float)RandomRange(Mathf.Pi/4, Mathf.Pi);
-        begin = (float)(RandomRange(0,2*Mathf.Pi));
-        //mult = (float)((16/(3*Math.PI)) * distance + (14/3)) * mult_amplified;
-        mult = (float)((16/(3*Math.PI)) * distance + (14/3)) * mult_amplified;
-        step = distance / chunk_size;
-        if (!invert)
-            chunk_mid = chunk_theoric_mid - (int)(Math.Sin((0*step)+begin) * mult);
-        else
-            chunk_mid = chunk_theoric_mid - (int)(Math.Sin(((chunk_size-1)*step)+begin) * mult);
-        } while (!isGood());
-    }
-    private bool isGood()
-    {
-        if (GetMidHeight() < min_generation)
-            return false;
-        return true;
-    }
-    public int GetMidHeight()
-    {
-        return (Get(0) + Get(chunk_size-1)) / 2;
-    }
-    public int Get(int x) 
-    {
-        return (int)(Math.Sin((x*step)+begin) * mult) + chunk_mid;   
-    }
-    /* Genere un double aleatoire entre min et max inclus */
-    private double RandomRange(double min, double max)
-    {
-        Random random = World.random;
-        double dif = max - min;
-        return (random.NextDouble() * dif + min);
-    }
 }
