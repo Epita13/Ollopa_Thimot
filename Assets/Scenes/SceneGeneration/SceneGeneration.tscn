@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Scenes/SceneGeneration/SceneGenerationScript.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Objects/Tilesets/BlocksTileset.tres" type="TileSet" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Objects/Player/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Objects/UI/TestsTemporaire/ValuesPanel.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Scenes/Liquid/Liquid.tscn" type="PackedScene" id=6]
 
 [node name="SceneGeneration" type="Node2D"]
 script = ExtResource( 1 )
@@ -13,6 +14,8 @@ script = ExtResource( 1 )
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
+
+[node name="Liquid" parent="." instance=ExtResource( 6 )]
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 1000, 0.1 )
