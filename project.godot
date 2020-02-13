@@ -45,7 +45,7 @@ ui_toolbar_left={
 [mono]
 
 debugger_agent/wait_for_debugger=true
-debugger_agent/wait_timeout=10000
+debugger_agent/wait_timeout=8000
 
 [rendering]
 

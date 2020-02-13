@@ -10,7 +10,7 @@ public class Liquid : TileMap
 	/*Pour utiliser l'eau, il suffit d'appeler la fonction DrawWaterLevel(), pour les niveaux, le niveau max est
 	 défini par capacity. Pour fonctionner correctement le TileSet associé doit contenir au minimum un sprite pour chaque
 	 niveau. Numeroté de 1 a capacity. le sprite 0 doit OBLIGATOIREMENT etre un sprite transparent*/
-	
+	private int index = 0;
 	private TileMap waterMap;
 	private int capacity = 8;
 	private int width = 50;		//Hauteur et largeur de la matrice qui gere l'eau
@@ -29,10 +29,11 @@ public class Liquid : TileMap
 	}
 	
 	public override void _Process(float delta)
-	 {
+	{
+		index++;
 		 DrawWaterLevel();
-		 PlaceWater(19,6);
-	 }
+		 PlaceWater(38,20);
+	}
 
 	public void PlaceWater(int x, int y)
 	{
