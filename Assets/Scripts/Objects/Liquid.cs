@@ -10,35 +10,42 @@ public class Liquid : TileMap
 	/*Pour utiliser l'eau, il suffit d'appeler la fonction DrawWaterLevel(), pour les niveaux, le niveau max est
 	 défini par capacity. Pour fonctionner correctement le TileSet associé doit contenir au minimum un sprite pour chaque
 	 niveau. Numeroté de 1 a capacity. le sprite 0 doit OBLIGATOIREMENT etre un sprite transparent*/
-	private int index = 0;
+	
+	/*Ne prend pas en compte le y = 0 de la TileMap Watermap parce que ya des soucis avec le changement de coordonnées sinon*/
+	
+	
 	private TileMap waterMap;
 	private int capacity = 8;
-	private int width = 50;		//Hauteur et largeur de la matrice qui gere l'eau
-	private int height = 50;
+	private int width; 		//Hauteur et largeur de la matrice qui gere l'eau
+	private int height;
 	public static int nbLiquids = 3;
 	public enum Type 
 	{ Water, Oil, Fuel }
 
-	
+	private void _on_Timer_timeout()
+	{
+		width = World.size * Chunk.size;
+		DrawWaterLevel();
+	}
 	
 	public override void _Ready()
 	{
+		
 		if(/*!World.IsInit()*/ false)
 			throw new Exception("World not initialized in scene Liquid");
 		waterMap = this;
+		height = Chunk.height;
 	}
 	
 	public override void _Process(float delta)
 	{
-		index++;
-		 DrawWaterLevel();
-		 PlaceWater(38,20);
 	}
 
 	public void PlaceWater(int x, int y)
 	{
-		if (waterMap.GetCell(x, y) == -1)
-			waterMap.SetCell(x, y, 8);
+		int y2 = Chunk.height - y;
+		if (waterMap.GetCell(x, y2) == -1)
+			waterMap.SetCell(x, y2, 8);
 	}
 	 
 	 public void DrawWaterLevel()
@@ -58,9 +65,9 @@ public class Liquid : TileMap
 		 int[,] map = new int[width, height];
 		 for(int x = 0; x <= map.GetUpperBound(0); x++)
 		 {
-			 for (int y = 0; y <= map.GetUpperBound(1); y++)
+			 for (int y = 1; y <= map.GetUpperBound(1); y++)
 			 {
-				 if (Block.GetIDTile(World.GetBlock(x,y).type) != -1)
+				 if (Block.GetIDTile(World.GetBlock(x, Chunk.height - y).type) != -1)
 					 map[x, y] = 0;
 				 else
 					 map[x, y] = -1;

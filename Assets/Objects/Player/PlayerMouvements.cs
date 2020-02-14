@@ -73,7 +73,10 @@ public class PlayerMouvements : KinematicBody2D
         GD.Print("Valuers Converties (decimal) : ", pos1);
         GD.Print("Valuers Converties (entier) : ", pos2);
         Chunk c = World.GetChunk((int)pos2.x);
-        c.AddBlock(Chunk.GetLocaleX((int)pos2.x), (int)pos2.y, Block.Type.Stone);
+        //c.AddBlock(Chunk.GetLocaleX((int)pos2.x), (int)pos2.y, Block.Type.Stone);
+        Liquid water =  (Liquid)GetTree().GetRoot().GetNode("SceneGeneration").GetNode("Liquid").GetNode("WaterMap");
+        water.PlaceWater((int) pos2.x, (int) pos2.y);
+        
     }
   }
 }
