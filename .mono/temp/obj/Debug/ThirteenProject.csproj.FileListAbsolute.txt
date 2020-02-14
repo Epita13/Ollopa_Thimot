@@ -1,0 +1,5 @@
+D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot\.mono\temp\bin\Debug\ThirteenProject.dll
+D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot\.mono\temp\bin\Debug\ThirteenProject.pdb
+D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.csprojAssemblyReference.cache
+D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.dll
+D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.pdb

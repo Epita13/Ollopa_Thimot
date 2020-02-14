@@ -2,17 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class Building : Node2D
+public abstract class Building : Node2D
 {
-
-    /*
-        La classe Building : Represente un batiment qui peut etre placer sur une scene.
-        Le batiment possede de la vie.
-        
-        IMPORTANT : Pour le fonctionnement de la classe (pour le placement des batiments) il faut tout d'abord initialiser les variable static avec la fonction Init() sinon ERREUR.
-    */
-
-
+    
     // Enumeration : Type de batiment disponible
     public enum Type
     {
@@ -26,18 +18,42 @@ public class Building : Node2D
 		{Type.Storage, GD.Load<PackedScene>("res://Assets/Objects/Buildings/Storage/Storage.tscn")}
     };
 
-
-
-
     /*
-        Node parent : la Node a l'interieur de laquelle les batiments vont être placés.
-        zIndex : La profondeur z des batiments qui vont être placés.
+        Object abstract:  Building
+
+        /!\ Initialisation static : STRICTEMENT NECESSAIRE.
+            - Utiliser la fonction Init()
+            - Verification d'initialisation : le getter IsInit
+
+        /!\ Classe Initialisées necessaire : None
+
+        Description de l'object :
+            Un batiment (Building) est un object placable dans une scene.
+            Il possede de la vie et peut ainsi en perdre. 
+            La classe Building est une definition generale d'un batiment et a donc d'autre classes qui herite de celui-ci.
+            Les coordonnées manipulées dans cette classe sont strictement celle de Godot.
+
+        Description des parametres:
+            (static) Node parent : est la node dans laquelle les buildings vont etre instancier en tant qu'enfant de cette node.
+            (static) int zIndex : est la profondeur 2D a laquelle les buildings vont etre instancier.
+            (static) bool isInit : True si Building est initialisé, false sinon.
+            Vector2 location : est la position du batiment dans la scene, si le batiment n'est pas placer alors : (-1,-1). 
+            bool isPlaced : true si le batiment est placer dans la scene; false sinon.
+            int health, maxGHealth : represente la vie du joueur et son maximum de vie.
     */
+
+
     public static Node parent;
     public static int zIndex = -1;
+
+
+    private static bool isInit = false;
+    public static bool IsInit => isInit;
+
     /// Initialise les variables pour le fonctionnement des batiments (OBLIGATOIRE)
     public static void Init(Node parent, int zIndex = -1)
     {
+        isInit = true;
         Building.parent = parent;
         Building.zIndex = zIndex;
     }
@@ -62,8 +78,8 @@ public class Building : Node2D
             return;
         this.location = location;
         isPlaced = true;
-        SetZIndex(zIndex);
-        SetPosition(location);
+        ZIndex = zIndex;
+        Position = location;
         parent.AddChild(this);
         return;
     }

@@ -14,9 +14,10 @@ public class PlayerMouvements : KinematicBody2D
     Vector2 vel;
     bool on_ground;
 
+    Vector2 depopos;
     public override void _Ready()
     {
-        
+        depopos = Position;
     }
 
 
@@ -58,25 +59,23 @@ public class PlayerMouvements : KinematicBody2D
 
   public override void _Process(float delta)
   {
-      Player.RemoveEnergy(0.1f*delta);
-      if(Player.energy==0)
-        {
-          canMove = false;
-        }
-    if (Input.IsActionJustPressed("mouse1")){
-        //Storage sp = (Storage)Building.prefabs[Building.Type.Storage].Instance();
-        //sp.Place(pos);
+    if (Convertion.Location2World(Position).y<Chunk.chunkMin)
+    {
+        Position = depopos;
+    }
+    Player.RemoveEnergy(0.1f*delta);
+    if(Player.energy==0)
+    {
+        canMove = false;
+    }
+    if (Input.IsActionJustPressed("mouse1"))
+    {
         Vector2 pos = GetGlobalMousePosition();
-        Vector2 pos1 = Convertions.Location2World(pos);
-        Vector2 pos2 = Convertions.Location2WorldFloor(pos);
-        GD.Print("\nValuers brutes : ", pos);
-        GD.Print("Valuers Converties (decimal) : ", pos1);
-        GD.Print("Valuers Converties (entier) : ", pos2);
-        Chunk c = World.GetChunk((int)pos2.x);
-        //c.AddBlock(Chunk.GetLocaleX((int)pos2.x), (int)pos2.y, Block.Type.Stone);
-        Liquid water =  (Liquid)GetTree().GetRoot().GetNode("SceneGeneration").GetNode("Liquid").GetNode("WaterMap");
-        water.PlaceWater((int) pos2.x, (int) pos2.y);
-        
+        Vector2 pos2 = Convertion.Location2WorldFloor(pos);
+		Liquid water =  (Liquid)GetTree().GetRoot().GetNode("SceneGeneration").GetNode("Liquid").GetNode("WaterMap");
+        water.PlaceWater((int)pos2.x, (int)pos2.y);
     }
   }
+
+  
 }

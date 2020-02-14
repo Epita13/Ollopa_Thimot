@@ -8,7 +8,7 @@ public class SlideBar : Sprite
     public void Change(float value, float valueMax)
     {
         float x = (value * max) / valueMax;
-        SetScale(new Vector2(x, Transform.Scale.y));
+        Scale = new Vector2(x, Transform.Scale.y);
     }
 
 }

@@ -18,12 +18,12 @@ public class ItemBox : NinePatchRect
     public void Change(int[] values)
     {
         int UsableId = values[id];
-        img.SetTexture(Usable.textures[UsableId]);
+        img.Texture = Usable.textures[UsableId];
         string txt = "";
         if (Usable.category[UsableId]==Usable.Category.Tool)
             txt = "-/-";
         else
             txt = Player.inventoryUsables.GetItemCount((Usable.Type)UsableId).ToString();
-        label.SetText(txt);
+        label.Text = txt;
     }
 }

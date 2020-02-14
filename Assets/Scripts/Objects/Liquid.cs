@@ -24,15 +24,13 @@ public class Liquid : TileMap
 
 	private void _on_Timer_timeout()
 	{
+		World.IsInitWorldTest("Liquid");
 		width = World.size * Chunk.size;
 		DrawWaterLevel();
 	}
 	
 	public override void _Ready()
 	{
-		
-		if(/*!World.IsInit()*/ false)
-			throw new Exception("World not initialized in scene Liquid");
 		waterMap = this;
 		height = Chunk.height;
 	}

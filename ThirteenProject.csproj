@@ -63,7 +63,7 @@
     <Compile Include="Assets\Scripts/Objects/World.cs" />
     <Compile Include="Assets\Scripts/Objects/Chunk.cs" />
     <Compile Include="Assets\Scripts\Objects\Building.cs" />
-    <Compile Include="Assets\Scripts\Objects\Convertions.cs" />
+    <Compile Include="Assets\Scripts\Tools\Convertion.cs" />
     <Compile Include="Assets\Scripts\Objects\Item.cs" />
     <Compile Include="Assets\Scripts\Objects\Liquid.cs" />
     <Compile Include="Assets\Scripts\Objects\Player.cs" />
@@ -72,6 +72,8 @@
     <Compile Include="Assets\Scripts\Objects\StorageItems.cs" />
     <Compile Include="Assets\Scripts\Objects\StorageLiquids.cs" />
     <Compile Include="Assets\Scripts\Objects\Usable.cs" />
+    <Compile Include="Assets\Scripts\Tools\Exeception\OutOfBoundsException.cs" />
+    <Compile Include="Assets\Scripts\Tools\Exeception\UninitializedException.cs" />
     <Compile Include="Assets\Scripts\Tools\SlideBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

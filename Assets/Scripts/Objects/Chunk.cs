@@ -5,6 +5,30 @@ using System.Collections.Generic;
 
 public class Chunk
 {
+
+    /*
+        Object :  Chunk
+
+        /!\ Initialisation static : NON NECESSAIRE.
+        /!\ Classe Initialisées necessaire : World
+
+        Description de l'object :
+            Un Chunk est une partie rectangulaire du monde de taille [size,height] blocks, 
+            Ainsi un ensemble chunk consiste a faire une partition du monde.
+            Les coordonnées manipulées dans cette classe sont strictement locale, cad x = [0,size-1] et y = [ChunkMin,ChunkMax].
+            Chaque Chunk possede une sorte de matrix dynamique de Block ("blocks").
+
+        Description des parametres:
+            (static) int size : est la taille en blocks du chunk en x.
+            int id : L'id definis la du chunk position dans le monde. (=> [id*size, (id*size)+size[)
+            (const) int ChunkMin, ChunkMax : definissent les limites en y (inclusives) des Chunks et donc du Monde.
+            (const) int height : est la hauteur du Monde. 
+            (const) int seaLevel : est la position y theorique du niveau de la mer.
+            (const) int minYGeneration, maxYGeneration : sont les positions y des limites (inclusives) de la generation.
+    */
+
+
+
     /* Constante */
     public static readonly int size = 16;
     public int id;
@@ -39,49 +63,22 @@ public class Chunk
             {
                 if (y<=maximumY-6)
                 {
-                    blocks[x].Add(new Block(Block.Type.Stone, x+(id*size), y));
+                    blocks[x].Add(new Block(Block.Type.Stone, x+(id*size), y, true));
                 }else if (y<=maximumY-1)
                 {
-                    blocks[x].Add(new Block(Block.Type.Dirt, x+(id*size), y));
+                    blocks[x].Add(new Block(Block.Type.Dirt, x+(id*size), y, true));
                 }else if (y==maximumY)
                 {
-                    blocks[x].Add(new Block(Block.Type.Grass, x+(id*size), y));
+                    blocks[x].Add(new Block(Block.Type.Grass, x+(id*size), y, true));
                 }else
                 {
-                    blocks[x].Add(new Block(Block.Type.Air, x+(id*size), y));
+                    blocks[x].Add(new Block(Block.Type.Air, x+(id*size), y, true));
                 }
             }
         }
         
     }
-
-    /// Affiche le chunk sur le tilemap de la scene
-    public void Draw()
-    {
-        TileMap Ground = World.tilemp_blocks;
-        foreach (var colon in blocks)
-        {
-            foreach (var block in colon)
-            {
-                DrawBlock(block);
-            }
-        }
-    }
-
-    /// Cache le chunk du tilemap de la scene
-    public void Hide()
-    {
-        TileMap Ground = World.tilemp_blocks;
-        foreach (var colon in blocks)
-        {
-            foreach (var block in colon)
-            {
-                HideBlock(block);
-            }
-        }
-    }
-
-
+    
     private int GetMaximumY(int x, OpenSimplexNoise noise)
     {
         float rayon = (World.size*size) / (2*Mathf.Pi);
@@ -95,44 +92,77 @@ public class Chunk
 
     }
 
+    /// Affiche le chunk sur la tilemap de la scene
+    public void Draw()
+    {
+        foreach (var colon in blocks)
+        {
+            foreach (var block in colon)
+            {
+                DrawBlock(block);
+            }
+        }
+    }
+
+    /// Cache le chunk du tilemap de la scene
+    public void Hide()
+    {
+        foreach (var colon in blocks)
+        {
+            foreach (var block in colon)
+            {
+                HideBlock(block);
+            }
+        }
+    }
+
+    /// Verifie si les coordonées sont correct
+    private bool IsInChunk(int x, int y)
+    {
+        return (x>=0 && x<size && y>=0 && y<=(chunkMax-chunkMin));
+    }
+
     /// Retourne le blocks de la coordonée (coordonées locales). retourne null si il n'y a pas de block
     public Block GetBlock(int x, int y)
     {
-        if (x<0 || x>=size || y<0 || y>(chunkMax-chunkMin))
-            return null;
+        if (!IsInChunk(x,y))
+            throw new OutOfBoundsException2D("GetBlock", x, 0, size-1, y, chunkMin, chunkMax);
         return blocks[x][y];
     }
 
     /// Ajoute un block au Chunk (coordonées locales)
     public void AddBlock(int x, int y, Block.Type type)
     {
-        if (x<0 || x>=size || y<0 || y>(chunkMax-chunkMin))
-            return;
-        blocks[x][y] = new Block(type, x+(id*size), y);
+        if (!IsInChunk(x,y))
+            throw new OutOfBoundsException2D("AddBlock", x, 0, size-1, y, chunkMin, chunkMax);
+        blocks[x][y].type = type;
         DrawBlock(blocks[x][y]);
     }
 
     /// Enleve un block au Chunk (coordonées locales)
     public void RemoveBlock(int x, int y)
     {
-        if (x<0 || x>=size || y<0 || y>(chunkMax-chunkMin))
-            return;
+        if (!IsInChunk(x,y))
+            throw new OutOfBoundsException2D("RemoveBlock", x, 0, size-1, y, chunkMin, chunkMax);
         HideBlock(blocks[x][y]);
-        blocks[x][y] = new Block(Block.Type.Air, x+(id*size), y);
+        blocks[x][y].type = Block.Type.Air;
     }
 
     /// Affiche un block au Chunk
     public void DrawBlock(Block b)
     {
-        World.tilemp_blocks.SetCell(b.x, -b.y+height, Block.GetIDTile(b.type));
+        World.IsInitWorldTest("DrawBlock");
+        World.BlockTilemap.SetCell(b.x, -b.y+height, Block.GetIDTile(b.type));
     }
 
     /// Cache un block au Chunk
     public void HideBlock(Block b)
     {
-        World.tilemp_blocks.SetCell(b.x, -b.y+height, Block.GetIDTile(Block.Type.Air));
+        World.IsInitWorldTest("HideBlock");
+        World.BlockTilemap.SetCell(b.x, -b.y+height, Block.GetIDTile(Block.Type.Air));
     }
 
+    /// Renvoie la position x local a partir de la position x globale (=> modulo la taille d'un chunk)
     public static int GetLocaleX(int x)
     {
         return x % size;

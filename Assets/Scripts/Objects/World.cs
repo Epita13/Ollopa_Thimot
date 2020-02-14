@@ -4,25 +4,69 @@ using System.Collections.Generic;
 
 public static class World
 {
-    public static TileMap tilemp_blocks;
+
+
+
+    /*
+        Object static:  World
+
+        /!\ Initialisation static : STRICTEMENT NECESSAIRE.
+            - Utiliser la fonction Init()
+            - Verification d'initialisation : le getter IsInit
+
+         /!\ Classe Initialisées necessaire : None
+         
+        Description de l'object :
+            Le World est une map constituée, de plusieurs chunks formant une partition de celui-ci.
+            Ca creation repose sur une generation aleatoire dependant d'un SimplexNoise "noise".
+            Le World fait une taille de "size" chunks et une hauteur de Chunk.height
+            Les coordonnées manipulées dans cette classe sont strictement globale, cad x = [0,size*Chunk.size-1] et y = [Chunk.ChunkMin,Chunk.ChunkMax].
+
+        Description des parametres:
+            Les TileMap :
+                - (static) Tilemap BlockTilemap :  principale, pour les blocks possedant des collisions.
+            Le SimplexNoise :
+                - (static) OpenSimplexNoise noise : (module Godot)
+                - (static) int seed : represente la graine du monde (chaque seed represente une generation differente)
+                - (const) ... : plus d'information https://godot-es-docs.readthedocs.io/en/latest/classes/class_opensimplexnoise.html
+            (static) Random random :  utilisé pour toute utilisation de systems aleatoires.
+            (static) int size : represente la taille en Chunk du monde.
+            (static) List<Chunk> chunks : est la liste contenant tous la partition du monde, possedant tous les chunk du monde
+                
+    */
+
+
+
+    /*TileMaps*/
+    public static TileMap BlockTilemap;
+    /*********/
+
     public static Random random;
 
     // SimplexNoise
     public static OpenSimplexNoise noise = new OpenSimplexNoise();
-    public static int seed;
-    public const int octave = 3;
-    public const float periode = 20.0f;
-    public const float persistence = 0.25f;
-    public const float lacunarity = 3.5f;
+    private static int seed;
+    private const int octave = 3;
+    private const float periode = 20.0f;
+    private const float persistence = 0.25f;
+    private const float lacunarity = 3.5f;
     
-    // size en nombre de chunks
     public static int size;
-    public static List<Chunk> chunks;
+    private static List<Chunk> chunks;
+
+    private static bool isInit = false;
+    public static bool IsInit => isInit;
+    public static void IsInitWorldTest(string funcName)
+    {
+        if (!isInit)
+            throw new UninitializedException(funcName, "World");
+    } 
+
 
     /// Initialise le monde et le calcule.
-    public static void Init(int size, TileMap tilemp_blocks, int seed = -1)
+    public static void Init(int size, TileMap BlockTilemap, int seed = -1)
     {
-        // Random et seed
+        isInit = true;
         if (seed==-1){
             World.random = new Random();
             World.seed = random.Next();
@@ -32,18 +76,20 @@ public static class World
         }
 
         World.size = size;
-        World.tilemp_blocks = tilemp_blocks;
+        World.BlockTilemap = BlockTilemap;
         World.chunks = new List<Chunk>();
 
         // Initialisation du SimplexNoise
-        noise.SetSeed(World.seed);
-        noise.SetOctaves(octave);
-        noise.SetPeriod(periode);
-        noise.SetPersistence(persistence);
-        noise.SetLacunarity(lacunarity);
+        noise.Seed = World.seed;
+        noise.Octaves = octave;
+        noise.Period = periode;
+        noise.Persistence = persistence;
+        noise.Lacunarity = lacunarity;
 
         World.Generate();
     }
+
+    
     
     /// Calcule le monde en fonction des parametres.
     private static void Generate()
@@ -69,66 +115,33 @@ public static class World
             HideChunkc(chunk);
     }
 
+
+
     /// Retourne le chunk correspondant a la position x
     public static Chunk GetChunk(int x)
     {
+        IsInitWorldTest("GetChunk");
         if (x<0 || x>=size*Chunk.size)
-            return null;
+            throw new OutOfBoundsException1D("GetChunk", x, 0, size*Chunk.size-1);
         return chunks[x/Chunk.size];
     }
-    /// Retourne le chunk correspondant a la position x
-    public static Chunk GetChunkv(Vector2 location)
+    /// Retourne le chunk correspondant a l'id
+    public static Chunk GetChunkWithID(int id)
     {
-        location = new Vector2(Mathf.Floor(location.x), Mathf.Floor(location.y));
-        int x = (int)location.x;
-        if (x<0 || x>=size*Chunk.size)
-            return null;
-        return chunks[x/Chunk.size];
+        IsInitWorldTest("GetChunkWithID");
+        if (id<0 || id>=size)
+            throw new ArgumentException("GetChunkWithID: id is out of bounds.");
+        return chunks[id];
     }
 
     /// Retourne le block aux coordonées misent en parametres. retourne null si pas de block
     public static Block GetBlock(int x, int y)
     {
+        IsInitWorldTest("GetBlock");
         Chunk c = GetChunk(x);
-        if (c==null)
-            return null;
-        return c.GetBlock(x%Chunk.size,y);
-    }
-    /// Retourne le block aux coordonées misent en parametres. retourne null si pas de block
-    public static Block GetBlockv(Vector2 location)
-    {
-        location = new Vector2(Mathf.Floor(location.x), Mathf.Floor(location.y));
-        int x = (int)location.x;
-        int y = (int)location.y;
-        Chunk c = GetChunk(x);
-        if (c==null)
-            return null;
         return c.GetBlock(x%Chunk.size,y);
     }
 
-    /// Verifie si il y a un block
-    public static bool HasBlock(int x, int y)
-    {
-        Block b = GetBlock(x,y);
-        return (b!=null);
-    }
-    /// Verifie si il y a un block
-    public static bool HasBlockv(Vector2 location)
-    {
-        Block b = GetBlockv(location);
-        return (b!=null);
-    }
-
-    /// Cache le chunk d'id id
-    public static void HideChunk(int id)
-    {
-        chunks[id].Hide();
-    }
-    /// Affiche le chunk d'id id
-    public static void DrawChunk(int id)
-    {
-        chunks[id].Draw();
-    }
     /// Cache le chunk d'id id
     public static void HideChunkc(Chunk c)
     {
