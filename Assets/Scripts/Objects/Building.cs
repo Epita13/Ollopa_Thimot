@@ -46,9 +46,16 @@ public abstract class Building : Node2D
     public static Node parent;
     public static int zIndex = -1;
 
+    public int size = 4;
+    public Vector2[] corners = new Vector2[4];
 
     private static bool isInit = false;
     public static bool IsInit => isInit;
+    public static void IsInitBuildingTest(string funcName)
+    {
+        if (!isInit)
+            throw new UninitializedException(funcName, "Building");
+    } 
 
     /// Initialise les variables pour le fonctionnement des batiments (OBLIGATOIRE)
     public static void Init(Node parent, int zIndex = -1)
@@ -74,12 +81,14 @@ public abstract class Building : Node2D
     /// Place le batiment sur la map
     public void Place(Vector2 location)
     {
+        IsInitBuildingTest("Place");
         if (isPlaced)
             return;
-        this.location = location;
+        this.location = Convertion.World2Location(location);
+        corners = SetCorners(location);
         isPlaced = true;
         ZIndex = zIndex;
-        Position = location;
+        Position = this.location;
         parent.AddChild(this);
         return;
     }
@@ -87,6 +96,7 @@ public abstract class Building : Node2D
     /// Enleve le batiment de la map
     public void Remove()
     {
+        IsInitBuildingTest("Remove");
         if (!isPlaced)
             return;
         this.location = new Vector2(-1,-1);
@@ -116,6 +126,18 @@ public abstract class Building : Node2D
         health += value;
         if (health>healthMax)
             health = healthMax;
+    }
+    
+    private Vector2[] SetCorners(Vector2 location)
+    {
+        Vector2[] l = new Vector2[4]
+        {
+            new Vector2(location.x - size / 2, location.y - size / 2),
+            new Vector2(location.x - size / 2, location.y + size / 2),
+            new Vector2(location.x + size / 2, location.y + size / 2),
+            new Vector2(location.x + size / 2, location.y - size / 2)
+        };
+        return l;
     }
 
 }

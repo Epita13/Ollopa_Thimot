@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class StorageUsables : Node
+public class StorageUsables
 {
     public int max;
 
@@ -11,6 +11,7 @@ public class StorageUsables : Node
     public StorageUsables(int max)
     {
         this.max = max;
+        Init();
     }
 
     /// Ajoute des blocks dans le stokage
@@ -51,13 +52,13 @@ public class StorageUsables : Node
     }
 
     /// Recupere le nombre d'item du type type dans le stokage
-    public float GetItemCount(Usable.Type type)
+    public int GetItemCount(Usable.Type type)
     {
         return stokage[type];
     }
 
     /// Donne le nombre de blocks au totale (compte pas les outils)
-    public float GetCount()
+    public int GetCount()
     {
         int sum = 0;
         foreach (var c in stokage)

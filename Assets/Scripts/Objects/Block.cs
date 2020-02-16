@@ -15,7 +15,7 @@ public class Block
         return (int) type;
     }
 
-
+    public static int cellSize = 16;
     /*
         Object :  Block
 

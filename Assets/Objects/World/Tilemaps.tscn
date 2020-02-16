@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Objects/Tilesets/BlocksTileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Assets/Objects/Tilesets/BlockUITileset.tres" type="TileSet" id=2]
+[ext_resource path="res://Assets/Ressources/Imgs/blocks/Back/Back.png" type="Texture" id=3]
+
+[sub_resource type="TileSet" id=1]
+0/name = "Back.png 0"
+0/texture = ExtResource( 3 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 16, 16 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shapes = [  ]
+0/z_index = 0
+
+[node name="Tilemaps" type="Node2D"]
+
+[node name="0" type="TileMap" parent="."]
+z_index = -10
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[node name="1" type="TileMap" parent="."]
+z_index = 1
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[node name="2" type="TileMap" parent="."]
+z_index = 10
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+format = 1

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public static class Player
 {
+
+
     public static float healthMax = 100.0f;
     public static float health = 100.0f;
 
@@ -19,6 +21,9 @@ public static class Player
     public static StorageItems inventoryItems = new StorageItems(200);
     // Ex : eau, petrole (Liquide)
     public static StorageLiquids inventoryLiquids = new StorageLiquids(30.0f);
+
+
+    public static Usable.Type UsableSelected = Usable.Type.Laser;
 
     /// Ajoute de la vie au joueur. 
     public static void AddHealth(float amount)

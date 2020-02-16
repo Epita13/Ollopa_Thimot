@@ -4,6 +4,8 @@ using System;
 public class PlayerMouvements : KinematicBody2D
 {
     
+    public static PlayerMouvements instance;
+    public static Vector2 size = new Vector2(1.625f,3);
 
     public static float GRAVITY = 10; 
     public static float SPEED = 250;
@@ -18,6 +20,7 @@ public class PlayerMouvements : KinematicBody2D
     public override void _Ready()
     {
         depopos = Position;
+        instance = this;
     }
 
 
@@ -59,21 +62,14 @@ public class PlayerMouvements : KinematicBody2D
 
   public override void _Process(float delta)
   {
-    if (Convertion.Location2World(Position).y<Chunk.chunkMin)
+    /*if (Convertion.Location2World(Position).y<Chunk.chunkMin)
     {
         Position = depopos;
-    }
+    }*/
     Player.RemoveEnergy(0.1f*delta);
     if(Player.energy==0)
     {
         canMove = false;
-    }
-    if (Input.IsActionJustPressed("mouse1"))
-    {
-        Vector2 pos = GetGlobalMousePosition();
-        Vector2 pos2 = Convertion.Location2WorldFloor(pos);
-		Liquid water =  (Liquid)GetTree().GetRoot().GetNode("SceneGeneration").GetNode("Liquid").GetNode("WaterMap");
-        water.PlaceWater((int)pos2.x, (int)pos2.y);
     }
   }
 

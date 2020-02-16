@@ -36,6 +36,7 @@ public class ToolBar : Node
             displayTools[2-i] = (Usable.nbUsables+(index-i))%Usable.nbUsables;
         }
         EmitSignal("Refresh", displayTools);
+        Player.UsableSelected = (Usable.Type)index;
     }
 
 }

@@ -54,6 +54,7 @@
     <Compile Include="Assets\Objects\Buildings\SolarPanel\SolarPanel.cs" />
     <Compile Include="Assets\Objects\Buildings\Rafinery\Rafinery.cs" />
     <Compile Include="Assets\Objects\Buildings\Storage\Storage.cs" />
+    <Compile Include="Assets\Objects\Player\PlayerInputs.cs" />
     <Compile Include="Assets\Objects\Player\PlayerMouvements.cs" />
     <Compile Include="Assets\Objects\UI\TestsTemporaire\ValuesPanel.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ItemBox.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="Assets\Scripts\Objects\Usable.cs" />
     <Compile Include="Assets\Scripts\Tools\Exeception\OutOfBoundsException.cs" />
     <Compile Include="Assets\Scripts\Tools\Exeception\UninitializedException.cs" />
+    <Compile Include="Assets\Scripts\Tools\PlaceBlock.cs" />
+    <Compile Include="Assets\Scripts\Tools\BasicPlacement.cs" />
     <Compile Include="Assets\Scripts\Tools\SlideBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

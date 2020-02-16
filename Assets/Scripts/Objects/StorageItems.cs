@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class StorageItems : Node
+public class StorageItems
 {
     public int max;
 

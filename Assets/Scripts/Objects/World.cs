@@ -38,7 +38,9 @@ public static class World
 
 
     /*TileMaps*/
+    public static TileMap BackBlockTilemap;
     public static TileMap BlockTilemap;
+    public static TileMap UIBlockTilemap;
     /*********/
 
     public static Random random;
@@ -64,7 +66,7 @@ public static class World
 
 
     /// Initialise le monde et le calcule.
-    public static void Init(int size, TileMap BlockTilemap, int seed = -1)
+    public static void Init(int size, TileMap BlockTilemap, TileMap UIBlockTilemap, TileMap BackBlockTilemap, int seed = -1)
     {
         isInit = true;
         if (seed==-1){
@@ -77,6 +79,8 @@ public static class World
 
         World.size = size;
         World.BlockTilemap = BlockTilemap;
+        World.UIBlockTilemap = UIBlockTilemap;
+        World.BackBlockTilemap = BackBlockTilemap;
         World.chunks = new List<Chunk>();
 
         // Initialisation du SimplexNoise

@@ -20,6 +20,7 @@
             </e>
           </e>
           <e p="Player" t="Include">
+            <e p="PlayerInputs.cs" t="Include" />
             <e p="PlayerMouvements.cs" t="Include" />
           </e>
           <e p="UI" t="Include">
@@ -53,11 +54,13 @@
             <e p="World.cs" t="Include" />
           </e>
           <e p="Tools" t="Include">
+            <e p="BasicPlacement.cs" t="Include" />
             <e p="Convertion.cs" t="Include" />
             <e p="Exeception" t="Include">
               <e p="OutOfBoundsException.cs" t="Include" />
               <e p="UninitializedException.cs" t="Include" />
             </e>
+            <e p="PlaceBlock.cs" t="Include" />
             <e p="SlideBar.cs" t="Include" />
           </e>
         </e>
