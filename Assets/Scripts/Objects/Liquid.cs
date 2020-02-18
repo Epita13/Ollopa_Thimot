@@ -104,11 +104,11 @@ public class Liquid : TileMap
 						 else if (differenceLeft == differenceRight && differenceLeft != 0)
 							 Mouvement(ref map, x, y, 'R');
 					 }
-					 else if ((x == 0 || map[x - 1, y] == 0) && map[x + 1, y] != 0 && differenceRight != 0 && map[x, y +1] == 8 && map[x + 1, y + 1] == 8)
+					 else if ((x == 0 || map[x - 1, y] == 0) && map[x + 1, y] != 0 && differenceRight != 0 && (map[x, y + 1] == 8 || map[x, y + 1] == 0))
 						 /*Cas bloc ou mur a gauche et PAS a gauche*/
 						 Mouvement(ref map, x, y, 'R');
 					 else if ((map[x + 1, y] == 0 || x == map.GetUpperBound(0)) && map[x - 1, y] != 0 &&
-					          differenceLeft != 0 && map[x, y +1] == 8 && map[x - 1, y + 1] == 8)
+					          differenceLeft != 0 && (map[x, y + 1] == 8 || map[x, y + 1] == 0))
 						 /*Cas block ou mur a gauche et PAS a droite*/
 						 Mouvement(ref map, x, y, 'L');
 				 }
