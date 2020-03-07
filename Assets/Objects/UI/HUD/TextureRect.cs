@@ -14,8 +14,13 @@ public class TextureRect : Godot.TextureRect
 
     public override void _Process(float delta)
     {
+        int i = 0;
+        i++;
+        
         string test = "res://Assets/Objects/UI/HUD/ImageTest/12.jpg";
-        this.Texture.ResourcePath = test;
-        GD.Print(Texture.ResourcePath);
+        //this.Texture.ResourcePath = test;
+        //GD.Print(Texture.ResourcePath);
+
+        
     }
 }
