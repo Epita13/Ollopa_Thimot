@@ -57,7 +57,6 @@
     <Compile Include="Assets\Objects\Player\PlayerInputs.cs" />
     <Compile Include="Assets\Objects\Player\PlayerMouvements.cs" />
     <Compile Include="Assets\Objects\UI\HUD\DisplayInventory.cs" />
-    <Compile Include="Assets\Objects\UI\HUD\TextureRect.cs" />
     <Compile Include="Assets\Objects\UI\TestsTemporaire\ValuesPanel.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ItemBox.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ToolBar.cs" />

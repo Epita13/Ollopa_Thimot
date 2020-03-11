@@ -6,6 +6,7 @@ public class PlayerInputs : Node2D
 
 
 	[Signal] delegate void BlockPlaced();
+	[Signal] delegate void Inventory();
 
 	private Vector2 mousePos;
 	private PlayerState.State lastState;
@@ -22,6 +23,7 @@ public class PlayerInputs : Node2D
 	private void ConnectSignals()
 	{
 		Connect("BlockPlaced", (Node)GetTree().GetNodesInGroup("ToolBar")[0], "SendRefresh"); // Pour Actualisation de la ToolBar
+		Connect("Inventory", GetNode("../../HUD/Inventory"), "Display"); //Ouvre l'inventaire
 	}
 
   
@@ -72,6 +74,10 @@ public class PlayerInputs : Node2D
 				PlayerState.SetState(PlayerState.State.Normal);
 			}
 		}
+		else if (Input.IsActionJustPressed("inventory"))
+			EmitSignal("Inventory");
+
+
 	}
 
 

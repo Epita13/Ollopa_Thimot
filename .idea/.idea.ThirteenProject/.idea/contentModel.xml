@@ -26,7 +26,6 @@
           <e p="UI" t="Include">
             <e p="HUD" t="Include">
               <e p="DisplayInventory.cs" t="Include" />
-              <e p="TextureRect.cs" t="Include" />
             </e>
             <e p="TestsTemporaire" t="Include">
               <e p="ValuesPanel.cs" t="Include" />

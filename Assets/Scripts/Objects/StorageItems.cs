@@ -45,7 +45,7 @@ public class StorageItems
         return (GetCount()+amount <= max);
     }
     /// Recupere le nombre d'item du type type dans le stokage
-    public float GetItemCount(Item.Type type)
+    public int GetItemCount(Item.Type type)
     {
         return stokage[type];
     }

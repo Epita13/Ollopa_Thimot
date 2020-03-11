@@ -1,18 +1,31 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class DisplayInventory : ItemList
 {
     public override void _Ready()
     {
-        ImageTexture test = new ImageTexture();
-        test.ResourcePath = "D:/thimo/Documents/EPITA/Ollopa/Ollopa_Thimot/Assets/Ressources/Imgs/Items/dirt.png";
-        AddItem("test", new ImageTexture(), true);
+        Visible = false;
     }
     
     public override void _Process(float delta)
     {
-        //Label test = GetNode("Item1").GetNode<Label>("Quantity");
-        //test.Text = "je fais un test";
+        if (Visible)
+        {
+            Vector2 pos = PlayerMouvements.instance.Position;
+            pos.x -= 140;
+            pos.y -= 150;
+            RectPosition = pos;
+        }
+    }
+
+    private void Display()
+    {
+        PlayerState.state = PlayerState.State.Menu;
+        Clear();
+        for (int i = 0; i < Item.nbItems; i++)
+            AddItem(Convert.ToString(Player.inventoryItems.GetItemCount((Item.Type)i)), Item.textures[i] , true);
+        Visible = !Visible;
     }
 }

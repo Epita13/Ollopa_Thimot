@@ -18,7 +18,7 @@ public class Item
         {(int)Type.Composite, GD.Load<Texture>("res://Assets/Ressources/Imgs/Items/Composite.png")},
         {(int)Type.Wood, GD.Load<Texture>("res://Assets/Ressources/Imgs/Items/Wood.png")},
         {(int)Type.Stone, GD.Load<Texture>("res://Assets/Ressources/Imgs/Items/Stone.png")},
-        {(int)Type.Dirt, GD.Load<Texture>("res://Assets/Ressources/Imgs/Items/Wood.png")}
+        {(int)Type.Dirt, GD.Load<Texture>("res://Assets/Ressources/Imgs/Items/Dirt.png")}
     };
 
 }
