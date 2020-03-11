@@ -8,8 +8,8 @@ public class PlayerMouvements : KinematicBody2D
     public static Vector2 size = new Vector2(1.625f,3);
 
     public static float GRAVITY = 10; 
-    public static float SPEED = 250;
-    public static float JUMP_POWER = -250;
+    public static float SPEED = 125*2.5f;
+    public static float JUMP_POWER = -250*1.4f;
     public static bool canMove = true;
 
     Vector2 UP = new Vector2(0,-1);
@@ -21,8 +21,20 @@ public class PlayerMouvements : KinematicBody2D
     {
         depopos = Position;
         instance = this;
+        if (!World.IsInit)
+        {
+            GD.Print("Player : Warning, le monde n'est pas initialisé");
+        }
+        GD.Print((-3)%16);
     }
 
+    public static float GetX() => Convertion.Location2World(instance.Position).x;
+    public static float GetY() => Convertion.Location2World(instance.Position).y;
+
+    public static void Teleport(float x, float y)
+    {
+        instance.Position = Convertion.World2Location(new Vector2(x,y));
+    }
 
     private void HorizontalMouvement()
     {
@@ -62,16 +74,46 @@ public class PlayerMouvements : KinematicBody2D
 
   public override void _Process(float delta)
   {
-    /*if (Convertion.Location2World(Position).y<Chunk.chunkMin)
-    {
-        Position = depopos;
-    }*/
-    Player.RemoveEnergy(0.1f*delta);
-    if(Player.energy==0)
-    {
-        canMove = false;
-    }
+        if (World.IsInit)
+        {
+            WorldEndTeleportation();
+        }
+
+        Player.RemoveEnergy(0.1f*delta);
+        if(Player.energy==0)
+        {
+            canMove = false;
+        }
   }
+
+
+  private void WorldEndTeleportation()
+  {
+      Transform2D t = GetViewportTransform();
+      Vector2 vecMin = Convertion.Location2World(t.origin) * -1;
+      Vector2 vecMax = Convertion.Location2World(new Vector2(t.origin.x*-1+GetViewport().Size.x, t.origin.y));
+      if (vecMin.x < 0)
+      {
+          int i = (int) Mathf.Abs(vecMin.x / Chunk.size);
+          for (int a = i; a >= 0; a--)
+            World.GetChunkWithID(World.size-1-a).DrawClone(-16*(a+1));
+      }
+      if (vecMax.x >= World.size*Chunk.size)
+      {
+          int i = (int) Mathf.Abs((vecMax.x-World.size*Chunk.size) / Chunk.size);
+          for (int a = i; a >= 0; a--)
+              World.GetChunkWithID(a).DrawClone(World.size*Chunk.size+(a*Chunk.size));
+      }
+      if (GetX() < 0)
+      {
+          Teleport(World.size*Chunk.size + GetX(),GetY());
+      }
+      if (GetX() > World.size*Chunk.size)
+      {
+          Teleport(GetX()-World.size*Chunk.size,GetY());
+      }
+  }
+  
 
   
 }

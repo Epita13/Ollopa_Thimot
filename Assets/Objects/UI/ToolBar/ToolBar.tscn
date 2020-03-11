@@ -20,9 +20,6 @@ margin_top = 20.0
 margin_right = 1180.0
 margin_bottom = 200.0
 custom_constants/separation = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ItemBox" parent="Hbox" instance=ExtResource( 2 )]
 size_flags_vertical = 1
@@ -50,8 +47,8 @@ margin_left = 880.0
 margin_right = 1080.0
 size_flags_vertical = 1
 id = 4
-[connection signal="Refresh" from="." to="Hbox/ItemBox2" method="Change"]
-[connection signal="Refresh" from="." to="Hbox/ItemBox" method="Change"]
 [connection signal="Refresh" from="." to="Hbox/ItemBox3" method="Change"]
-[connection signal="Refresh" from="." to="Hbox/ItemBox5" method="Change"]
 [connection signal="Refresh" from="." to="Hbox/ItemBox4" method="Change"]
+[connection signal="Refresh" from="." to="Hbox/ItemBox" method="Change"]
+[connection signal="Refresh" from="." to="Hbox/ItemBox2" method="Change"]
+[connection signal="Refresh" from="." to="Hbox/ItemBox5" method="Change"]

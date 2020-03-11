@@ -16,15 +16,14 @@ _global_script_class_icons={
 [application]
 
 config/name="ThirteenProject"
-run/main_scene="res://Assets/Scenes/SceneGeneration/SceneGeneration.tscn"
+run/main_scene="res://Assets/Scenes/Menus/MenuPlay.tscn"
 config/icon="res://icon.png"
 
 [display]
 
-window/size/width=1280
+window/size/width=1000
 window/size/height=720
-window/stretch/mode="viewport"
-window/stretch/aspect="expand"
+window/stretch/aspect="keep_height"
 
 [input]
 
@@ -54,13 +53,9 @@ inventory={
  ]
 }
 
-[memory]
-
-limits/message_queue/max_size_kb=2048
-
 [mono]
 
-debugger_agent/wait_timeout=8000
+debugger_agent/wait_timeout=10000
 
 [rendering]
 

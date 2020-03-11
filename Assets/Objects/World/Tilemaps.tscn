@@ -22,16 +22,19 @@
 z_index = -10
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
+cell_y_sort = true
 format = 1
 
 [node name="1" type="TileMap" parent="."]
 z_index = 1
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 16, 16 )
+cell_y_sort = true
 format = 1
 
 [node name="2" type="TileMap" parent="."]
 z_index = 10
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
+cell_y_sort = true
 format = 1

@@ -4,6 +4,10 @@ using Array = Godot.Collections.Array;
 
 public class Liquid : TileMap
 {
+
+	public static Liquid instance;
+	
+	
 	/*Il reste un petit soucis, c'est que de l'eau se teleporte plus loin lorsque on ne la limite plus a une cuvette*/
 	
 	
@@ -27,13 +31,14 @@ public class Liquid : TileMap
 		World.IsInitWorldTest("Liquid");
 		width = World.size * Chunk.size;
 		DrawWaterLevel();
-		PlaceWater(120,40);
+		PlaceWater(130, 50);
 	}
 	
 	public override void _Ready()
 	{
 		waterMap = this;
 		height = Chunk.height;
+		instance = this;
 	}
 	
 	public override void _Process(float delta)

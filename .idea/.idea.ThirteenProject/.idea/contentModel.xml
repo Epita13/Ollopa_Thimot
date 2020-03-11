@@ -24,8 +24,8 @@
             <e p="PlayerMouvements.cs" t="Include" />
           </e>
           <e p="UI" t="Include">
-            <e p="HUD" t="Include">
-              <e p="DisplayInventory.cs" t="Include" />
+            <e p="PlayerInventory" t="Include">
+              <e p="UI_PlayerInventory.cs" t="Include" />
             </e>
             <e p="TestsTemporaire" t="Include">
               <e p="ValuesPanel.cs" t="Include" />
@@ -37,11 +37,20 @@
           </e>
         </e>
         <e p="Scenes" t="Include">
+          <e p="Jeux" t="Include">
+            <e p="Game.cs" t="Include" />
+          </e>
+          <e p="Menus" t="Include">
+            <e p="MenuPlay.cs" t="Include" />
+          </e>
           <e p="SceneGeneration" t="Include">
             <e p="SceneGenerationScript.cs" t="Include" />
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="Autres" t="Include">
+            <e p="Environement.cs" t="Include" />
+          </e>
           <e p="Objects" t="Include">
             <e p="Block.cs" t="Include" />
             <e p="Building.cs" t="Include" />

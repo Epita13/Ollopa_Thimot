@@ -29,6 +29,10 @@ public static class PlaceBlock
 
     public static bool Place(int x, int y, Block.Type type)
     {
+        if (x < 0)
+            x = World.size * Chunk.size + x;
+        else if (x >= World.size * Chunk.size)
+            x = x - World.size * Chunk.size;
         bool res;
         if (CanPlace(x, y, out res))
         {

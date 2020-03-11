@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Objects/UI/PlayerInventory/UI_PlayerInventory.cs" type="Script" id=1]
+
+[node name="PlayerInventory" type="Node2D"]
+position = Vector2( 241.684, 80.5612 )
+scale = Vector2( 2, 2 )
+script = ExtResource( 1 )
+
+[node name="List" type="ItemList" parent="."]
+margin_left = 3.0
+margin_top = 30.0
+margin_right = 248.0
+margin_bottom = 111.0
+allow_reselect = true
+max_columns = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inventories" type="HBoxContainer" parent="."]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 244.0
+margin_bottom = 26.0
+size_flags_horizontal = 0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Items" type="Button" parent="Inventories"]
+margin_right = 77.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buildings" type="Button" parent="Inventories"]
+margin_left = 77.0
+margin_right = 154.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Usable" type="Button" parent="Inventories"]
+margin_left = 154.0
+margin_right = 231.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+
+[node name="Close" type="Button" parent="Inventories"]
+margin_left = 231.0
+margin_right = 243.0
+margin_bottom = 25.0

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 public static class World
 {
@@ -50,7 +51,7 @@ public static class World
     private static int seed;
     private const int octave = 3;
     private const float periode = 20.0f;
-    private const float persistence = 0.25f;
+    private const float persistence = 0.1f;
     private const float lacunarity = 3.5f;
     
     public static int size;
@@ -76,7 +77,10 @@ public static class World
             World.random = new Random(seed);
             World.seed = seed;
         }
-
+        
+        if (size <= 3)
+            throw new OutOfBoundsException1D("Init", size, 3, 9999);
+        
         World.size = size;
         World.BlockTilemap = BlockTilemap;
         World.UIBlockTilemap = UIBlockTilemap;
@@ -125,16 +129,25 @@ public static class World
     public static Chunk GetChunk(int x)
     {
         IsInitWorldTest("GetChunk");
-        if (x<0 || x>=size*Chunk.size)
-            throw new OutOfBoundsException1D("GetChunk", x, 0, size*Chunk.size-1);
+        /*if (x<0 || x>=size*Chunk.size)
+            throw new OutOfBoundsException1D("GetChunk", x, 0, size*Chunk.size-1);*/
+        if (x < 0)
+            x = size * Chunk.size + x;
+        else if (x >= size * Chunk.size)
+            x = x - size * Chunk.size;
         return chunks[x/Chunk.size];
     }
+    
     /// Retourne le chunk correspondant a l'id
     public static Chunk GetChunkWithID(int id)
     {
         IsInitWorldTest("GetChunkWithID");
-        if (id<0 || id>=size)
-            throw new ArgumentException("GetChunkWithID: id is out of bounds.");
+        /*if (id<0 || id>=size)
+            throw new ArgumentException("GetChunkWithID: id is out of bounds.");*/
+        if (id < 0)
+            id = size + id;
+        else if (id >= size)
+            id = id - size;
         return chunks[id];
     }
 
@@ -143,7 +156,11 @@ public static class World
     {
         IsInitWorldTest("GetBlock");
         Chunk c = GetChunk(x);
-        return c.GetBlock(x%Chunk.size,y);
+        if (x < 0)
+            x = size * Chunk.size + x;
+        else if (x >= size * Chunk.size)
+            x = x - size * Chunk.size;
+        return c.GetBlock(Chunk.GetLocaleX(x),y);
     }
 
     /// Cache le chunk d'id id

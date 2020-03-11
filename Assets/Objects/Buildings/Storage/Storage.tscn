@@ -1,16 +1,30 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Objects/Buildings/Storage/Storage.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/stockage.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Ressources/Shaders/fog.shader" type="Shader" id=3]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/stockageMask1.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/stockageMaskB1.png" type="Texture" id=5]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 3 )
+shader_param/color = Vector3( 0.1, 0.51, 0.91 )
+shader_param/OCTAVES = 4
+shader_param/mask_texture = ExtResource( 4 )
 
 [node name="Storage" type="Node2D"]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Image" type="Sprite" parent="."]
+z_index = -1
 texture = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 1 )
+z_index = -2
+texture = ExtResource( 4 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+visible = false
+z_index = -3
+texture = ExtResource( 5 )

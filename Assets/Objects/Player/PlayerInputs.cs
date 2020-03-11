@@ -6,7 +6,6 @@ public class PlayerInputs : Node2D
 
 
 	[Signal] delegate void BlockPlaced();
-	[Signal] delegate void Inventory();
 
 	private Vector2 mousePos;
 	private PlayerState.State lastState;
@@ -18,12 +17,14 @@ public class PlayerInputs : Node2D
 		Player.inventoryUsables.Add(Usable.Type.Grass, 10);
 		Player.inventoryUsables.Add(Usable.Type.Stone, 10);
 		ConnectSignals();
+		Player.inventoryItems.Add(Item.Type.Composite, 12);
+
 	}
 
 	private void ConnectSignals()
 	{
-		Connect("BlockPlaced", (Node)GetTree().GetNodesInGroup("ToolBar")[0], "SendRefresh"); // Pour Actualisation de la ToolBar
-		Connect("Inventory", GetNode("../../HUD/Inventory"), "Display"); //Ouvre l'inventaire
+		if (GetTree().GetNodesInGroup("ToolBar").Count==1)
+			Connect("BlockPlaced", (Node)GetTree().GetNodesInGroup("ToolBar")[0], "SendRefresh"); // Pour Actualisation de la ToolBar
 	}
 
   
@@ -39,7 +40,7 @@ public class PlayerInputs : Node2D
 
 		mousePos = Convertion.Location2WorldFloor(GetGlobalMousePosition());
 
-		/*Affichage*/
+		//Affichage
 		if (PlayerState.GetState() == PlayerState.State.Normal)
 		{
 			NormalState();
@@ -50,8 +51,13 @@ public class PlayerInputs : Node2D
 		}
 
 
-		/*Inputs*/
-
+		/* Inventory Click */
+		if (Input.IsActionJustPressed("inventory"))
+		{
+			InventoryClick();
+		}		
+		
+		//Inputs
 		if (Input.IsActionJustPressed("mouse1"))
 		{
 			if (PlayerState.GetState() == PlayerState.State.Normal)
@@ -62,6 +68,7 @@ public class PlayerInputs : Node2D
 			{
 				ClickBuildState();
 			}
+			
 		}
 		else if (Input.IsActionJustPressed("mouse2"))
 		{
@@ -74,10 +81,6 @@ public class PlayerInputs : Node2D
 				PlayerState.SetState(PlayerState.State.Normal);
 			}
 		}
-		else if (Input.IsActionJustPressed("inventory"))
-			EmitSignal("Inventory");
-
-
 	}
 
 
@@ -223,7 +226,19 @@ public class PlayerInputs : Node2D
 	}
 
 
-
+	private void InventoryClick()
+	{
+		if (PlayerState.GetState() != PlayerState.State.Inventory)
+		{
+			PlayerState.SetState(PlayerState.State.Inventory);
+			UI_PlayerInventory.Display("item");
+		}
+		else
+		{
+			PlayerState.SetState(PlayerState.State.Normal);
+			UI_PlayerInventory.Hide();
+		}
+	}
 
 
 }

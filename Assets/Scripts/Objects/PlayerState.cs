@@ -19,7 +19,7 @@ public static class PlayerState
     {
         Normal,
         Build,
-        Menu,
+        Inventory,
         Dead
     }
 

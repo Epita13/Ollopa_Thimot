@@ -1,38 +1,71 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Assets/Scenes/SceneGeneration/SceneGenerationScript.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Objects/World/Tilemaps.tscn" type="PackedScene" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Objects/Player/Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Assets/Objects/UI/HUD/HUD.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Assets/Scenes/Liquid/Liquid.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Assets/Objects/UI/ToolBar/ToolBar.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Objects/UI/ToolBar/ToolBar.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Objects/UI/PlayerInventory/PlayerInventory.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Scripts/Autres/Environement.cs" type="Script" id=7]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://Assets/Ressources/Fonts/American Captain.otf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 100
+font_data = SubResource( 1 )
 
 [node name="SceneGeneration" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="Ground" type="TileMap" parent="."]
-cell_size = Vector2( 16, 16 )
-format = 1
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+visible = false
+margin_right = 582.0
+margin_bottom = 127.0
+custom_fonts/font = SubResource( 2 )
+text = "Generation V1.5
+Break&Pose V1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ToolBar" parent="CanvasLayer" instance=ExtResource( 5 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -640.0
+margin_top = -240.0
+margin_right = 640.0
+margin_bottom = 6.10352e-05
+
+[node name="PlayerInventory" parent="CanvasLayer" instance=ExtResource( 6 )]
+position = Vector2( 298.545, 511.742 )
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 1000, 0.1 )
 texture = ExtResource( 3 )
 
-[node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 2048, 641.655 )
-scale = Vector2( 1, 1 )
+[node name="Sprite2" type="Sprite" parent="."]
+scale = Vector2( 0.1, 1000 )
+z_index = 65
+texture = ExtResource( 3 )
 
-[node name="Camera2D2" type="Camera2D" parent="Player"]
-position = Vector2( 0.527893, -1.90234 )
-scale = Vector2( 0.5, 0.5 )
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 543.716, 688.064 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
-zoom = Vector2( 0.7, 0.7 )
+zoom = Vector2( 0.5, 0.5 )
 
 [node name="Tilemaps" parent="." instance=ExtResource( 2 )]
 
-[node name="Liquid" parent="." instance=ExtResource( 6 )]
+[node name="Environement" type="Node2D" parent="."]
+scale = Vector2( 1000, 0.1 )
+script = ExtResource( 7 )
 
-[node name="HUD" parent="." instance=ExtResource( 5 )]
-
-[node name="ToolBar" parent="." instance=ExtResource( 7 )]
+[node name="Canvas_DayNight" type="CanvasModulate" parent="Environement"]

@@ -10,7 +10,7 @@ public class SceneGenerationScript : Node
         TileMap back = GetNode("Tilemaps").GetNode<TileMap>("0");
         TileMap ground = GetNode("Tilemaps").GetNode<TileMap>("1");
         TileMap uiground = GetNode("Tilemaps").GetNode<TileMap>("2");
-        World.Init(16, ground, uiground, back);
+        World.Init(4, ground, uiground, back);
         World.Draw();
         Building.Init(this);
     }
