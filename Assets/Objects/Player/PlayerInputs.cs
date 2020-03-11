@@ -231,12 +231,11 @@ public class PlayerInputs : Node2D
 		if (PlayerState.GetState() != PlayerState.State.Inventory)
 		{
 			PlayerState.SetState(PlayerState.State.Inventory);
-			UI_PlayerInventory.Display("item");
+			UI_PlayerInventory.Open("item");
 		}
 		else
 		{
-			PlayerState.SetState(PlayerState.State.Normal);
-			UI_PlayerInventory.Hide();
+			UI_PlayerInventory.Close();
 		}
 	}
 

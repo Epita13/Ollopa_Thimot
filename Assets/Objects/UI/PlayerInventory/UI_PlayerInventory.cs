@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class UI_PlayerInventory : Node
 {
-    /*Le script n'a besoin de rien pour exister mais il le script n'appelle jamais de lui-même Display()*/
+    /*Le script n'a besoin de rien pour exister mais il le script n'appelle jamais de lui-même Open()*/
+    /*Le script change lui-même l'état du joueur en inventaire ou en normal à l'appel de Open et Close*/
     
     public static UI_PlayerInventory instance;
     public static UI_PlayerInventory GetInstance() => instance;
@@ -44,17 +45,17 @@ public class UI_PlayerInventory : Node
         if (inventories.Visible)                                    //Quand l'inventaire est affiché, vérifie si un des bouton est pressé
         {
             if(btItems.Pressed)
-                Display("item");
+                Open("item");
             else if (btBuildings.Pressed)
-                Display("building");
+                Open("building");
             else if (btUsable.Pressed)
-                Display("usable");
+                Open("usable");
             else if (btClose.Pressed)
-                Hide();
+                Close();
         }
     }
 
-    public static void Display(string str)                            //Affiche l'inventaire correspondant a str, lance une exception si pas de correspondance
+    public static void Open(string str)                           //Affiche l'inventaire correspondant a str, lance une exception si pas de correspondance
     {
         GetInstance().itemList.Clear();
 
@@ -78,16 +79,19 @@ public class UI_PlayerInventory : Node
             // a faire quand le stockage de batiment existera
         }
         else
-            throw new Exception("Invalid argument in Display() from UI_PlayerInvventory.cs");
+            throw new Exception("Invalid argument in Open() from UI_PlayerInvventory.cs");
         
         GetInstance().itemList.Visible = true;
         GetInstance().inventories.Visible = true;
+        
+        PlayerState.SetState(PlayerState.State.Inventory);
     }
     
-    public static void Hide()                                        //Cache l'inventaire
+    public static void Close()                                        //Ferme l'inventaire
     {
         GetInstance().itemList.Visible = false;
         GetInstance().inventories.Visible = false;
+        PlayerState.SetState(PlayerState.State.Normal);
     }
 
     private void SizeTextButtons()                             //Doit adapter la taille mais ne fonctionne pas parce que les boutons sont dans un hbox container
