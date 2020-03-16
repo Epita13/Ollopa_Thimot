@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Scenes/SceneGeneration/SceneGenerationScript.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Objects/World/Tilemaps.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/Objects/UI/ToolBar/ToolBar.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Objects/UI/PlayerInventory/PlayerInventory.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Scripts/Autres/Environement.cs" type="Script" id=7]
+[ext_resource path="res://Assets/Scenes/Liquid/Liquid.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Ressources/Fonts/American Captain.otf"
@@ -16,7 +17,10 @@ size = 100
 font_data = SubResource( 1 )
 
 [node name="SceneGeneration" type="Node2D"]
+position = Vector2( 1, -2 )
 script = ExtResource( 1 )
+
+[node name="Liquid" parent="." instance=ExtResource( 8 )]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

@@ -21,8 +21,8 @@ config/icon="res://icon.png"
 
 [display]
 
-window/size/width=1000
-window/size/height=720
+window/size/width=1300
+window/size/height=700
 window/stretch/aspect="keep_height"
 
 [input]
@@ -55,6 +55,7 @@ inventory={
 
 [mono]
 
+debugger_agent/wait_for_debugger=true
 debugger_agent/wait_timeout=10000
 
 [rendering]
