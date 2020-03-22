@@ -57,6 +57,7 @@
             <e p="Chunk.cs" t="Include" />
             <e p="Item.cs" t="Include" />
             <e p="Liquid.cs" t="Include" />
+            <e p="LiquidMove.cs" t="Include" />
             <e p="Player.cs" t="Include" />
             <e p="PlayerState.cs" t="Include" />
             <e p="StorageItems.cs" t="Include" />

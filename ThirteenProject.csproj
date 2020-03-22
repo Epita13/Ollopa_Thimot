@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts/Objects/Chunk.cs" />
     <Compile Include="Assets\Scripts\Autres\Environement.cs" />
     <Compile Include="Assets\Scripts\Objects\Building.cs" />
+    <Compile Include="Assets\Scripts\Objects\LiquidMove.cs" />
     <Compile Include="Assets\Scripts\Tools\Convertion.cs" />
     <Compile Include="Assets\Scripts\Objects\Item.cs" />
     <Compile Include="Assets\Scripts\Objects\Liquid.cs" />
