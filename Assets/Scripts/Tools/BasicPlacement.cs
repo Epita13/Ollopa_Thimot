@@ -20,7 +20,7 @@ public class BasicPlacement : Node2D
 	{
 		bool res = true;
 		Block b = World.GetBlock(x, y);
-		if (b == null || b.type != Block.Type.Air)
+		if (b == null || b.GetType != Block.Type.Air)
 			res = false;
 		return res;
 	}
@@ -30,7 +30,7 @@ public class BasicPlacement : Node2D
 	{
 		bool res = true;
 		Block b = World.GetBlock(x, y - 1);
-		if (b==null || b.type == Block.Type.Air)
+		if (b==null || b.GetType == Block.Type.Air)
 			res = false;
 		return res;
 	}
@@ -112,7 +112,6 @@ public class BasicPlacement : Node2D
 	///place un batiment selon les regles
 	public static void PlaceWithMouse(Building building,Vector2 mouse,bool right)
 	{
-		GD.Print("fe");
 		Vector2 mouseC = Convertion.Location2WorldFloor(mouse);
 		if (right)
 		{

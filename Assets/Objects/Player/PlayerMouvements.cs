@@ -3,12 +3,15 @@ using System;
 
 public class PlayerMouvements : KinematicBody2D
 {
+
+
+    public static bool HasPlayer = false;
     
     public static PlayerMouvements instance;
     public static Vector2 size = new Vector2(1.625f,3);
 
     public static float GRAVITY = 10; 
-    public static float SPEED = 125*2.5f;
+    public static float SPEED = 125*2.5f*0.6f;
     public static float JUMP_POWER = -250*1.4f;
     public static bool canMove = true;
 
@@ -19,13 +22,13 @@ public class PlayerMouvements : KinematicBody2D
     Vector2 depopos;
     public override void _Ready()
     {
+        HasPlayer = true;
         depopos = Position;
         instance = this;
         if (!World.IsInit)
         {
             GD.Print("Player : Warning, le monde n'est pas initialisé");
         }
-        GD.Print((-3)%16);
     }
 
     public static float GetX() => Convertion.Location2World(instance.Position).x;
@@ -84,14 +87,18 @@ public class PlayerMouvements : KinematicBody2D
         {
             canMove = false;
         }
+        
+            
   }
+
 
 
   private void WorldEndTeleportation()
   {
-      Transform2D t = GetViewportTransform();
-      Vector2 vecMin = Convertion.Location2World(t.origin) * -1;
-      Vector2 vecMax = Convertion.Location2World(new Vector2(t.origin.x*-1+GetViewport().Size.x, t.origin.y));
+      Vector2 p = GetViewportTransform().origin * CurrentCamera.GetXZoom();
+      int viewportSizeX = Mathf.FloorToInt(GetViewport().Size.x * CurrentCamera.GetXZoom());
+      Vector2 vecMin = Convertion.Location2World(p) * -1;
+      Vector2 vecMax = Convertion.Location2World(new Vector2(p.x*-1+viewportSizeX, p.y));
       if (vecMin.x < 0)
       {
           int i = (int) Mathf.Abs(vecMin.x / Chunk.size);
@@ -113,6 +120,20 @@ public class PlayerMouvements : KinematicBody2D
           Teleport(GetX()-World.size*Chunk.size,GetY());
       }
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 
   

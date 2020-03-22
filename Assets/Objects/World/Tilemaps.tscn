@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Objects/Tilesets/BlocksTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/Objects/Tilesets/BlockUITileset.tres" type="TileSet" id=2]
-[ext_resource path="res://Assets/Ressources/Imgs/blocks/Back/Back.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Ressources/Imgs/Blocks/Back/Back.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Objects/Tilesets/BlockUI2Tileset.tres" type="TileSet" id=4]
 
 [sub_resource type="TileSet" id=1]
 0/name = "Back.png 0"
@@ -30,11 +31,18 @@ z_index = 1
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 16, 16 )
 cell_y_sort = true
+collision_layer = 3
 format = 1
 
 [node name="2" type="TileMap" parent="."]
+z_index = 5
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 16, 16 )
+cell_y_sort = true
+format = 1
+
+[node name="3" type="TileMap" parent="."]
 z_index = 10
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
-cell_y_sort = true
 format = 1

@@ -4,6 +4,7 @@ render_mode unshaded;
 uniform vec3 color = vec3(0.33, 0.15, 0.82);
 uniform int OCTAVES = 4;
 uniform float size = 20;
+uniform float mult = 1.0;
 
 uniform sampler2D mask_texture;
 
@@ -48,7 +49,7 @@ void fragment()
 	
 	float final = fbm(coord + motion);
 	
-	vec4 color1 = vec4(color, final * 1.0 );
+	vec4 color1 = vec4(color, final * mult );
 	
 	color1 = color1 * texture(mask_texture, UV).a;
 	

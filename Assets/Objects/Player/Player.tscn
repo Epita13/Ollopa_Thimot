@@ -1,11 +1,18 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Objects/Player/PlayerMouvements.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Ressources/Imgs/Joueur/astronaute.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Objects/Player/PlayerInputs.cs" type="Script" id=3]
+[ext_resource path="res://Assets/Ressources/Imgs/Joueur/PointLigth.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Objects/Player/PlayerZone.cs" type="Script" id=5]
+[ext_resource path="res://Assets/Objects/Tools/RayGun/Raygun.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 13, 24 )
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 12.8554
+height = 24.6139
 
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
@@ -22,3 +29,19 @@ shape = SubResource( 1 )
 
 [node name="Inputs" type="Node2D" parent="."]
 script = ExtResource( 3 )
+
+[node name="light" type="Light2D" parent="."]
+position = Vector2( -0.946938, 0 )
+texture = ExtResource( 4 )
+energy = 0.0
+shadow_enabled = true
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
+
+[node name="Raygun" parent="." instance=ExtResource( 6 )]
+scale = Vector2( 0.5, 0.5 )
+[connection signal="area_shape_entered" from="Area2D" to="Area2D" method="_on_Area2D_area_shape_entered"]

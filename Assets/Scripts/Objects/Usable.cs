@@ -20,10 +20,10 @@ public class Usable
 
     public static Dictionary<int, Texture> textures = new Dictionary<int, Texture>
     {
-        {(int)Type.Laser, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/laser.png")},
-        {(int)Type.Dirt, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/dirt.png")},
-        {(int)Type.Grass, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/grass.png")},
-        {(int)Type.Stone, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/stone.png")}
+        {(int)Type.Laser, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Tools/Raygun/Raygun.png")},
+        {(int)Type.Dirt, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Blocks/dirt.png")},
+        {(int)Type.Grass, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Blocks/grass.png")},
+        {(int)Type.Stone, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Blocks/stone.png")}
     };
 
     public static Dictionary<Type, Block.Type> blocks = new Dictionary<Type, Block.Type>

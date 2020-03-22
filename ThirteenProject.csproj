@@ -8,7 +8,7 @@
     <OutputPath>.mono/temp/bin/$(Configuration)</OutputPath>
     <RootNamespace>ThirteenProject</RootNamespace>
     <AssemblyName>ThirteenProject</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <BaseIntermediateOutputPath>.mono/temp/obj</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)/$(Configuration)</IntermediateOutputPath>
     <ApiConfiguration Condition=" '$(Configuration)' != 'Release' ">Debug</ApiConfiguration>
@@ -51,24 +51,31 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Objects\Autres\Loot.cs" />
+    <Compile Include="Assets\Objects\Buildings\Barrel\Barrel.cs" />
     <Compile Include="Assets\Objects\Buildings\SolarPanel\SolarPanel.cs" />
     <Compile Include="Assets\Objects\Buildings\Rafinery\Rafinery.cs" />
+    <Compile Include="Assets\Objects\Buildings\Spaceship\Spaceship.cs" />
     <Compile Include="Assets\Objects\Buildings\Storage\Storage.cs" />
     <Compile Include="Assets\Objects\Player\PlayerInputs.cs" />
     <Compile Include="Assets\Objects\Player\PlayerMouvements.cs" />
+    <Compile Include="Assets\Objects\Player\PlayerZone.cs" />
+    <Compile Include="Assets\Objects\Tools\Raygun\Raygun.cs" />
     <Compile Include="Assets\Objects\UI\PlayerInventory\UI_PlayerInventory.cs" />
     <Compile Include="Assets\Objects\UI\TestsTemporaire\ValuesPanel.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ItemBox.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ToolBar.cs" />
     <Compile Include="Assets\Scenes\Jeux\Game.cs" />
     <Compile Include="Assets\Scenes\Menus\MenuPlay.cs" />
+    <Compile Include="Assets\Scenes\PlayerTests\LootTest.cs" />
     <Compile Include="Assets\Scenes\SceneGeneration\SceneGenerationScript.cs" />
     <Compile Include="Assets\Scripts/Objects/Block.cs" />
     <Compile Include="Assets\Scripts/Objects/World.cs" />
     <Compile Include="Assets\Scripts/Objects/Chunk.cs" />
+    <Compile Include="Assets\Scripts\Autres\CurrentCamera.cs" />
     <Compile Include="Assets\Scripts\Autres\Environement.cs" />
+    <Compile Include="Assets\Scripts\Autres\Paralax.cs" />
     <Compile Include="Assets\Scripts\Objects\Building.cs" />
-    <Compile Include="Assets\Scripts\Objects\LiquidMove.cs" />
     <Compile Include="Assets\Scripts\Tools\Convertion.cs" />
     <Compile Include="Assets\Scripts\Objects\Item.cs" />
     <Compile Include="Assets\Scripts\Objects\Liquid.cs" />
@@ -78,6 +85,7 @@
     <Compile Include="Assets\Scripts\Objects\StorageItems.cs" />
     <Compile Include="Assets\Scripts\Objects\StorageLiquids.cs" />
     <Compile Include="Assets\Scripts\Objects\Usable.cs" />
+    <Compile Include="Assets\Scripts\Tools\Delay.cs" />
     <Compile Include="Assets\Scripts\Tools\Exeception\OutOfBoundsException.cs" />
     <Compile Include="Assets\Scripts\Tools\Exeception\UninitializedException.cs" />
     <Compile Include="Assets\Scripts\Tools\PlaceBlock.cs" />

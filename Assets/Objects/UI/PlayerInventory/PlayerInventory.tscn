@@ -2,16 +2,19 @@
 
 [ext_resource path="res://Assets/Objects/UI/PlayerInventory/UI_PlayerInventory.cs" type="Script" id=1]
 
-[node name="PlayerInventory" type="Node2D"]
-position = Vector2( 241.684, 80.5612 )
-scale = Vector2( 2, 2 )
+[node name="PlayerInventory" type="Control"]
+margin_right = 245.0
+rect_min_size = Vector2( 245, 110 )
+rect_scale = Vector2( 2, 2 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="List" type="ItemList" parent="."]
-margin_left = 3.0
 margin_top = 30.0
-margin_right = 248.0
-margin_bottom = 111.0
+margin_right = 245.0
+margin_bottom = 110.0
 allow_reselect = true
 max_columns = 5
 __meta__ = {
@@ -19,10 +22,8 @@ __meta__ = {
 }
 
 [node name="Inventories" type="HBoxContainer" parent="."]
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 244.0
-margin_bottom = 26.0
+margin_right = 245.0
+margin_bottom = 25.0
 size_flags_horizontal = 0
 custom_constants/separation = 0
 __meta__ = {

@@ -5,12 +5,7 @@ using System.Security.Policy;
 
 public class Storage : Building
 {
-	//Initialistaion des différents type de stockage
- 	
-	//bois, composite (matieres premieres)
-    public static StorageItems storageItems = new StorageItems(750);
-    //eau, petrole (Liquide)
-    public static StorageLiquids storageLiquids = new StorageLiquids(150.0f);
+
 	//energy
 	public float energy = 0;
 	public float maxEnergy  = 1000f;
@@ -32,7 +27,6 @@ public class Storage : Building
 	
 	 public override void _Ready()
     {
-
     }
 	
 	public void AddEnergy(float amount)

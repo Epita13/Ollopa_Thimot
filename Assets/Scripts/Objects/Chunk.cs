@@ -150,7 +150,7 @@ public class Chunk
     {
         if (!IsInChunk(x,y))
             throw new OutOfBoundsException2D("AddBlock", x, 0, size-1, y, chunkMin, chunkMax);
-        blocks[x][y].type = type;
+        blocks[x][y].SetType(type);
         DrawBlock(blocks[x][y]);
     }
 
@@ -160,21 +160,21 @@ public class Chunk
         if (!IsInChunk(x,y))
             throw new OutOfBoundsException2D("RemoveBlock", x, 0, size-1, y, chunkMin, chunkMax);
         HideBlock(blocks[x][y]);
-        blocks[x][y].type = Block.Type.Air;
+        blocks[x][y].SetType(Block.Type.Air);
     }
 
     /// Affiche un block au Chunk
     public void DrawBlock(Block b)
     {
         World.IsInitWorldTest("DrawBlock");
-        World.BlockTilemap.SetCell(b.x, -b.y+height, Block.GetIDTile(b.type));
+        World.BlockTilemap.SetCell(b.x, -b.y+height, Block.GetIDTile(b.GetType));
     }
     
     /// Affiche un block au Chunk a une position specifique
     public void DrawBlockClone(Block b, int x)
     {
         World.IsInitWorldTest("DrawBlock");
-        World.BlockTilemap.SetCell(b.x-(id*size)+x, -b.y+height, Block.GetIDTile(b.type));
+        World.BlockTilemap.SetCell(b.x-(id*size)+x, -b.y+height, Block.GetIDTile(b.GetType));
     }
 
     /// Cache un block au Chunk
