@@ -14,14 +14,11 @@ public class Game : Node2D
         TileMap ground = GetNode("Tilemaps").GetNode<TileMap>("1");
         TileMap uiground = GetNode("Tilemaps").GetNode<TileMap>("3");
         TileMap uiground2 = GetNode("Tilemaps").GetNode<TileMap>("2");
-        World.Init(30, ground, uiground, uiground2, back);
+        World.Init(20, ground, uiground, uiground2, back);
         World.Draw();
         Building.Init(this);
+        Loot.Init(this);
     }
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+
 }

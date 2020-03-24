@@ -37,7 +37,7 @@ public static class PlaceBlock
         if (CanPlace(x, y, out res))
         {
             World.GetChunk(x).AddBlock(Chunk.GetLocaleX(x), y, type);
-            Delay.StartDelay(World.BlockTilemap, 0.3f,
+            Delay.StartDelay(World.BlockTilemap, 2.0f,
                 () => {World.UI2BlockTilemap.SetCell(x, -y+Chunk.height, -1);},
                 (delta, time) =>
                 {

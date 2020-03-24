@@ -79,7 +79,7 @@ public static class World
             World.seed = seed;
         }
         
-        if (size <= 3)
+        if (size < 3)
             throw new OutOfBoundsException1D("Init", size, 3, 9999);
         
         World.size = size;

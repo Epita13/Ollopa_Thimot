@@ -46,11 +46,11 @@ public class Raygun : Node2D
         var vec = hit_pos - raygun_pos;
         var block_pos = Convertion.Location2World(hit_pos);
         var block_posF = Convertion.Location2WorldFloor(hit_pos);
-        if (vec.x > 0 && vec.y > 0)
+        if (vec.x >= 0 && vec.y >= 0)
         {
             if (block_pos.y == Mathf.Floor(block_pos.y))
                 block_posF += new Vector2(0,-1.0f);
-        } else if (vec.x < 0 && vec.y > 0)
+        } else if (vec.x < 0 && vec.y >= 0)
         {
             if (block_pos.y == Mathf.Floor(block_pos.y))
                 block_posF += new Vector2(0,-1.0f);
@@ -63,7 +63,8 @@ public class Raygun : Node2D
         }
 
         Block block_hit = World.GetBlock((int) block_posF.x, (int) block_posF.y);
-        block_hit.Damage(3.0f);
+        if (block_hit.GetType != Block.Type.Air)
+            block_hit.Damage(2.5f);
     }
 
 

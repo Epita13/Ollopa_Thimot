@@ -61,10 +61,12 @@
     <Compile Include="Assets\Objects\Player\PlayerMouvements.cs" />
     <Compile Include="Assets\Objects\Player\PlayerZone.cs" />
     <Compile Include="Assets\Objects\Tools\Raygun\Raygun.cs" />
+    <Compile Include="Assets\Objects\UI\Notification\Notifications.cs" />
     <Compile Include="Assets\Objects\UI\PlayerInventory\UI_PlayerInventory.cs" />
     <Compile Include="Assets\Objects\UI\TestsTemporaire\ValuesPanel.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ItemBox.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ToolBar.cs" />
+    <Compile Include="Assets\Objects\World\UI_breakingBlocks.cs" />
     <Compile Include="Assets\Scenes\Jeux\Game.cs" />
     <Compile Include="Assets\Scenes\Menus\MenuPlay.cs" />
     <Compile Include="Assets\Scenes\PlayerTests\LootTest.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Assets\Scripts\Autres\Environement.cs" />
     <Compile Include="Assets\Scripts\Autres\Paralax.cs" />
     <Compile Include="Assets\Scripts\Objects\Building.cs" />
+    <Compile Include="Assets\Scripts\Objects\Drop.cs" />
     <Compile Include="Assets\Scripts\Tools\Convertion.cs" />
     <Compile Include="Assets\Scripts\Objects\Item.cs" />
     <Compile Include="Assets\Scripts\Objects\Liquid.cs" />

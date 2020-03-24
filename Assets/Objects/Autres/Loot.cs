@@ -1,9 +1,10 @@
 using Godot;
 using System;
+using System.Net.Sockets;
 
 public class Loot : Node2D
 {
-    
+
     /*
      Object static:  World
 
@@ -50,6 +51,7 @@ public class Loot : Node2D
     public const float SPEEDMIN = 1.4f;
     public const float SPEEDMAX = 2.0f;
     public const float LIFETIME = 30.0f;
+    public const int STACKSIZE = 24;
 
     private float time;
     public bool dead = false;
@@ -67,8 +69,33 @@ public class Loot : Node2D
         this.hasLoot = true;
     }
 
+    public void GiveLoot(Loot l)
+    {
+        int r = STACKSIZE - l.GetLootAmount();
+        int amount = 0;
+        if (GetLootAmount() <= r)
+        {
+            amount = GetLootAmount();
+        }
+        else
+        {
+            amount = r;
+        }
+        this.amount -= amount;
+        l.AddLoot(amount);
+        l.ResetTime();
+        
+    }
+
+    public void AddLoot(int amount)
+    {
+        this.amount += amount;
+    }
+
     public Item.Type GetLootType() => type;
     public int GetLootAmount() => amount;
+
+    public void ResetTime() => time = 0;
 
     private bool HasLoot() => hasLoot;
     
@@ -106,17 +133,54 @@ public class Loot : Node2D
                 Player = (Node2D) body;
             }
         }
+        Node2D NearestLoot = null;
+        var areas = area.GetOverlappingAreas();
+        foreach (var a in areas)
+        {
+            Node2D n = (Node2D) a;
+            if (n.GetGroups().Contains("loot") && n.GetNode<Loot>("..")!=this)
+            {
+                Loot l = n.GetNode<Loot>("..");
+                if (l.GetLootType()==GetLootType() && GetLootAmount()<STACKSIZE && l.GetLootAmount() < STACKSIZE)
+                {
+                    NearestLoot = n.GetNode<Loot>("..");
+                    break;
+                }
+            }
+        }
 
         if (Player != null)
         {
             Vector2 vec = Player.Position - Position;
             Position = Position + (vec.Normalized() * speed);
         }
+        else if (NearestLoot != null)
+        {
+            Vector2 vec = NearestLoot.Position - Position;
+            Position = Position + (vec.Normalized() * 4.0f);
+        }
         else
         {
             Position = new Vector2(Position.x, Position.y + Mathf.Sin((float)OS.GetTicksMsec()*0.004f+dephase)*0.2f);
         }
 
+    }
+
+    public void _on_BALL_area_shape_entered(int are_id, Area2D area, int a, int b)
+    {
+        if (area.GetGroups().Contains("loot"))
+        {
+            Loot l = area.GetNode<Loot>("..");
+            if (l.dead==false && l.GetLootType() == GetLootType() && l.GetLootAmount()<STACKSIZE && GetLootAmount()<STACKSIZE)
+            {
+                dead = true;
+                GiveLoot(l);
+                if (GetLootAmount() <= 0)
+                {
+                    QueueFree();
+                }
+            }
+        }
     }
 
     public void Explosion()

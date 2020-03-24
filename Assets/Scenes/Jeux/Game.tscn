@@ -30,12 +30,12 @@ texture = ExtResource( 7 )
 [node name="Tilemaps" parent="." instance=ExtResource( 3 )]
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1169.19, 1023.35 )
+position = Vector2( 113.786, 981.676 )
 z_index = -1
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
-zoom = Vector2( 0.6, 0.6 )
+zoom = Vector2( 0.7, 0.7 )
 drag_margin_v_enabled = true
 script = ExtResource( 6 )
 
@@ -58,9 +58,9 @@ script = ExtResource( 10 )
 [node name="Canvas_DayNight" type="CanvasModulate" parent="Environement"]
 
 [node name="fog" type="Sprite" parent="Environement"]
-visible = false
 material = SubResource( 1 )
 scale = Vector2( 100, 100 )
+z_index = -1
 texture = ExtResource( 7 )
 centered = false
 

@@ -1,21 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Assets/Objects/Tilesets/Liquid.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/Scripts/Objects/Liquid.cs" type="Script" id=2]
 
 [node name="Liquid" type="Node2D"]
-
-[node name="WaterMap" type="TileMap" parent="."]
-position = Vector2( 1, 0 )
-tile_set = ExtResource( 1 )
-cell_size = Vector2( 16, 16 )
-format = 1
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
 
-[node name="Timer" type="Timer" parent="."]
+[node name="TimerWater" type="Timer" parent="."]
 wait_time = 0.05
 autostart = true
-[connection signal="timeout" from="Timer" to="WaterMap" method="_on_Timer_timeout"]
+
+[node name="TimerOil" type="Timer" parent="."]
+wait_time = 0.05
+[connection signal="timeout" from="TimerWater" to="." method="TimeOutWater"]
+[connection signal="timeout" from="TimerOil" to="." method="TimeOutOil"]

@@ -6,12 +6,13 @@
 [ext_resource path="res://Assets/Objects/Particles/Explosion.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 65.36
+radius = 49.2985
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 2.52498
 
 [node name="Loot" type="Node2D"]
+z_index = 20
 script = ExtResource( 2 )
 
 [node name="img" type="Sprite" parent="."]
@@ -24,8 +25,9 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Light2D" type="Light2D" parent="."]
+position = Vector2( -1, 0 )
 texture = ExtResource( 3 )
-texture_scale = 0.8
+texture_scale = 0.2
 energy = 0.5
 
 [node name="BALL" type="Area2D" parent="." groups=[
@@ -36,3 +38,4 @@ energy = 0.5
 shape = SubResource( 2 )
 
 [node name="Explosion" parent="." instance=ExtResource( 4 )]
+[connection signal="area_shape_entered" from="BALL" to="." method="_on_BALL_area_shape_entered"]
