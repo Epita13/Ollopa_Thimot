@@ -29,7 +29,7 @@ rect_min_size = Vector2( 450, 112 )
 hint_tooltip = "
 "
 custom_fonts/font = SubResource( 2 )
-text = "PLAY"
+text = "Pute"
 __meta__ = {
 "_edit_use_anchors_": false
 }
