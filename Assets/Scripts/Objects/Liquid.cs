@@ -9,22 +9,23 @@ public class Liquid : Node2D
     private readonly Dictionary<Liquid.Type, LiquidMove> list = new Dictionary<Type, LiquidMove>();
     private Timer TimerWater;
     private Timer TimerOil;
+    public static TileMap Watermap;
+    public static TileMap Oilmap;
 
     public const int NbLiquids = 3;
     public const int Capacity = 8;
     public enum Type 
     { Water, Oil, Fuel }
-    
+
+    private int test = 0;
     public override void _Ready()
     {
-        /*water = new LiquidMove(Type.Water);
-        oil = new LiquidMove(Type.Oil);
-        list.Add(Type.Water, water);
-        list.Add(Type.Oil, oil);
+        Watermap = GetNode<TileMap>("Watermap");
+        Oilmap = GetNode<TileMap>("Oilmap");
+        list.Add(Type.Water, new LiquidMove(Type.Water));
+        list.Add(Type.Oil, new LiquidMove(Type.Oil));
         TimerWater = GetNode<Timer>("TimerWater");
-        TimerOil = GetNode<Timer>("TimerOil");*/
-        //TimerWater.Connect("timeout()", GetNode("Liquid"), "TimeOutWater");
-
+        TimerOil = GetNode<Timer>("TimerOil");
     }
 
 
@@ -35,12 +36,16 @@ public class Liquid : Node2D
 
     private void TimeOutWater()
     {
-        /*list[Type.Water].Move();
-        list[Type.Water].PlaceWater(10, 80);*/
+        if (test < 1)
+        {
+           list[Type.Water].PlaceWater(10, 60);
+           test++;
+        }
+        list[Type.Water].Move();
     }
     
     private void TimeOutOil()
     {
-       // list[Type.Oil].Move();
+        //list[Type.Oil].Move();
     }
 }

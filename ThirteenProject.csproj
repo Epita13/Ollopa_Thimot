@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\Tools\Convertion.cs" />
     <Compile Include="Assets\Scripts\Objects\Item.cs" />
     <Compile Include="Assets\Scripts\Objects\Liquid.cs" />
+	<Compile Include="Assets\Scripts\Objects\LiquidMove.cs" />
     <Compile Include="Assets\Scripts\Objects\Player.cs" />
     <Compile Include="Assets\Scripts\Objects\PlayerState.cs" />
     <Compile Include="Assets\Scripts\Objects\StorageUsables.cs" />

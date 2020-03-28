@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
+[ext_resource path="res://Assets/Objects/Tilesets/Liquid.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/Scripts/Objects/Liquid.cs" type="Script" id=2]
 
 [node name="Liquid" type="Node2D"]
@@ -11,5 +12,18 @@ autostart = true
 
 [node name="TimerOil" type="Timer" parent="."]
 wait_time = 0.05
+autostart = true
+
+[node name="Watermap" type="TileMap" parent="."]
+position = Vector2( 0, -3 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+occluder_light_mask = 0
+format = 1
+tile_data = PoolIntArray( 1769477, 0, 0, 1769478, 0, 0, 1769479, 0, 0, 1769480, 0, 0, 1769481, 0, 0, 1769482, 0, 0 )
+
+[node name="Oilmap" type="TileMap" parent="."]
+cell_size = Vector2( 16, 16 )
+format = 1
 [connection signal="timeout" from="TimerWater" to="." method="TimeOutWater"]
 [connection signal="timeout" from="TimerOil" to="." method="TimeOutOil"]

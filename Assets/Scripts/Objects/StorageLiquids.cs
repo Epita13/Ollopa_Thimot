@@ -63,7 +63,7 @@ public class StorageLiquids
     private void Init()
     {
         stokage = new Dictionary<Liquid.Type, float>();
-        for (int i = 0; i < Liquid.nbLiquids; i++)
+        for (int i = 0; i < Liquid.NbLiquids; i++)
         {
             stokage.Add((Liquid.Type)i,0);
         }
