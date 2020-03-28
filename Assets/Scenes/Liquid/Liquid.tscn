@@ -15,7 +15,6 @@ wait_time = 0.05
 autostart = true
 
 [node name="Watermap" type="TileMap" parent="."]
-position = Vector2( 0, -3 )
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 16, 16 )
 occluder_light_mask = 0

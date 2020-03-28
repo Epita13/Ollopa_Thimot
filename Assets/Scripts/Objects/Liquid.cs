@@ -36,12 +36,13 @@ public class Liquid : Node2D
 
     private void TimeOutWater()
     {
-        if (test < 1)
+        if (test < 50)
         {
            list[Type.Water].PlaceWater(10, 60);
            test++;
         }
         list[Type.Water].Move();
+        /// intégrer si ca dépasse la hauteur du chunk
     }
     
     private void TimeOutOil()

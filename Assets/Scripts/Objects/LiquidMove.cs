@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Array = Godot.Collections.Array;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 public class LiquidMove : TileMap
 {
@@ -18,12 +19,17 @@ public class LiquidMove : TileMap
 
     private List<Tuple<int,int,int>> map = new List<Tuple<int,int,int>>{};
     private List<Tuple<int,int,int>> ToRemove = new List<Tuple<int,int,int>>{};
+    private List<Tuple<int,int,int>> ToFusion = new List<Tuple<int,int,int>>{};
+    private static Tuple<int, int, int> ToFind;
     private const int Capacity = Liquid.Capacity;
     private int width;                             //Hauteur et largeur de la matrice qui gere l'eau
     private readonly int height;
     public readonly Liquid.Type type;
     private TileMap mapdraw;
-    
+
+    private Predicate<Tuple<int, int, int>> predicat = Predicat;
+
+
     private int test = 0;
     
     
@@ -52,7 +58,6 @@ public class LiquidMove : TileMap
     private void DrawWaterLevel()
     {
         //Récupere les niveaux et emplacement d'eau puis calcule les nouveux niveau verticaux puis horizontaux
-        
         Update();
         VerticalWater();
         Update();
@@ -66,7 +71,7 @@ public class LiquidMove : TileMap
     {
         foreach (Tuple<int,int,int> block in ToRemove)
         {
-            Liquid.Watermap.SetCell(block.Item1, height + 1 - block.Item2, -1);
+            Liquid.Watermap.SetCell(block.Item1, height - block.Item2, -1);
             map.Remove(block);
         }
         ToRemove.Clear();
@@ -147,28 +152,66 @@ public class LiquidMove : TileMap
                 if (h2 > 0)
                     difference -= h2;
 
-                if (block.Item3 < difference)
+                if (difference != 0)
                 {
-                    h2 += block.Item3;
-                    h = 0;
-                }
-                else
-                {
-                    h2 = Capacity;
-                    h -= difference;
-                }
-                
-                map[i] = new Tuple<int, int, int>(block.Item1, block.Item2, h);
-                if (map.BinarySearch(blockinf) < 0)
-                {
-                    map.Add(new Tuple<int, int, int>(blockinf.Item1, blockinf.Item2, h2));
-                }
-                else
-                {
-                    map[map.BinarySearch(blockinf)] = new Tuple<int, int, int>(blockinf.Item1, blockinf.Item2 - 1, h2);
+                    if (block.Item3 < difference)
+                    {
+                        h2 += block.Item3;
+                        h = 0;
+                    }
+                    else
+                    {
+                        h2 = Capacity;
+                        h -= difference;
+                    }
+
+                    map[i] = new Tuple<int, int, int>(block.Item1, block.Item2, h);
+                    ToFind = blockinf;
+                    if (map.BinarySearch(blockinf) < 0)
+                    {
+                        map.Add(new Tuple<int, int, int>(blockinf.Item1, blockinf.Item2, h2));
+                    }
+                    else
+                    {
+                        map[map.BinarySearch(blockinf)] = new Tuple<int, int, int>(blockinf.Item1, blockinf.Item2, h2);
+                    }
                 }
             }
         }
+        
+        
+        for (int i = 0; i < map.Count && Double(map) ; i++)
+        {
+            int h = 0;
+            int j = 1;
+            ToFind = map[i];
+            ToFusion = map.FindAll(predicat);
+            foreach (Tuple<int,int,int> block in ToFusion)
+            {
+                h += block.Item3;
+            }
+          
+            map.RemoveAll(predicat);
+            if (h > 8)
+            {
+                while (h > 8)
+                {
+                    map.Add(new Tuple<int, int, int>(ToFind.Item1, ToFind.Item2 + j, 8));
+                    j++;
+                    h -= 8;
+                }
+                map.Add(new Tuple<int, int, int>(ToFind.Item1, ToFind.Item2, h));
+            }
+            else
+            {
+                map.Add(new Tuple<int, int, int>(ToFind.Item1,ToFind.Item2,h));
+            }
+              
+              
+        }
+
+
+
     }
  
  
@@ -178,7 +221,7 @@ public class LiquidMove : TileMap
  
         foreach (Tuple<int, int, int> block in map)
         {
-            Liquid.Watermap.SetCell(block.Item1, height + 1 - block.Item2, block.Item3);
+            Liquid.Watermap.SetCell(block.Item1, height - block.Item2, block.Item3);
         }
     }
  
@@ -275,9 +318,12 @@ public class LiquidMove : TileMap
         ToRemove.Add(block);
         map[index] = new Tuple<int, int, int>(x, y, block.Item3 - 1);
     }
- 
-    private Tuple<int, int, int> Find(int x, int y, int lgr)
+
+    private Tuple<int, int, int> Find(int x, int y, int lgr = -1, int start = 0)
     {
+        if (lgr == -1)
+            lgr = map.Count;
+
         Tuple<int, int, int> res;
         int i = 0;
         do
@@ -289,6 +335,28 @@ public class LiquidMove : TileMap
         if (i >= lgr)
             res = new Tuple<int, int, int>(-1, -1, -1);
  
+        return res;
+    }
+
+    
+    private static bool Predicat(Tuple<int, int, int> block)
+    {
+        return block.Item1 == ToFind.Item1 && block.Item2 == ToFind.Item2;
+    }
+
+    private static bool Double(List<Tuple<int, int, int>> water)
+    {
+        bool res = false;
+        int i = 0;
+
+        while (!res && i < water.Count)
+        {
+            ToFind = water[i];
+            if (water.FindAll(Predicat).Count > 1)
+                res = true;
+            i++;
+        }
+        
         return res;
     }
 }
