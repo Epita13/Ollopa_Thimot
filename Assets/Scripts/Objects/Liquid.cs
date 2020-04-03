@@ -6,7 +6,8 @@ public class Liquid : Node2D
 {
     private LiquidMove water;
     private LiquidMove oil;
-    private readonly Dictionary<Liquid.Type, LiquidMove> list = new Dictionary<Type, LiquidMove>();
+    public static readonly Dictionary<Liquid.Type, LiquidMove> list = new Dictionary<Type, LiquidMove>();
+    public static readonly Dictionary<Liquid.Type, TileMap> listMap = new Dictionary<Type, TileMap>();
     private Timer TimerWater;
     private Timer TimerOil;
     public static TileMap Watermap;
@@ -24,6 +25,8 @@ public class Liquid : Node2D
         Oilmap = GetNode<TileMap>("Oilmap");
         list.Add(Type.Water, new LiquidMove(Type.Water));
         list.Add(Type.Oil, new LiquidMove(Type.Oil));
+        listMap.Add(Type.Water, Watermap);
+        listMap.Add(Type.Oil, Oilmap);
         TimerWater = GetNode<Timer>("TimerWater");
         TimerOil = GetNode<Timer>("TimerOil");
     }
@@ -36,13 +39,12 @@ public class Liquid : Node2D
 
     private void TimeOutWater()
     {
-        if (test < 50)
+        if (test < 3)
         {
-           list[Type.Water].PlaceWater(10, 60);
+           list[Type.Water].PlaceWater(10, 39);
            test++;
         }
         list[Type.Water].Move();
-        /// intégrer si ca dépasse la hauteur du chunk
     }
     
     private void TimeOutOil()
