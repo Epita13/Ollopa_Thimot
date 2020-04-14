@@ -1,477 +1,447 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using Array = Godot.Collections.Array;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
+using System.Threading;
+using Godot;
+using Thread = System.Threading.Thread;
+
 
 public class LiquidMove : TileMap
 {
-    /*Il reste un petit soucis, c'est que de l'eau se teleporte plus loin lorsque on ne la limite plus a une cuvette*/
+	/*Pour utiliser l'eau, il suffit d'appeler la fonction DrawWaterLevel(), pour les niveaux, le niveau max est
+	 défini par capacity. Pour fonctionner correctement le TileSet associé doit contenir au minimum un sprite pour chaque
+	 niveau. Numeroté de 1 a capacity. le sprite 0 doit OBLIGATOIREMENT etre un sprite transparent*/
+	
+	
+	private List<Tuple<int,int>> listLiquid = new List<Tuple<int,int >>{};
+	private List<Tuple<int,int>> ToRemove = new List<Tuple<int,int>>{};
+	private const int Capacity = Liquid.Capacity;
+	private int width; 
+	private int height;
+	private readonly Liquid.Type type;
+	private int[,] map;
+	private Thread init;
 
+	public LiquidMove(Liquid.Type type)
+	{
+		height = Chunk.height;
+		this.type = type;
+		init = new Thread(Init);
+		init.Start();
+	}
 
-    /*Pour utiliser l'eau, il suffit d'appeler la fonction DrawWaterLevel(), pour les niveaux, le niveau max est
-     défini par capacity. Pour fonctionner correctement le TileSet associé doit contenir au minimum un sprite pour chaque
-     niveau. Numeroté de 1 a capacity. le sprite 0 doit OBLIGATOIREMENT etre un sprite transparent*/
+	private void Init()
+	{
+		while (!World.IsInit)
+		{
+		}
+		World.IsInitWorldTest("Liquid." + type);
+		width = World.size * Chunk.size - 1;
+		map = new int[width + 1,height];
+	}
 
-    /*Ne prend pas en compte le y = 0 de la TileMap Watermap parce que ya des soucis avec le changement de coordonnées sinon*/
+	public void Move()
+	{
+		if (!init.IsAlive)
+		{
+			VerticalWater();
+			DrawWater();
+			HorizontalWater();
+			DrawWater();
+		}
+	}
 
+	public void PlaceWater(int x, int y)
+	{
+		map[x, y] = UpdateBlock(x, y, 'C');
+		
+		if (map[x, y] == -1)
+		{
+			Liquid.listMap[type].SetCell(x, height - y, 8);
+			map[x, y] = 8;
+			listLiquid.Add(new Tuple<int, int>(x,y));
+		}
+	}
 
-    private List<Tuple<int,int,int>> map = new List<Tuple<int,int,int>>{};
-    private List<Tuple<int,int,int>> ToRemove = new List<Tuple<int,int,int>>{};
-    private List<Tuple<int,int,int>> ToFusion = new List<Tuple<int,int,int>>{};
-    private static Tuple<int, int, int> ToFind;
-    private const int Capacity = Liquid.Capacity;
-    private int width;                             //Hauteur et largeur de la matrice qui gere l'eau
-    private readonly int height;
-    public readonly Liquid.Type type;
-    private TileMap mapdraw;
+	private void HorizontalWater()
+	 {
+		 /*Calcule la difference d'eau avec les tuiles voisines d'une tuiles contenant de l'eau.
+		  Redefinit ensuite le nouveau niveau en fonction des blocks deja present*/
 
-    private Predicate<Tuple<int, int, int>> predicat = Predicat;
+		 int lgr = listLiquid.Count;
+		 for (int i = 0; i < lgr; i++)
+		 {
+			 Tuple<int, int> block = listLiquid[i];
+			 
+			 if(block.Item1 > 0)
+				 map[block.Item1 - 1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'L');
+			 else
+				 map[width, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'L');
+			 
+			 if (block.Item1 < width)
+				 map[block.Item1 + 1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'R');
+			 else
+				 map[0, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'R');
+			 
+			 if(block.Item2 > 0)
+				 map[block.Item1, block.Item2 - 1] = UpdateBlock(block.Item1, block.Item2, 'D');
+				 
+			 int differenceLeft = Difference(block.Item1, block.Item2, 'L');
+			 int differenceRight = Difference(block.Item1, block.Item2, 'R');
 
+			 if (block.Item1 == 0)
+			 {
+				 /*Cas début de map*/
+				 
+				 if (map[width, block.Item2] != 0 && map[block.Item1 + 1, block.Item2] != 0 
+				     && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+				 {
+					 /*Cas standard, pas de bloc ou mur ni a gauche, ni a droite*/
+					 if (differenceLeft > differenceRight)
+						 Mouvement(block.Item1, block.Item2, 'L');
+					 else if (differenceLeft < differenceRight)
+						 Mouvement(block.Item1, block.Item2, 'R');
+					 else if (differenceLeft == differenceRight && differenceLeft != 0)
+					 {
+						 Random side = new Random();
+						 if(side.Next(10) > 5)
+							 Mouvement(block.Item1, block.Item2, 'R');
+						 else
+							 Mouvement(block.Item1, block.Item2, 'L');
+					 }
+				 }
+				 else if (map[width, block.Item2] == 0 && map[block.Item1 + 1, block.Item2] != 0 && 
+				          differenceRight != 0 && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+					 /*Cas block ou mur a gauche et PAS a gauche*/
+					 Mouvement(block.Item1, block.Item2, 'R');
+				 else if (map[block.Item1 + 1, block.Item2] == 0 && map[width, block.Item2] != 0 &&
+				          differenceLeft != 0 && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+					 /*Cas block ou mur a gauche et PAS a droite*/
+					 Mouvement(block.Item1, block.Item2, 'L');
+			 }
+			 else if (block.Item1 == width)
+			 {
+				 /*Cas fin de map*/
+				 
+				 if (map[block.Item1 - 1, block.Item2] != 0 && map[0, block.Item2] != 0 
+				     && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+				 {
+					 /*Cas standard, pas de bloc ou mur ni a gauche, ni a droite*/
+					 if (differenceLeft > differenceRight)
+						 Mouvement(block.Item1, block.Item2, 'L');
+					 else if (differenceLeft < differenceRight)
+						 Mouvement(block.Item1, block.Item2, 'R');
+					 else if (differenceLeft == differenceRight && differenceLeft != 0)
+					 {
+						 Random side = new Random();
+						 if(side.Next(10) > 5)
+							 Mouvement(block.Item1, block.Item2, 'R');
+						 else
+							 Mouvement(block.Item1, block.Item2, 'L');
+					 }
+				 }
+				 else if (map[block.Item1 - 1, block.Item2] == 0 && map[0, block.Item2] != 0 && differenceRight != 0 && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+					 /*Cas block ou mur a gauche et PAS a gauche*/
+					 Mouvement(block.Item1, block.Item2, 'R');
+				 else if (map[0, block.Item2] == 0 && map[block.Item1 - 1, block.Item2] != 0 &&
+				          differenceLeft != 0 && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+					 /*Cas block ou mur a gauche et PAS a droite*/
+					 Mouvement(block.Item1, block.Item2, 'L');
+			 }
+			 else if (map[block.Item1 - 1, block.Item2] != 0 && map[block.Item1 + 1, block.Item2] != 0 
+				     && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+			 {
+				 /*Cas standard, pas de bloc ou mur ni a gauche, ni a droite*/
+				 if (differenceLeft > differenceRight)
+					 Mouvement(block.Item1, block.Item2, 'L');
+				 else if (differenceLeft < differenceRight)
+					 Mouvement(block.Item1, block.Item2, 'R');
+				 else if (differenceLeft == differenceRight && differenceLeft != 0)
+				 {
+					 Random side = new Random();
+					 if(side.Next(10) > 5)
+						 Mouvement(block.Item1, block.Item2, 'R');
+					 else
+						 Mouvement(block.Item1, block.Item2, 'L');
+				 }
+			 }
+			 else if (map[block.Item1 - 1, block.Item2] == 0 && map[block.Item1 + 1, block.Item2] != 0 && differenceRight != 0 && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+				 /*Cas block ou mur a gauche et PAS a gauche*/
+				 Mouvement(block.Item1, block.Item2, 'R');
+			 else if (map[block.Item1 + 1, block.Item2] == 0 && map[block.Item1 - 1, block.Item2] != 0 &&
+				          differenceLeft != 0 && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+				 /*Cas block ou mur a gauche et PAS a droite*/
+				 Mouvement(block.Item1, block.Item2, 'L');
+		 }
+	 }  
+	 
+	 private void VerticalWater()
+	 {
+		 /*Calcule pour toutes les tuiles vide la difference d'eau avec la tuile au dessus.
+		  Transfert l'eau si possible*/
 
-    private int test = 0;
-    
-    
-    public void Move()
-    {
-        World.IsInitWorldTest("Liquid." + type);
-        width = World.size * Chunk.size - 1;
-        DrawWaterLevel();
-        test++;
-    }
- 
-    public LiquidMove(Liquid.Type type)
-    {
-        height = Chunk.height;
-        this.type = type;
-        mapdraw = new TileMap();
-    }
- 
- 
-    public void PlaceWater(int x, int y)
-    {
-        if (Block.GetIDTile(World.GetBlock(x, y).GetType) == -1)
-            map.Add(new Tuple<int, int, int>( x, y, 8));
-    }
- 
-    private void DrawWaterLevel()
-    {
-        //Récupere les niveaux et emplacement d'eau puis calcule les nouveux niveau verticaux puis horizontaux
-        Update();
-        //VerticalWater();
-        Update();
-        DrawWater();
-        HorizontalWater();
-        Update();
-        DrawWater();
-    }
+		 int lgr = listLiquid.Count;
+		 for(int i = 0; i < lgr; i++)
+		 {
+			 Tuple<int, int> block = listLiquid[i];
+			
+			 if(block.Item1 > 0)
+				map[block.Item1 - 1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'L');
+			 if (block.Item1 < width)
+				 map[block.Item1 + 1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'R');
+			 if(block.Item2 > 0)
+				map[block.Item1, block.Item2 - 1] = UpdateBlock(block.Item1, block.Item2, 'D');
+			 
+			 if (block.Item2 > 0 && map[block.Item1, block.Item2] > 0 && map[block.Item1, block.Item2 - 1] != 0 && map[block.Item1, block.Item2 - 1] < 8)
+			 {
+				 if (map[block.Item1, block.Item2 - 1] <= -1)
+				 {
+					 map[block.Item1, block.Item2 - 1] += map[block.Item1, block.Item2] + 1;
+					 map[block.Item1, block.Item2] = -1;
+					 ToRemove.Add(block);
+					 listLiquid.Add(new Tuple<int, int>(block.Item1, block.Item2 - 1));
+				 }
+				 else
+				 {
+					 int difference = Capacity - map[block.Item1, block.Item2 - 1];
+					 if(map[block.Item1, block.Item2] < difference)
+					 {
+						 map[block.Item1, block.Item2 - 1] += map[block.Item1, block.Item2];
+						 map[block.Item1, block.Item2] = -1;  
+						 ToRemove.Add(block);
+					 }
+					 else
+					 {
+						 map[block.Item1, block.Item2 - 1] = Capacity;
+						 map[block.Item1, block.Item2] -= difference;
+					 }
+				 }
+				 
+				 if (map[block.Item1, block.Item2] == 0)
+					 map[block.Item1, block.Item2] = -1;
+				 if (map[block.Item1, block.Item2 - 1] == 0)
+					 map[block.Item1, block.Item2 - 1] = -1;
+			 }
+			 else if (map[block.Item1, block.Item2] < 1)
+			 {
+				 ToRemove.Add(block);
+			 }
+		 }
+	 }
 
-    private void Remove()
-    {
-        foreach (Tuple<int,int,int> block in ToRemove)
-        {
-            Liquid.listMap[Liquid.Type.Water].SetCell(block.Item1, height - block.Item2, -1);
-            map.Remove(block);
-        }
-        ToRemove.Clear();
-    }
-    private void Update()
-    {
-        for (int i = 0; i < map.Count; i++)
-        {
-            Tuple<int, int, int> block = map[i];
-            if (block.Item3 <= 0 || block.Item1 < 0 || block.Item2 < 0 || Block.GetIDTile(World.GetBlock(block.Item1, block.Item2).GetType) != -1)
-                ToRemove.Add(block);
-        }
-        Remove();
-    }
- 
-    private void HorizontalWater()
-    {
-        //Calcule la difference d'eau avec les tuiles voisines d'une tuiles contenant de l'eau.
-        //Redefinit ensuite le nouveau niveau en fonction des blocks deja present
-        int lgr = map.Count;
-        for(int i = 0; i < lgr && i < map.Count; i++)
-        {
-            Tuple<int, int, int> block = map[i];
-            Tuple<int, int, int> blockinf = Find(block.Item1, block.Item2 - 1, lgr);
+	 
+	 private void DrawWater()
+	 {
+		 /*Dessine sur la Tilemap les niveaux d'eau correspondant à la matrice*/
 
-            if (blockinf.Item1 == -1 && blockinf.Item2 == -1)
-            {
-                blockinf = new Tuple<int, int, int>(block.Item1, block.Item2 - 1, -1);
-            }
-            
-            int differenceLeft = Difference(block, 'L', lgr);
-            int differenceRight = Difference(block, 'R', lgr);
+		 foreach (Tuple<int, int> block in ToRemove)
+		 {
+			 Liquid.listMap[type].SetCell(block.Item1, height - block.Item2, -1);
+			 listLiquid.Remove(block);
+		 }
+		 
+		 ToRemove.Clear();
+		 
+		 foreach (Tuple<int,int> block in listLiquid)
+			 Liquid.listMap[type].SetCell(block.Item1, height - block.Item2, map[block.Item1, block.Item2]);
+	 }
 
-            if (block.Item1 == 0)
-            {
-                if (block.Item2 > 0 && Block.GetIDTile(World.GetBlock(width, block.Item2).GetType) == -1 &&
-                    Block.GetIDTile(World.GetBlock(1, block.Item2).GetType) == -1 &&
-                    (blockinf.Item3 == 8 || blockinf.Item3 == -1))
-                {
-                    if (differenceLeft > differenceRight)
-                        Mouvement(block, 'L', lgr, i);
-                    else if (differenceLeft < differenceRight)
-                        Mouvement(block, 'R', lgr, i);
-                    else if (differenceLeft == differenceRight && differenceLeft != 0)
-                        Mouvement(block, 'L', lgr, i);
-                }
-                else if (block.Item2 > 0 && Block.GetIDTile(World.GetBlock(width, block.Item2).GetType) != -1 &&
-                         Block.GetIDTile(World.GetBlock(1, block.Item2).GetType) == 0 && differenceRight != 0 &&
-                         (blockinf.Item3 == 8 || blockinf.Item3 == -1))
-                {
-                    //Cas bloc ou mur a gauche et PAS a gauche
-                    Mouvement(block, 'R', lgr, i);
-                }
-                else if (block.Item2 > 0 && Block.GetIDTile(World.GetBlock(1, block.Item2).GetType) != -1 &&
-                         Block.GetIDTile(World.GetBlock(width, block.Item2).GetType) == -1 && differenceLeft != 0 &&
-                         (blockinf.Item3 == 8 || blockinf.Item3 == -1))
-                {
-                    //Cas block ou mur a gauche et PAS a droite
-                    Mouvement(block, 'L', lgr, i);
-                }
-            }
-            else if (block.Item1 >= width)
-            {
-                if (block.Item2 > 0 && Block.GetIDTile(World.GetBlock(block.Item1 - 1, block.Item2).GetType) == -1 &&
-                    Block.GetIDTile(World.GetBlock(0, block.Item2).GetType) == -1 &&
-                    (blockinf.Item3 == 8 || blockinf.Item3 == -1))
-                {
-                    if (differenceLeft > differenceRight)
-                        Mouvement(block, 'L', lgr, i);
-                    else if (differenceLeft < differenceRight)
-                        Mouvement(block, 'R', lgr, i);
-                    else if (differenceLeft == differenceRight && differenceLeft != 0)
-                        Mouvement(block, 'L', lgr, i);
-                }
-                else if (block.Item2 > 0 && Block.GetIDTile(World.GetBlock(block.Item1 - 1, block.Item2).GetType) != -1 &&
-                         Block.GetIDTile(World.GetBlock(0, block.Item2).GetType) == 0 && differenceRight != 0 &&
-                         (blockinf.Item3 == 8 || blockinf.Item3 == -1))
-                {
-                    //Cas bloc ou mur a gauche et PAS a gauche
-                    Mouvement(block, 'R', lgr, i);
-                }
-                else if (block.Item2 > 0 && Block.GetIDTile(World.GetBlock(0, block.Item2).GetType) != -1 &&
-                         Block.GetIDTile(World.GetBlock(block.Item1 - 1, block.Item2).GetType) == -1 && differenceLeft != 0 &&
-                         (blockinf.Item3 == 8 || blockinf.Item3 == -1))
-                {
-                    //Cas block ou mur a gauche et PAS a droite
-                    Mouvement(block, 'L', lgr, i);
-                }
-            }
-            else if (block.Item2 > 0 && Block.GetIDTile(World.GetBlock(block.Item1 - 1, block.Item2).GetType) == -1 &&
-                     Block.GetIDTile(World.GetBlock(block.Item1 + 1, block.Item2).GetType) == -1 &&
-                     (blockinf.Item3 == 8 || blockinf.Item3 == -1))
-            {
-                //Cas standard, pas de bloc ou mur ni a gauche, ni a droite
-                if (differenceLeft > differenceRight)
-                    Mouvement(block, 'L', lgr, i);
-                else if (differenceLeft < differenceRight)
-                    Mouvement(block, 'R', lgr, i);
-                else if (differenceLeft == differenceRight && differenceLeft != 0)
-                    Mouvement(block, 'L', lgr, i);
-            }
-            else if (block.Item2 > 0 && Block.GetIDTile(World.GetBlock(block.Item1 - 1, block.Item2).GetType) != -1 &&
-                     Block.GetIDTile(World.GetBlock(block.Item1 + 1, block.Item2).GetType) == 0 &&
-                     differenceRight != 0 &&
-                     (blockinf.Item3 == 8 || blockinf.Item3 == -1))
-            {
-                //Cas bloc ou mur a gauche et PAS a gauche
-                Mouvement(block, 'R', lgr, i);
-            }
-            else if (block.Item2 > 0 && Block.GetIDTile(World.GetBlock(block.Item1 + 1, block.Item2).GetType) != -1 &&
-                     Block.GetIDTile(World.GetBlock(block.Item1 - 1, block.Item2).GetType) == -1 &&
-                     differenceLeft != 0 &&
-                     (blockinf.Item3 == 8 || blockinf.Item3 == -1))
-            {
-                //Cas block ou mur a gauche et PAS a droite
-                Mouvement(block, 'L', lgr, i); 
-            }
-            
-            Remove();
-            Fusion();
-        }
-    }
- 
-    private void VerticalWater()
-    {
-        //Calcule pour toutes les tuiles vide la difference d'eau avec la tuile au dessus.
-        //Transfert l'eau si possible
-        int lgr = map.Count;
- 
-        for(int i = 0; i < lgr; i++)
-        {
-            Tuple<int, int, int> block = map[i];
-            Tuple<int,int,int> blockinf = Find(block.Item1, block.Item2 - 1, lgr);
-            int h2 = blockinf.Item3;
-            int h = block.Item3;
-            int difference = Capacity;
+	 private int Difference(int x, int y, char side) 
+	 {
+		 /*Calcule la difference d'eau avec le block de droite ou de gauche selon side*/
+		 int dif = 0;
+		 switch (side)
+		 {
+			 case 'R':
+			 {
+				 if (x < width)
+				 {
+					 if (map[x + 1, y] > 0 && map[x, y] > map[x + 1, y])
+						 dif = map[x, y] - map[x + 1, y];
+					 else if (map[x + 1, y] == -1)
+						 dif = map[x,y];
+				 }
+				 else
+				 {
+					 if (map[0, y] > 0 && map[x, y] > map[0, y])
+						 dif = map[x, y] - map[0, y];
+					 else if (map[0, y] == -1)
+						 dif = map[x,y];
+				 }
+				 break;
+			 }
+			 case 'L':
+			 {
+				 if (x > 0)
+				 {
+					 if (map[x - 1, y] > 0 && map[x, y] > map[x - 1, y])
+						 dif = map[x, y] - map[x - 1, y];
+					 else if (map[x - 1, y] == -1)
+						 dif = map[x,y]; 
+				 }
+				 else
+				 {
+					 if (map[width, y] > 0 && map[x, y] > map[width, y])
+						 dif = map[x, y] - map[width, y];
+					 else if (map[width, y] == -1)
+						 dif = map[x,y];
+				 }
+				 break;
+			 }
+			 default:
+				 throw new ArgumentException("Character different of 'R' or 'L' from Difference");
+		 }
 
-            if (blockinf.Item1 == -1 && blockinf.Item2 == -1)
-            {
-                blockinf = new Tuple<int, int, int>(block.Item1, block.Item2 - 1, -1);
-            }
-                
- 
-            if (Block.GetIDTile(World.GetBlock(block.Item1, block.Item2 - 1).GetType) == -1 && block.Item2 > 0)
-            {
-                if (h2 > 0)
-                    difference -= h2;
+		 if (dif < 0)
+			 dif = 0;
+		 
+		 return dif;
+	 }
 
-                if (difference != 0)
-                {
-                    if (block.Item3 < difference)
-                    {
-                        h2 += block.Item3;
-                        h = 0;
-                    }
-                    else
-                    {
-                        h2 = Capacity;
-                        h -= difference;
-                    }
+	 private void Mouvement(int x, int y, char side) 
+	 {
+		 /*Deplace horizontalement 1 d'eau selon side*/
+		 switch (side)
+		 {
+			 case 'R':
+			 {
+				 if (x < width)
+				 {
+					if (map[x + 1, y] == -1)
+					{
+						map[x + 1, y] = 1;
+						listLiquid.Add(new Tuple<int, int>(x + 1, y));
+					}
+					else 
+						map[x + 1, y]++; 
+				 }
+				 else
+				 {
+					 if (map[0, y] == -1)
+					 {
+						 map[0, y] = 1;
+						 listLiquid.Add(new Tuple<int, int>(0, y));
+					 }
+					 else 
+						 map[0, y]++; 
+				 }
+				 
+				 break;
+			 }
+			 case 'L':
+			 {
+				 if (x > 0)
+				 {
+					if (map[x - 1, y] == -1)
+					{
+						map[x - 1, y] = 1;
+						listLiquid.Add(new Tuple<int, int>(x - 1, y));
+					}
+					else
+						map[x - 1, y]++; 
+				 }
+				 else
+				 {
+					 if (map[width, y] == -1)
+					 {
+						 map[width, y] = 1;
+						 listLiquid.Add(new Tuple<int, int>(width, y));
+					 }
+					 else
+						 map[width, y]++;
+				 }
+				 break;
+			 }
+			 default:
+				 throw new ArgumentException("Character different of 'R' or 'L' from Mouvement");
+		 }
+		 
+		 map[x, y]--;
+		 if (map[x, y] == 0)
+		 {
+			 map[x, y] = -1;
+			 ToRemove.Add(new Tuple<int, int>(x, y));
+		 }
+	 }
 
-                    map[i] = new Tuple<int, int, int>(block.Item1, block.Item2, h);
-                    ToFind = blockinf;
-                    if (map.BinarySearch(blockinf) < 0)
-                    {
-                        map.Add(new Tuple<int, int, int>(blockinf.Item1, blockinf.Item2, h2));
-                    }
-                    else
-                    {
-                        map[map.BinarySearch(blockinf)] = new Tuple<int, int, int>(blockinf.Item1, blockinf.Item2, h2);
-                    }
-                }
-            }
-        }
-        
-        Fusion();
-    }
- 
- 
-    private void DrawWater()
-    {
-        //Dessine sur la Tilemap les niveaux d'eau correspondant à la matrice
- 
-        foreach (Tuple<int, int, int> block in map)
-        {
-            Liquid.listMap[Liquid.Type.Water].SetCell(block.Item1, height - block.Item2, block.Item3);
-        }
-    }
- 
-    private int Difference(Tuple<int,int,int> block, char side, int lgr)
-    {
-        //Calcule la difference d'eau avec le block de droite ou de gauche selon side
-        int dif = 0;
-        int x = block.Item1;
-        int y = block.Item2;
-        
-        switch (side)
-        {
-            case 'L':
-            {
-                Tuple<int, int, int> blockinf = Find(x - 1, y, lgr);
-
-                if (x == 0)
-                    blockinf = Find(width, y, lgr); 
-                
-                if (blockinf.Item3 > 0 && block.Item3 > blockinf.Item3)
-                    dif = block.Item3 - blockinf.Item3;
-                else if (block.Item3 > blockinf.Item3)
-                    dif = block.Item3;
-                break;
-            }
-            case 'R':
-            {
-                Tuple<int, int, int> blocksup = Find(x + 1, y, lgr);
-                if (x == width)
-                    blocksup = Find(0, y, lgr);
- 
-                if (blocksup.Item3 > 0 && block.Item3 > blocksup.Item3)
-                    dif = block.Item3 - blocksup.Item3;
-                else if (block.Item3 > blocksup.Item3)
-                    dif = block.Item3;
- 
-                break;
-            }
-            default:
-                throw new ArgumentException("Character different of 'R' or 'L' from Difference");
-        }
- 
-        if (dif < 0)
-            dif = 0;
- 
-        return dif;
-    }
- 
-    private void Mouvement(Tuple<int,int,int> block, char side, int lgr, int index)
-    {
-        //Deplace horizontalement 1 d'eau selon side
-        int x = block.Item1;
-        int y = block.Item2;
-        int h = block.Item3;
- 
-        switch (side)
-        {
-            case 'R':
-            {
-                Tuple<int, int, int> blocksup = Find(x + 1, y, lgr);
-                if (blocksup.Item1 == -1 && blocksup.Item2 == -1)
-                {
-                    blocksup = new Tuple<int, int, int>(block.Item1 + 1, block.Item2, -1);
-                }
-                
-                if (map.BinarySearch(blocksup) < 0)
-                    map.Add(new Tuple<int, int, int>(x + 1, y, 1));
-                else
-                {
-                    ToRemove.Add(blocksup);
-                    map[map.BinarySearch(blocksup)] = new Tuple<int, int, int>(x + 1, y, blocksup.Item3 + 1);
-                }
- 
-                break;
-            }
-            case 'L':
-            {
-                Tuple<int, int, int> blockinf = Find(x - 1, y, lgr);
-                if (blockinf.Item1 == -1 && blockinf.Item2 == -1)
-                {
-                    blockinf = new Tuple<int, int, int>(block.Item1 - 1, block.Item2, -1);
-                }
-
-                if (map.BinarySearch(blockinf) < 0)
-                    map.Add(new Tuple<int, int, int>(x + 1, y, 1));
-                else
-                {
-                    ToRemove.Add(blockinf);
-                    map[map.BinarySearch(blockinf)] = new Tuple<int, int, int>(x + 1, y, blockinf.Item3 + 1);
-                }
- 
-                break;
-            }
-            default:
-                throw new ArgumentException("Character different of 'R' or 'L' from Mouvement");
-        }
- 
-        ToRemove.Add(block);
-        map[index] = new Tuple<int, int, int>(x, y, block.Item3 - 1);
-    }
-
-    private Tuple<int, int, int> Find(int x, int y, int lgr = -1, int start = 0)
-    {
-        if (lgr == -1)
-            lgr = map.Count;
-
-        lgr = Math.Min(lgr, map.Count);
-        
-        Tuple<int, int, int> res;
-        int i = 0;
-        do
-        {
-            res = map[i];
-            i++;
-        } while ((res.Item1 != x || res.Item2 != y) && i < lgr);
- 
-        if (i >= lgr)
-            res = new Tuple<int, int, int>(-1, -1, -1);
- 
-        return res;
-    }
-
-    
-    private static bool Predicat(Tuple<int, int, int> block)
-    {
-        return block.Item1 == ToFind.Item1 && block.Item2 == ToFind.Item2;
-    }
-
-    private static bool Double(List<Tuple<int, int, int>> water)
-    {
-        bool res = false;
-        int i = 0;
-
-        while (!res && i < water.Count)
-        {
-            ToFind = water[i];
-            if (water.FindAll(Predicat).Count > 1)
-                res = true;
-            i++;
-        }
-        
-        return res;
-    }
-
-    private void Fusion()
-    {
-        for (int i = 0; i < map.Count && Double(map) ; i++)
-        {
-            int h = 0;
-            int y = 1;
-            int xpos = 1;
-            int xneg = -1;
-            bool agauche = true;
-            int taillemonde = width;
-            
-            ToFind = map[i];
-            ToFusion = map.FindAll(predicat);
-            foreach (Tuple<int,int,int> block in ToFusion)
-            {
-                h += block.Item3;
-            }
-          
-            map.RemoveAll(predicat);
-            if (h > 8)
-            {
-                while (h > 8)
-                {
-                    if (ToFind.Item2 + y < height && Block.GetIDTile(World.GetBlock(ToFind.Item1, ToFind.Item2 + y).GetType) == -1)
-                    {
-                        map.Add(new Tuple<int, int, int>(ToFind.Item1, ToFind.Item2 + y, 8));
-                        y++;
-                        h -= 8;
-                    }
-                    else if (agauche && (ToFind.Item1 + xneg > 0 && Block.GetIDTile(World.GetBlock(ToFind.Item1 + xneg, ToFind.Item2).GetType) == -1) 
-                             || (ToFind.Item1 == 0 && (Block.GetIDTile(World.GetBlock(taillemonde, ToFind.Item2).GetType) == -1)))
-                    {
-                        if (ToFind.Item1 + xneg == 0)
-                        {
-                            map.Add(new Tuple<int, int, int>(taillemonde, ToFind.Item2, 8));
-                        }
-                        else
-                        {
-                            map.Add(new Tuple<int, int, int>(ToFind.Item1 + xneg, ToFind.Item2, 8));
-                        }
-                        agauche = false;
-                        xneg--;
-                        h -= 8;
-                    }
-                    else if ((ToFind.Item1 + xpos < taillemonde && Block.GetIDTile(World.GetBlock(ToFind.Item1 + xpos, ToFind.Item2).GetType) == -1) 
-                        || (ToFind.Item1 == taillemonde && (Block.GetIDTile(World.GetBlock(0, ToFind.Item2).GetType) == -1)))
-                    {
-                        if (ToFind.Item1 + xneg == taillemonde)
-                        {
-                            map.Add(new Tuple<int, int, int>(0, ToFind.Item2, 8));
-                        }
-                        else
-                        {
-                            map.Add(new Tuple<int, int, int>(ToFind.Item1 + xpos, ToFind.Item2, 8));
-                        }
-                        agauche = true;
-                        xpos++;
-                        h -= 8;
-                    }
-                    else if (agauche)
-                    {
-                        h -= 8;
-                    }
-                }
-                map.Add(new Tuple<int, int, int>(ToFind.Item1, ToFind.Item2, h));
-            }
-            else
-            {
-                map.Add(new Tuple<int, int, int>(ToFind.Item1,ToFind.Item2,h));
-            }
-        } 
-    }
+	 private int UpdateBlock(int x, int y, char side)
+	 {
+		 int res = 0;
+		 switch (side)
+		 {
+			 case'L':
+				 if (x > 0)
+				 {
+					 if (Block.GetIDTile(World.GetBlock(x - 1, y).GetType) == -1 && map[x - 1, y] == 0)
+						 res = -1;
+					 else if (Block.GetIDTile(World.GetBlock(x - 1, y).GetType) != -1)
+						 res = 0;
+					 else
+						 res = map[x - 1, y];
+				 }
+				 else
+				 {
+					 if (Block.GetIDTile(World.GetBlock(width, y).GetType) == -1 && map[width, y] == 0)
+						 res = -1;
+					 else if (Block.GetIDTile(World.GetBlock(width, y).GetType) != -1)
+						 res = 0;
+					 else
+						 res = map[width, y];
+				 }
+				 break;
+			 case'R':
+				 if (x < width)
+				 {
+					 if (Block.GetIDTile(World.GetBlock(x + 1, y).GetType) == -1 && map[x + 1, y] == 0)
+						 res = -1;
+					 else if (Block.GetIDTile(World.GetBlock(x + 1, y).GetType) != -1)
+						 res = 0;
+					 else
+						 res = map[x + 1, y];
+				 }
+				 else
+				 {
+					 if (Block.GetIDTile(World.GetBlock(0, y).GetType) == -1 && map[0, y] == 0)
+						 res = -1;
+					 else if (Block.GetIDTile(World.GetBlock(0, y).GetType) != -1)
+						 res = 0;
+					 else
+						 res = map[0, y];
+				 }
+				 break;
+			 case 'D':
+				 if (y > 0)
+				 {
+					 if (Block.GetIDTile(World.GetBlock(x, y - 1).GetType) == -1 && map[x, y - 1] == 0)
+						 res = -1;
+					 else if (Block.GetIDTile(World.GetBlock(x, y - 1).GetType) != -1)
+						 res = 0;
+					 else
+						 res = map[x, y - 1];
+				 }
+				 break;
+			 case 'U':
+				 if (y < height)
+				 {
+					 if (Block.GetIDTile(World.GetBlock(x, y + 1).GetType) == -1 && map[x, y + 1] == 0)
+						 res = -1;
+					 else if (Block.GetIDTile(World.GetBlock(x, y + 1).GetType) != -1)
+						 res = 0;
+					 else
+						 res = map[x, y + 1];
+				 }
+				 break;
+			 case 'C':
+				 if (Block.GetIDTile(World.GetBlock(x, y).GetType) == -1 && map[x, y] == 0)
+						 res = -1;
+				 else if (Block.GetIDTile(World.GetBlock(x, y).GetType) != -1)
+					 res = 0;
+				 else
+					 res = map[x, y];
+				 break;
+			 default:
+				 throw new ArgumentException("side is diferent of 'L', 'R', 'D', 'U', UpdateBlock() in LiquidMove.cs");
+		 }
+		 return res;
+	 }
 }
