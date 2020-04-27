@@ -15,7 +15,7 @@ public class Game : Node2D
         TileMap ground = GetNode("Tilemaps").GetNode<TileMap>("1");
         TileMap uiground = GetNode("Tilemaps").GetNode<TileMap>("3");
         TileMap uiground2 = GetNode("Tilemaps").GetNode<TileMap>("2");
-        World.Init(3, ground, uiground, uiground2, back);
+        World.Init(30, ground, uiground, uiground2, back);
         World.Draw();
         Building.Init(this);
         Loot.Init(this);

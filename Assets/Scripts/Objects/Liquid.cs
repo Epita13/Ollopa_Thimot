@@ -13,10 +13,9 @@ public class Liquid : Node2D
     public static readonly Dictionary<Liquid.Type, TileMap> listMap = new Dictionary<Type, TileMap>();
     private Timer TimerWater;
     private Timer TimerOil;
-    private Thread waterMove;
-    private Thread oilMove;
     public static TileMap Watermap;
     public static TileMap Oilmap;
+    
 
     public const int NbLiquids = 3;
     public const int Capacity = 8;
@@ -34,62 +33,56 @@ public class Liquid : Node2D
         listMap.Add(Type.Oil, Oilmap);
         TimerWater = GetNode<Timer>("TimerWater");
         TimerOil = GetNode<Timer>("TimerOil");
-        waterMove = new Thread(list[Type.Water].Move);
-        oilMove = new Thread(list[Type.Oil].Move);
     }
 
 
-    public void Placewater(int x, int y, Liquid.Type type)
+    public static bool PlaceLiquid(int x, int y, Type type)
     {
+        /*Place un block de liquid, renvoie true si possible, false dans tous les autres cas*/
+        bool res = false;
         try
         {
-            list[type].PlaceWater(x,y);
+            res = list[type].Place(x,y);
         }
-        catch (Exception )
+        catch (Exception)
         {
             Console.WriteLine("Error, maybe arg out of bounds ? PlaceWater() in Liquid.cs");
             GD.Print("Error, maybe arg out of bounds ? PlaceWater() in Liquid.cs");
         }
-        
+
+        return res;
     }
+
+    public override void _Process(float delta)
+    { 
+       foreach (KeyValuePair<Type, LiquidMove> liquid in list)
+           liquid.Value.CloneWater(GetViewport().Size.x, GetViewportTransform().origin);
+    }
+
 
     private void TimeOutWater()
     {
-        if (test < 50 && !waterMove.IsAlive)
+        try
         {
-            Placewater(test, 40, Type.Water);
-            test++;
+             list[Type.Water].Move();
         }
-        
-        if (!waterMove.IsAlive)
+        catch (Exception)
         {
-            waterMove = new Thread(list[Type.Water].Move);
-            try
-            {
-                waterMove.Start();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Unknow error from LiquidMove.cs");
-                GD.Print("Unknow error from LiquidMove.cs");
-            }
+            Console.WriteLine("Unknow error from LiquidMove.cs");
+            GD.Print("Unknow error from LiquidMove.cs");
         }
     }
     
     private void TimeOutOil()
     {
-        if (!oilMove.IsAlive)
+        try
         {
-            oilMove = new Thread(list[Type.Oil].Move);
-            try
-            {
-                oilMove.Start();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Unknow error from LiquidMove.cs");
-                GD.Print("Unknow error from LiquidMove.cs");
-            }
+            list[Type.Oil].Move();
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Unknow error from LiquidMove.cs");
+            GD.Print("Unknow error from LiquidMove.cs");
         }
     }
 }

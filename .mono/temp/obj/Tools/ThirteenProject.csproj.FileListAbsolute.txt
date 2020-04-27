@@ -13,3 +13,4 @@ D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\bin\Tools\ThirteenPr
 D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\obj\Tools\ThirteenProject.csprojAssemblyReference.cache
 D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\obj\Tools\ThirteenProject.dll
 D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\obj\Tools\ThirteenProject.pdb
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\obj\Tools\ThirteenProject.csproj.CoreCompileInputs.cache

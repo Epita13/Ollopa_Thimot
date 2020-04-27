@@ -180,6 +180,7 @@ public class PlayerInputs : Node2D
 		Usable.Category cat = Usable.category[(int)type];
 		if (MouseInRange(9,false))
 		{
+			//Liquid.PlaceLiquid((int) mousePos.x, (int) mousePos.y, Liquid.Type.Water);
 			if(cat==Usable.Category.Block)
 			{
 				int amount = Player.inventoryUsables.GetItemCount(type);

@@ -1,26 +1,28 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using Godot;
 using Thread = System.Threading.Thread;
 
 
-public class LiquidMove : TileMap
+public class LiquidMove : Node2D
 {
 	/*Pour utiliser l'eau, il suffit d'appeler la fonction DrawWaterLevel(), pour les niveaux, le niveau max est
 	 défini par capacity. Pour fonctionner correctement le TileSet associé doit contenir au minimum un sprite pour chaque
 	 niveau. Numeroté de 1 a capacity. le sprite 0 doit OBLIGATOIREMENT etre un sprite transparent*/
 	
 	
+	/*Petit bug que j'ai remarqué, le block contenant de l'eau ne se mets pas à jour donc si il est seul on peut mettre
+	 bloc dessus sans que ca le fasse disparaitre*/
+	
 	private List<Tuple<int,int>> listLiquid = new List<Tuple<int,int >>{};
 	private List<Tuple<int,int>> ToRemove = new List<Tuple<int,int>>{};
 	private const int Capacity = Liquid.Capacity;
 	private int width; 
-	private int height;
+	private readonly int height;
 	private readonly Liquid.Type type;
 	private int[,] map;
-	private Thread init;
+	private readonly Thread init;
+	private int i = 0;
 
 	public LiquidMove(Liquid.Type type)
 	{
@@ -29,7 +31,8 @@ public class LiquidMove : TileMap
 		init = new Thread(Init);
 		init.Start();
 	}
-
+	
+	
 	private void Init()
 	{
 		while (!World.IsInit)
@@ -40,27 +43,64 @@ public class LiquidMove : TileMap
 		map = new int[width + 1,height];
 	}
 
+	public void CloneWater(float viewportX, Vector2 origin)
+	{
+		Vector2 p = origin * CurrentCamera.GetXZoom();
+		int viewportSizeX = Mathf.FloorToInt(viewportX * CurrentCamera.GetXZoom());
+		Vector2 vecMin = Convertion.Location2World(p) * -1;
+		Vector2 vecMax = Convertion.Location2World(new Vector2(p.x*-1+viewportSizeX, p.y));
+		if (vecMin.x < 0)
+		{
+			i = (int) Mathf.Abs(vecMin.x / Chunk.size) + 1;
+			i *= Chunk.size;
+			GD.Print(i);
+			foreach (Tuple<int,int> block in listLiquid)
+			{
+				if (block.Item1 > width - i)
+				{
+					Liquid.listMap[type].SetCell(block.Item1 - width - 1, height - block.Item2, map[block.Item1, block.Item2]);
+				}
+			}
+		}
+		if (vecMax.x >= World.size*Chunk.size)
+		{
+			i = (int) Mathf.Abs((vecMax.x - Chunk.size * World.size)/ Chunk.size) + 1;
+			i *= Chunk.size;
+			GD.Print(i);
+			foreach (Tuple<int,int> block in listLiquid)
+			{
+				if (block.Item1 < i)
+				{
+					Liquid.listMap[type].SetCell(width + block.Item1 + 1, height - block.Item2, map[block.Item1, block.Item2]);
+				}
+			}
+		}
+	}
+
 	public void Move()
 	{
 		if (!init.IsAlive)
 		{
 			VerticalWater();
-			DrawWater();
 			HorizontalWater();
 			DrawWater();
 		}
 	}
 
-	public void PlaceWater(int x, int y)
+	public bool Place(int x, int y)			//coordonées du jeu et pas celle de godot
 	{
 		map[x, y] = UpdateBlock(x, y, 'C');
+		bool res = false;
 		
 		if (map[x, y] == -1)
 		{
 			Liquid.listMap[type].SetCell(x, height - y, 8);
 			map[x, y] = 8;
 			listLiquid.Add(new Tuple<int, int>(x,y));
+			res = true;
 		}
+		
+		return res;
 	}
 
 	private void HorizontalWater()
@@ -73,6 +113,7 @@ public class LiquidMove : TileMap
 		 {
 			 Tuple<int, int> block = listLiquid[i];
 			 
+
 			 if(block.Item1 > 0)
 				 map[block.Item1 - 1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'L');
 			 else
@@ -169,7 +210,7 @@ public class LiquidMove : TileMap
 				 /*Cas block ou mur a gauche et PAS a gauche*/
 				 Mouvement(block.Item1, block.Item2, 'R');
 			 else if (map[block.Item1 + 1, block.Item2] == 0 && map[block.Item1 - 1, block.Item2] != 0 &&
-				          differenceLeft != 0 && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
+			          differenceLeft != 0 && (map[block.Item1, block.Item2 - 1] == 8 || map[block.Item1, block.Item2 - 1] == 0))
 				 /*Cas block ou mur a gauche et PAS a droite*/
 				 Mouvement(block.Item1, block.Item2, 'L');
 		 }
@@ -184,11 +225,7 @@ public class LiquidMove : TileMap
 		 for(int i = 0; i < lgr; i++)
 		 {
 			 Tuple<int, int> block = listLiquid[i];
-			
-			 if(block.Item1 > 0)
-				map[block.Item1 - 1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'L');
-			 if (block.Item1 < width)
-				 map[block.Item1 + 1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'R');
+
 			 if(block.Item2 > 0)
 				map[block.Item1, block.Item2 - 1] = UpdateBlock(block.Item1, block.Item2, 'D');
 			 
@@ -238,10 +275,13 @@ public class LiquidMove : TileMap
 		 {
 			 Liquid.listMap[type].SetCell(block.Item1, height - block.Item2, -1);
 			 listLiquid.Remove(block);
+			 if(block.Item1 > width - i)
+				 Liquid.listMap[type].SetCell( block.Item1 - width - 1, height - block.Item2, -1);
+			 else if(block.Item1 < i)
+				 Liquid.listMap[type].SetCell(width + block.Item1 + 1, height - block.Item2, -1);
 		 }
-		 
 		 ToRemove.Clear();
-		 
+
 		 foreach (Tuple<int,int> block in listLiquid)
 			 Liquid.listMap[type].SetCell(block.Item1, height - block.Item2, map[block.Item1, block.Item2]);
 	 }
@@ -366,6 +406,7 @@ public class LiquidMove : TileMap
 
 	 private int UpdateBlock(int x, int y, char side)
 	 {
+		 /*Mets à jour la valeur du block donnée par side, L : (x + 1, y), R : (x - 1, y), D : (x, y - 1), U : (x, y + 1), C : (x, y) */
 		 int res = 0;
 		 switch (side)
 		 {
