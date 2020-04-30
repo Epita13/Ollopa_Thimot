@@ -1,24 +1,45 @@
 using Godot;
 using System;
 
-
 public class Game : Node2D
 {
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = "text";
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+    public static bool load = false;
+    public static string saveName = "";
+
+
+    public override void _EnterTree()
     {
-        TileMap back = GetNode("Tilemaps").GetNode<TileMap>("0");
-        TileMap ground = GetNode("Tilemaps").GetNode<TileMap>("1");
-        TileMap uiground = GetNode("Tilemaps").GetNode<TileMap>("3");
-        TileMap uiground2 = GetNode("Tilemaps").GetNode<TileMap>("2");
-        World.Init(30, ground, uiground, uiground2, back);
-        World.Draw();
-        Building.Init(this);
-        Loot.Init(this);
+        if (!load)
+        {
+            TileMap back = GetNode("Tilemaps").GetNode<TileMap>("0");
+            TileMap ground = GetNode("Tilemaps").GetNode<TileMap>("1");
+            TileMap uiground = GetNode("Tilemaps").GetNode<TileMap>("3");
+            TileMap uiground2 = GetNode("Tilemaps").GetNode<TileMap>("2");
+            Camera2D camera = GetNode<Camera2D>("Player/Camera2D");
+            Building.Init(this);
+            Loot.Init(this);
+            Tree.Init(this);
+            CurrentCamera.Init(camera);
+            BuildingInterface.Init(GetNode("CanvasLayer"));
+            World.SetSize(10);
+            World.Init(ground, uiground, uiground2, back);
+        }
+        else
+        {
+            TileMap back = GetNode("Tilemaps").GetNode<TileMap>("0");
+            TileMap ground = GetNode("Tilemaps").GetNode<TileMap>("1");
+            TileMap uiground = GetNode("Tilemaps").GetNode<TileMap>("3");
+            TileMap uiground2 = GetNode("Tilemaps").GetNode<TileMap>("2");
+            Camera2D camera = GetNode<Camera2D>("Player/Camera2D");
+            Loot.Init(this);
+            Tree.Init(this);
+            Building.Init(this);
+            CurrentCamera.Init(camera);
+            BuildingInterface.Init(GetNode("CanvasLayer"));
+            World.Init(ground, uiground, uiground2, back, false);
+            Save._Load(saveName);
+        }
     }
 
 

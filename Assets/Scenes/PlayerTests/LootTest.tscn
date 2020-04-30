@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Objects/Tilesets/BlocksTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/Objects/Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Scripts/Autres/CurrentCamera.cs" type="Script" id=3]
 [ext_resource path="res://Assets/Scenes/PlayerTests/LootTest.cs" type="Script" id=4]
 [ext_resource path="res://Assets/Objects/UI/TestsTemporaire/ValuesPanel.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Objects/Autres/Tree/Tree.tscn" type="PackedScene" id=6]
 
 [node name="Node2D" type="Node2D"]
 position = Vector2( -3, 0 )
@@ -13,6 +14,8 @@ script = ExtResource( 4 )
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 16, 16 )
+collision_layer = 2
+collision_mask = 0
 format = 1
 tile_data = PoolIntArray( 1769520, 0, 0, 1835024, 0, 0, 1835025, 0, 0, 1835056, 0, 0, 1900560, 0, 0, 1900561, 0, 0, 1900592, 0, 0, 1966096, 0, 0, 1966097, 0, 0, 1966128, 0, 0, 2031632, 0, 0, 2031633, 0, 0, 2031664, 0, 0, 2097168, 0, 0, 2097169, 0, 0, 2097170, 1, 0, 2097171, 1, 0, 2097172, 1, 0, 2097173, 1, 0, 2097174, 1, 0, 2097188, 1, 0, 2097189, 1, 0, 2097190, 1, 0, 2097191, 1, 0, 2097192, 1, 0, 2097193, 1, 0, 2097194, 1, 0, 2097195, 1, 0, 2097196, 1, 0, 2097197, 1, 0, 2097198, 1, 0, 2097199, 1, 0, 2097200, 0, 0, 2162704, 0, 0, 2162705, 0, 0, 2162706, 0, 0, 2162707, 0, 0, 2162708, 0, 0, 2162709, 0, 0, 2162710, 1, 0, 2162711, 1, 0, 2162712, 1, 0, 2162713, 1, 0, 2162714, 1, 0, 2162715, 1, 0, 2162716, 1, 0, 2162717, 1, 0, 2162718, 1, 0, 2162719, 1, 0, 2162720, 1, 0, 2162721, 1, 0, 2162722, 1, 0, 2162723, 1, 0, 2162724, 0, 0, 2162725, 0, 0, 2162726, 0, 0, 2162727, 0, 0, 2162728, 0, 0, 2162729, 0, 0, 2162730, 0, 0, 2162731, 0, 0, 2162732, 0, 0, 2162733, 0, 0, 2162734, 0, 0, 2162735, 0, 0, 2162736, 0, 0, 2228240, 0, 0, 2228241, 0, 0, 2228242, 0, 0, 2228243, 0, 0, 2228244, 0, 0, 2228245, 0, 0, 2228246, 0, 0, 2228247, 0, 0, 2228248, 0, 0, 2228249, 0, 0, 2228250, 0, 0, 2228251, 0, 0, 2228252, 0, 0, 2228253, 0, 0, 2228254, 0, 0, 2228255, 0, 0, 2228256, 0, 0, 2228257, 0, 0, 2228258, 0, 0, 2228259, 0, 0, 2228260, 0, 0, 2228261, 0, 0, 2228262, 0, 0, 2228263, 0, 0, 2228264, 0, 0, 2228265, 0, 0, 2228266, 0, 0, 2228267, 0, 0, 2228268, 0, 0, 2228269, 0, 0, 2228270, 0, 0, 2228271, 0, 0, 2228272, 0, 0 )
 
@@ -33,3 +36,9 @@ margin_top = 8.11829
 margin_right = 9.67865
 margin_bottom = 8.11829
 rect_scale = Vector2( 0.3, 0.3 )
+
+[node name="Tree" parent="." instance=ExtResource( 6 )]
+position = Vector2( 760.224, 511.817 )
+
+[node name="Tree2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 711.18, 435.678 )

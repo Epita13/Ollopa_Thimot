@@ -53,7 +53,6 @@ public class LiquidMove : Node2D
 		{
 			i = (int) Mathf.Abs(vecMin.x / Chunk.size) + 1;
 			i *= Chunk.size;
-			GD.Print(i);
 			foreach (Tuple<int,int> block in listLiquid)
 			{
 				if (block.Item1 > width - i)
@@ -66,7 +65,6 @@ public class LiquidMove : Node2D
 		{
 			i = (int) Mathf.Abs((vecMax.x - Chunk.size * World.size)/ Chunk.size) + 1;
 			i *= Chunk.size;
-			GD.Print(i);
 			foreach (Tuple<int,int> block in listLiquid)
 			{
 				if (block.Item1 < i)

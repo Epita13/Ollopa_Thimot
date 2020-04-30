@@ -20,7 +20,13 @@ public class PlayerMouvements : KinematicBody2D
     bool on_ground;
 
     Vector2 depopos;
-    public override void _Ready()
+    
+    
+    /*Chunk extremité du joueur*/
+    private Chunk chunkLeft = null;
+    private Chunk chunkRight = null;
+    
+    public override void _EnterTree()
     {
         HasPlayer = true;
         depopos = Position;
@@ -64,7 +70,7 @@ public class PlayerMouvements : KinematicBody2D
     public override void _PhysicsProcess(float delta)
     {
         vel.x = 0;
-        if (canMove){
+        if (canMove && (PlayerState.GetState()==PlayerState.State.Normal || PlayerState.GetState()==PlayerState.State.Build || PlayerState.GetState()==PlayerState.State.Link)){
             HorizontalMouvement();
             JUMP();
         }
@@ -83,12 +89,6 @@ public class PlayerMouvements : KinematicBody2D
         }
 
         Player.RemoveEnergy(0.1f*delta);
-        if(Player.energy==0)
-        {
-            canMove = false;
-        }
-        
-            
   }
 
 
@@ -99,25 +99,35 @@ public class PlayerMouvements : KinematicBody2D
       int viewportSizeX = Mathf.FloorToInt(GetViewport().Size.x * CurrentCamera.GetXZoom());
       Vector2 vecMin = Convertion.Location2World(p) * -1;
       Vector2 vecMax = Convertion.Location2World(new Vector2(p.x*-1+viewportSizeX, p.y));
-      if (vecMin.x < 0)
+      
+      Chunk NchunkLeft = World.GetChunk(Mathf.FloorToInt(vecMin.x));
+      Chunk NchunkRight = World.GetChunk(Mathf.FloorToInt(vecMin.x));
+
+      if (chunkLeft != NchunkLeft || chunkRight != NchunkRight)
       {
-          int i = (int) Mathf.Abs(vecMin.x / Chunk.size);
-          for (int a = i; a >= 0; a--)
-            World.GetChunkWithID(World.size-1-a).DrawClone(-16*(a+1));
-      }
-      if (vecMax.x >= World.size*Chunk.size)
-      {
-          int i = (int) Mathf.Abs((vecMax.x-World.size*Chunk.size) / Chunk.size);
-          for (int a = i; a >= 0; a--)
-              World.GetChunkWithID(a).DrawClone(World.size*Chunk.size+(a*Chunk.size));
+          World.Hide();
+          chunkLeft = NchunkLeft;
+          chunkRight = NchunkRight;
+          int x = Mathf.FloorToInt(vecMin.x);
+          x = Chunk.size * Mathf.FloorToInt(x / (float)Chunk.size);
+          while (x <= Mathf.CeilToInt(vecMax.x) + Chunk.size)
+          {
+              Chunk c = World.GetChunk(x);
+              c.DrawClone(x);
+              x += Chunk.size;
+          }
       }
       if (GetX() < 0)
       {
           Teleport(World.size*Chunk.size + GetX(),GetY());
+          chunkLeft = null;
+          chunkRight = null;
       }
       if (GetX() > World.size*Chunk.size)
       {
-          Teleport(GetX()-World.size*Chunk.size,GetY());
+          Teleport(GetX()-World.size*Chunk.size,GetY()); 
+          chunkLeft = null;
+          chunkRight = null;
       }
   }
   

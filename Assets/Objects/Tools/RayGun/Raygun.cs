@@ -5,6 +5,10 @@ using System.Reflection;
 public class Raygun : Node2D
 {
 
+
+    public const float POWER = 10f;
+    public const float RADIUS = 200;
+    
     [Signal]
     public delegate void hit(Vector2 xy,Vector2 az);
 
@@ -19,6 +23,7 @@ public class Raygun : Node2D
     {
         anSprite = GetNode<AnimatedSprite>("Sprite_Raygun");
         raycast = anSprite.GetNode<RayCast2D>("shoot_ray");
+        raycast.CastTo = new Vector2(RADIUS,raycast.CastTo.y);
     }
 	
     public void shoot()
@@ -30,7 +35,18 @@ public class Raygun : Node2D
             if (hit_collider is TileMap)
             {
                 BlockCollision();
+            }else if (hit_collider is StaticBody2D)
+            {
+                // Collide with a tree
+                StaticBody2D s = (StaticBody2D) hit_collider;
+                if (s.GetGroups().Contains("tree"))
+                {
+                    TreeCollosion();
+                }
+
             }
+            
+            
         }
         else
         {
@@ -64,7 +80,13 @@ public class Raygun : Node2D
 
         Block block_hit = World.GetBlock((int) block_posF.x, (int) block_posF.y);
         if (block_hit.GetType != Block.Type.Air)
-            block_hit.Damage(2.5f);
+            block_hit.Damage(POWER);
+    }
+
+    private void TreeCollosion()
+    {
+        Tree t = (Tree)raycast.GetCollider();
+        t.Damage(POWER);
     }
 
 

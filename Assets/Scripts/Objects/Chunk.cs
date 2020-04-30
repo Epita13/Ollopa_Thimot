@@ -40,8 +40,10 @@ public class Chunk
     public const int minYGeneration = seaLevel - 5;
     public const int maxYGeneration = seaLevel + 20;
 
+    /*Trees*/
+    public const float TREE_FREQUENCY = 1.5f / 16.0f; 
 
-    private List<List<Block>> blocks;
+    public List<List<Block>> blocks;
 
     public Chunk(int id)
     {
@@ -61,7 +63,11 @@ public class Chunk
             blocks.Add(new List<Block>());
             for (int y = chunkMin; y <= chunkMax; y++)
             {
-                if (y<=maximumY-6)
+                if (y == chunkMin)
+                {
+                    blocks[x].Add(new Block(Block.Type.WestStone, x+(id*size), y, true));
+                }
+                else if (y<=maximumY-6)
                 {
                     blocks[x].Add(new Block(Block.Type.Stone, x+(id*size), y, true));
                 }else if (y<=maximumY-1)
@@ -77,6 +83,30 @@ public class Chunk
             }
         }
         
+        /*Generation des Arbres*/
+        TreesGeneration();
+
+    }
+
+    private void TreesGeneration()
+    {
+        for (int x = 0; x < size; x++)
+        {
+            float r = (float)World.random.NextDouble();
+            if (r <= TREE_FREQUENCY)
+            {
+                int y = GetGroundY(x);
+                Tree.SpawnTree(new Vector2(x+id*size,y));
+            }
+        }
+    }
+
+    private int GetGroundY(int x)
+    {
+        int y = 0;
+        while (y < height && blocks[x][y].GetType!=Block.Type.Air)
+            y++;
+        return y;
     }
     
     private int GetMaximumY(int x, OpenSimplexNoise noise)
@@ -95,14 +125,7 @@ public class Chunk
     /// Affiche le chunk sur la tilemap de la scene
     public void Draw()
     {
-        foreach (var colon in blocks)
-        {
-            foreach (var block in colon)
-            {
-                DrawBlock(block);
-                DrawBlockBack(block);
-            }
-        }
+        DrawClone(id*size);
     }
     
     /// Affiche le chunk sur la tilemap de la scene a une position specifique
@@ -116,6 +139,7 @@ public class Chunk
                 DrawBlockBackClone(block, x);
             }
         }
+        World.visibleChunks.Add(this);
     }
 
     /// Cache le chunk du tilemap de la scene
@@ -129,6 +153,7 @@ public class Chunk
                 HideBlockBack(block);
             }
         }
+        World.visibleChunks.Remove(this);
     }
 
     /// Verifie si les coordonées sont correct

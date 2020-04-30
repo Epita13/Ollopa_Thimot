@@ -16,14 +16,16 @@ public static class Player
     public static float energy = 100.0f;
 
     // Ex : laser, blocks..
-    public static  StorageUsables inventoryUsables = new StorageUsables(100);
+    public static  StorageUsables inventoryUsables = new StorageUsables(1000000);
     // Ex : bois, composite (matieres premieres)
-    public static StorageItems inventoryItems = new StorageItems(200);
-    // Ex : eau, petrole (Liquide)
+    public static StorageItems inventoryItems = new StorageItems(20000);
+    // Ex : eau, petrol (Liquide)
     public static StorageLiquids inventoryLiquids = new StorageLiquids(30.0f);
+    public static StorageBuildings inventoryBuildings = new StorageBuildings(10);
 
 
     public static Usable.Type UsableSelected = Usable.Type.Laser;
+    public static Building.Type BuildingSelected = Building.Type.SolarPanel;
 
     /// Ajoute de la vie au joueur. 
     public static void AddHealth(float amount)

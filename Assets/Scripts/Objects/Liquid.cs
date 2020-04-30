@@ -17,7 +17,7 @@ public class Liquid : Node2D
     public static TileMap Oilmap;
     
 
-    public const int NbLiquids = 3;
+    public const int nbLiquids = 3;
     public const int Capacity = 8;
     public enum Type 
     { Water, Oil, Fuel }

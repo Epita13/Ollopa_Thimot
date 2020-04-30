@@ -1,63 +1,65 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class SolarPanel : Building
 {
+
     public static int nbSolarPanel;
-    public int id;
-
-    public static float energyMax = 200.0f;
-    public float energy = 0;
-
-    public static bool isDay = true;
-    public static float sunPower = 0.5f;
 
     /* Signal pour les voyants */
     [Signal] public delegate void EnergyChange(float energy, float energyMax);
+    
+    private Sprite stateSprite;
+    
+    
 
-    private Timer timer;
-
-    public SolarPanel() : base (100)
+    public SolarPanel() : base (100, 200.0f)
     {
-        id = nbSolarPanel;
-        nbSolarPanel+=1;
     }
 
     public override void _EnterTree()
     {
-        timer = GetNode<Timer>("Timer");
+        id = nbSolarPanel;
+        nbSolarPanel+=1;
+        
+        stateSprite = GetNode<Sprite>("state");
         EmitSignal("EnergyChange", energy, energyMax);
+        if (Environement.cycle == Environement.TimeState.DAY)
+        {
+            Color color = Color.Color8(66, 190, 40);
+            stateSprite.Modulate = color;
+            stateSprite.GetNode<Light2D>("Light").Color = color;
+        }
+        else
+        {
+            Color color = Color.Color8(255,0,0);
+            stateSprite.Modulate = color;
+            stateSprite.GetNode<Light2D>("Light").Color = color;
+        }
     }
 
 
     public void _on_Timer_timeout()
     {
-        if (isPlaced && isDay)
+        if (isPlaced && Environement.sunPower>0)
         {
-            AddEnergy(sunPower*timer.WaitTime);
-            PrintEnergy();
+            Color color = Color.Color8(66, 190, 40);
+            stateSprite.Modulate = color;
+            stateSprite.GetNode<Light2D>("Light").Color = color;
         }
+        if (isPlaced && Environement.sunPower==0)
+        {
+            Color color = Color.Color8(255,0,0);
+            stateSprite.Modulate = color;
+            stateSprite.GetNode<Light2D>("Light").Color = color;
+        }
+        
+        AddEnergy(Environement.sunPower * timer.WaitTime);
+        TransferToLink(timer.WaitTime);
+        
         EmitSignal("EnergyChange", energy, energyMax);
     }
-
-
-    private void AddEnergy(float amount)
-    {
-        energy += amount;
-        if (energy>energyMax)
-            energy = energyMax;
-    }
-
-    private void RemoveEnergy(float amount)
-    {
-        energy -= amount;
-        if (energy<0)
-            energy = 0;
-    }
-
-    public void PrintEnergy()
-    {
-            GD.Print("Le panneau solaire "+id+" est a "+energy+"/"+energyMax+" d'energie.");
-    }
+    
 
 }

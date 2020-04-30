@@ -25,4 +25,20 @@ public class Drop
             this.loots.Add(l);
         }
     }
+
+
+
+    public static bool PlayerCanCraft(Drop d)
+    {
+        bool can = true;
+        foreach (var loot in d.loots)
+        {
+            if (Player.inventoryItems.GetItemCount(loot.type) < loot.amount)
+            {
+                can = false;
+            }
+        }
+
+        return can;
+    }
 }

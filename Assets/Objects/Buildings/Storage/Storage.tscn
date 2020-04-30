@@ -1,30 +1,145 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Objects/Buildings/Storage/Storage.cs" type="Script" id=1]
-[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/stockage.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/Stockage.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Ressources/Shaders/fog.shader" type="Shader" id=3]
 [ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/stockageMask1.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/stockageMaskB1.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Ressources/Shaders/outline.shader" type="Shader" id=5]
+[ext_resource path="res://Assets/Ressources/Imgs/Joueur/PointLigth.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/oxygeneSlide.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/energySlideback.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/oxygeneSlideback.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/energySlide.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/voyant.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Scripts/Tools/Sliders/SlideBar.cs" type="Script" id=12]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/mask.png" type="Texture" id=13]
 
-[sub_resource type="ShaderMaterial" id=1]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+light_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id=2]
+light_mode = 1
+
+[sub_resource type="ShaderMaterial" id=3]
 shader = ExtResource( 3 )
 shader_param/color = Vector3( 0.1, 0.51, 0.91 )
 shader_param/OCTAVES = 4
+shader_param/size = 20.0
+shader_param/mult = 1.0
 shader_param/mask_texture = ExtResource( 4 )
 
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 29.1177, 32.0258 )
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = ExtResource( 5 )
+shader_param/width = 0.0
+shader_param/outline_color = Color( 0, 0.588235, 1, 1 )
+
 [node name="Storage" type="Node2D"]
+z_index = -2
 script = ExtResource( 1 )
 
+[node name="LED" type="Node2D" parent="."]
+position = Vector2( -25, -17 )
+z_index = -2
+
+[node name="led" type="Sprite" parent="LED"]
+modulate = Color( 1, 0, 0, 1 )
+z_index = -2
+texture = ExtResource( 11 )
+centered = false
+
+[node name="Light" type="Light2D" parent="LED"]
+position = Vector2( 2.5, 2.5 )
+z_index = -2
+texture = ExtResource( 6 )
+texture_scale = 0.05
+color = Color( 1, 0, 0, 1 )
+energy = 2.0
+
+[node name="Energy" type="Node2D" parent="."]
+position = Vector2( -8, 28 )
+rotation = -1.5708
+z_index = -2
+
+[node name="back" type="Sprite" parent="Energy"]
+position = Vector2( -1, -0.3 )
+scale = Vector2( 1.1, 1.1 )
+z_index = -2
+texture = ExtResource( 8 )
+centered = false
+
+[node name="slide" type="Sprite" parent="Energy"]
+material = SubResource( 1 )
+z_index = -2
+texture = ExtResource( 10 )
+centered = false
+script = ExtResource( 12 )
+max = 1.0
+
+[node name="Oxygene" type="Node2D" parent="."]
+position = Vector2( 11, 23 )
+z_index = -2
+
+[node name="back" type="Sprite" parent="Oxygene"]
+position = Vector2( 0, -0.25 )
+scale = Vector2( 1.1, 1.1 )
+z_index = -2
+texture = ExtResource( 9 )
+centered = false
+
+[node name="slide" type="Sprite" parent="Oxygene"]
+material = SubResource( 2 )
+z_index = -2
+texture = ExtResource( 7 )
+centered = false
+script = ExtResource( 12 )
+max = 1.0
+
 [node name="Image" type="Sprite" parent="."]
-z_index = -1
+z_index = -2
 texture = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 1 )
+[node name="oxygene" type="Sprite" parent="Image"]
+material = SubResource( 3 )
 z_index = -2
 texture = ExtResource( 4 )
 
-[node name="Sprite2" type="Sprite" parent="."]
-visible = false
-z_index = -3
-texture = ExtResource( 5 )
+[node name="Light2D2" type="Light2D" parent="."]
+position = Vector2( -12, 0 )
+z_index = -2
+texture = ExtResource( 6 )
+texture_scale = 0.3
+color = Color( 0.901961, 0.870588, 0.054902, 1 )
+shadow_enabled = true
+
+[node name="ZONE" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZONE"]
+shape = SubResource( 4 )
+
+[node name="OUTLINE" type="Sprite" parent="."]
+material = SubResource( 5 )
+z_index = 10
+texture = ExtResource( 13 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="TimerHistory" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="TimerEnergy" type="Timer" parent="."]
+wait_time = 0.4
+autostart = true
+[connection signal="EnergyChange" from="." to="Energy/slide" method="Change"]
+[connection signal="OxygeneChange" from="." to="Oxygene/slide" method="Change"]
+[connection signal="mouse_entered" from="ZONE" to="." method="_on_ZONE_mouse_entered"]
+[connection signal="mouse_exited" from="ZONE" to="." method="_on_ZONE_mouse_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="TimerHistory" to="." method="_on_TimerHistory_timeout"]
+[connection signal="timeout" from="TimerEnergy" to="." method="_on_TimerEnergy_timeout"]

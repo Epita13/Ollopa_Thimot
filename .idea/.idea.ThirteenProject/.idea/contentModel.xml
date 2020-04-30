@@ -10,10 +10,16 @@
         <e p="Objects" t="Include">
           <e p="Autres" t="Include">
             <e p="Loot.cs" t="Include" />
+            <e p="Tree" t="Include">
+              <e p="Tree.cs" t="Include" />
+            </e>
           </e>
           <e p="Buildings" t="Include">
             <e p="Barrel" t="Include">
               <e p="Barrel.cs" t="Include" />
+            </e>
+            <e p="Printer3D" t="Include">
+              <e p="Printer3D.cs" t="Include" />
             </e>
             <e p="Rafinery" t="Include">
               <e p="Rafinery.cs" t="Include" />
@@ -39,11 +45,26 @@
             </e>
           </e>
           <e p="UI" t="Include">
+            <e p="Building" t="Include">
+              <e p="Printer3DInterface.cs" t="Include" />
+              <e p="SolarPanelInterface.cs" t="Include" />
+              <e p="StorageInterface.cs" t="Include" />
+            </e>
+            <e p="Graphics" t="Include">
+              <e p="Graph.cs" t="Include" />
+            </e>
             <e p="Notification" t="Include">
               <e p="Notifications.cs" t="Include" />
             </e>
             <e p="PlayerInventory" t="Include">
               <e p="UI_PlayerInventory.cs" t="Include" />
+              <e p="UI_PlayerInventory2.cs" t="Include" />
+            </e>
+            <e p="Sliders" t="Include">
+              <e p="Energy" t="Include">
+                <e p="EnergyBar.cs" t="Include" />
+                <e p="PowerBar.cs" t="Include" />
+              </e>
             </e>
             <e p="TestsTemporaire" t="Include">
               <e p="ValuesPanel.cs" t="Include" />
@@ -80,16 +101,21 @@
           <e p="Objects" t="Include">
             <e p="Block.cs" t="Include" />
             <e p="Building.cs" t="Include" />
+            <e p="BuildingInterface.cs" t="Include" />
             <e p="Chunk.cs" t="Include" />
             <e p="Drop.cs" t="Include" />
             <e p="Item.cs" t="Include" />
+            <e p="Link.cs" t="Include" />
             <e p="Liquid.cs" t="Include" />
             <e p="LiquidMove.cs" t="Include" />
+            <e p="Ore.cs" t="Include" />
             <e p="Player.cs" t="Include" />
             <e p="PlayerState.cs" t="Include" />
+            <e p="StorageBuildings.cs" t="Include" />
             <e p="StorageItems.cs" t="Include" />
             <e p="StorageLiquids.cs" t="Include" />
             <e p="StorageUsables.cs" t="Include" />
+            <e p="Structure.cs" t="Include" />
             <e p="Usable.cs" t="Include" />
             <e p="World.cs" t="Include" />
           </e>
@@ -101,12 +127,21 @@
               <e p="OutOfBoundsException.cs" t="Include" />
               <e p="UninitializedException.cs" t="Include" />
             </e>
+            <e p="History.cs" t="Include" />
             <e p="PlaceBlock.cs" t="Include" />
-            <e p="SlideBar.cs" t="Include" />
+            <e p="Save.cs" t="Include" />
+            <e p="SavesModels" t="Include">
+              <e p="DataModel.cs" t="Include" />
+            </e>
+            <e p="ScreenAdapt.cs" t="Include" />
+            <e p="Sliders" t="Include">
+              <e p="SlideBar.cs" t="Include" />
+            </e>
           </e>
         </e>
       </e>
       <e p="packages" t="ExcludeRecursive" />
+      <e p="packages.config" t="Include" />
       <e p="Properties" t="Include">
         <e p="AssemblyInfo.cs" t="Include" />
       </e>

@@ -73,7 +73,10 @@ public class UI_PlayerInventory : Control
         }
         else if (string.Equals(str, "building"))
         {
-            // a faire quand le stockage de batiment existera
+            foreach (Building.Type type in Enum.GetValues(typeof(Building.Type)))
+            {
+                GetInstance().itemList.AddItem(Player.inventoryBuildings.GetItemCount(type).ToString(), Building.textures[type]);
+            }
         }
         else
             throw new Exception("Invalid argument in Open() from UI_PlayerInvventory.cs");
@@ -102,4 +105,13 @@ public class UI_PlayerInventory : Control
         btBuildings.RectSize = new Vector2((size.x - btClose.RectSize.x) / 3 , btBuildings.RectSize.y);
         btUsable.RectSize = new Vector2((size.x - btClose.RectSize.x) / 3 , btUsable.RectSize.y);*/
     }
+    
+    
+    // On double click 
+    public void _on_List_item_activated(int index)
+    {
+        
+    }
+    
+    
 }

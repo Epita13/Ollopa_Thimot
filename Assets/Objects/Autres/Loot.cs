@@ -12,7 +12,7 @@ public class Loot : Node2D
          - Utiliser la fonction Init()
          - Verification d'initialisation : le getter IsInit
 
-      /!\ Classe Initialisées necessaire : None
+      /!\ Classe Initialisées necessaire : World
       
      Description de l'object :
         A faire
@@ -51,13 +51,18 @@ public class Loot : Node2D
     public const float SPEEDMIN = 1.4f;
     public const float SPEEDMAX = 2.0f;
     public const float LIFETIME = 30.0f;
-    public const int STACKSIZE = 24;
+    public const int STACKSIZE = 48;
 
     private float time;
     public bool dead = false;
     
     public float speed = SPEEDMAX;
     public float dephase;
+
+    
+    /*Teleportation variables*/
+    private bool mirrored = false;
+    private float prev_x_viewport;
 
     private bool hasLoot = false;
     private Item.Type type;
@@ -111,6 +116,12 @@ public class Loot : Node2D
             QueueFree();
         area = GetNode<Area2D>("ZONE");
         time = 0;
+        
+        Vector2 p = GetViewportTransform().origin * CurrentCamera.GetXZoom();
+        Vector2 vecMin = Convertion.Location2World(p) * -1;
+        prev_x_viewport = vecMin.x;
+        
+        World.IsInitWorldTest("Loot constructor");
     }
 
     public override void _PhysicsProcess(float delta)
@@ -124,6 +135,73 @@ public class Loot : Node2D
             dead = true;
             Delay.StartDelay(this, 0.3f, () => QueueFree());
         }
+        
+        
+        /*Teleportation loots*/
+        Vector2 p = GetViewportTransform().origin * CurrentCamera.GetXZoom();
+        int viewportSizeX = Mathf.FloorToInt(GetViewport().Size.x * CurrentCamera.GetXZoom());
+        Vector2 vecMin = Convertion.Location2World(p) * -1;
+        Vector2 vecMax = Convertion.Location2World(new Vector2(p.x*-1+viewportSizeX, p.y));
+        if (vecMin.x < 0)
+        {
+            if (!mirrored)
+            {
+                int i = (int) Mathf.Abs(vecMin.x / Chunk.size) + 1;
+                if (Convertion.Location2World(Position).x >= (World.size - i) * Chunk.size)
+                {
+                    GD.Print("--");
+                    Position = Position - new Vector2(World.size * Chunk.size * World.BlockTilemap.CellSize.x, 0);
+                    mirrored = true;
+                }
+            }else if (-vecMin.x+prev_x_viewport >= 0.90f * World.size * Chunk.size)
+            {
+                int i = (int) Mathf.Abs(vecMin.x / Chunk.size) + 1;
+                if (Convertion.Location2World(Position).x >= (World.size - i) * Chunk.size)
+                {
+                    Position = Position - new Vector2(World.size * Chunk.size * World.BlockTilemap.CellSize.x, 0);
+                    mirrored = false;
+                }
+            }
+        }
+        else if (vecMax.x >= World.size*Chunk.size)
+        {
+            if (!mirrored)
+            {
+                int i = (int) Mathf.Abs((vecMax.x - World.size * Chunk.size) / Chunk.size) + 1;
+                if (Convertion.Location2World(Position).x <= i * Chunk.size)
+                {
+                    Position = Position + new Vector2(World.size * Chunk.size * World.BlockTilemap.CellSize.x, 0);
+                    mirrored = true;
+                }
+            } else if (vecMin.x-prev_x_viewport >= 0.90f * World.size * Chunk.size)
+            {
+                int i = (int) Mathf.Abs((vecMax.x - World.size * Chunk.size) / Chunk.size) + 1;
+                if (Convertion.Location2World(Position).x <= i * Chunk.size)
+                {
+                    Position = Position + new Vector2(World.size * Chunk.size * World.BlockTilemap.CellSize.x, 0);
+                    mirrored = false;
+                }
+            }
+        }
+        else if (vecMax.x < World.size*Chunk.size && vecMin.x >= 0)
+        {
+            if (mirrored)
+            {
+                if (Convertion.Location2World(Position).x < 0)
+                {
+                    Position = Position + new Vector2(World.size * Chunk.size * World.BlockTilemap.CellSize.x, 0);
+                }
+                else
+                {
+                    Position = Position - new Vector2(World.size * Chunk.size * World.BlockTilemap.CellSize.x, 0);
+                }
+
+                mirrored = false;
+            }
+        }
+        prev_x_viewport = vecMin.x;
+        /*----------------------*/
+        
         var bodies = area.GetOverlappingBodies();
         Node2D Player = null;
         foreach (var body in bodies)

@@ -9,25 +9,23 @@
 [ext_resource path="res://icon.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Ressources/Shaders/fog.shader" type="Shader" id=8]
 [ext_resource path="res://Assets/Ressources/Imgs/Environement/mountains.png" type="Texture" id=9]
-[ext_resource path="res://Assets/Scripts/Autres/Environement.cs" type="Script" id=10]
+[ext_resource path="res://Assets/Objects/Autres/Environement/Environement.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/Objects/UI/ToolBar/ToolBar.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Assets/Objects/UI/PlayerInventory/PlayerInventory.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Assets/Objects/UI/PlayerInventory/PlayerInventory2.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Assets/Scenes/Liquid/Liquid.tscn" type="PackedScene" id=13]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 8 )
 shader_param/color = Vector3( 0.1, 0.15, 0.7 )
 shader_param/OCTAVES = 3
-shader_param/size = 20.0
+shader_param/size = 160.0
 shader_param/mult = 0.7
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="Liquid" parent="." instance=ExtResource( 13 )]
-position = Vector2( 0, 0 )
-
 [node name="Sprite" type="Sprite" parent="."]
+visible = false
 scale = Vector2( 0.1, 1000 )
 texture = ExtResource( 7 )
 
@@ -39,7 +37,7 @@ z_index = -1
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
-zoom = Vector2( 0.7, 0.7 )
+zoom = Vector2( 0.4, 0.4 )
 drag_margin_v_enabled = true
 script = ExtResource( 6 )
 
@@ -56,15 +54,15 @@ texture = ExtResource( 9 )
 zIndex = -99
 y = 1344.0
 
-[node name="Environement" type="Node2D" parent="."]
-script = ExtResource( 10 )
+[node name="Environement" parent="." instance=ExtResource( 10 )]
 
 [node name="Canvas_DayNight" type="CanvasModulate" parent="Environement"]
 
 [node name="fog" type="Sprite" parent="Environement"]
 material = SubResource( 1 )
-scale = Vector2( 100, 100 )
-z_index = -1
+position = Vector2( -4000, 0 )
+scale = Vector2( 800, 800 )
+z_index = -3
 texture = ExtResource( 7 )
 centered = false
 
@@ -81,13 +79,7 @@ margin_right = 960.0
 margin_bottom = 119.0
 rect_scale = Vector2( 0.5, 0.5 )
 
-[node name="PlayerInventory" parent="CanvasLayer" instance=ExtResource( 12 )]
+[node name="Control" parent="CanvasLayer" instance=ExtResource( 12 )]
 visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -245.0
-margin_top = -110.0
-margin_right = 6.10352e-05
-margin_bottom = 3.05176e-05
+
+[node name="Liquid" parent="." instance=ExtResource( 13 )]

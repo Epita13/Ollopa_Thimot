@@ -1,0 +1,118 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Inventory/inventoryPanel.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Objects/UI/PlayerInventory/UI_PlayerInventory2.cs" type="Script" id=2]
+
+[node name="PlayerInventory" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -300.0
+margin_top = -250.0
+margin_right = 300.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 600, 500 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="back" type="NinePatchRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -300.0
+margin_top = -250.0
+margin_right = 300.0
+margin_bottom = 250.0
+texture = ExtResource( 1 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="topbar" type="Panel" parent="back"]
+anchor_top = 0.025
+anchor_right = 1.0
+anchor_bottom = 0.1
+margin_left = 25.0
+margin_top = -1.90735e-06
+margin_right = -25.0
+margin_bottom = -7.62939e-06
+rect_min_size = Vector2( 550, 37.5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Close" type="Button" parent="back/topbar"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -18.75
+margin_bottom = 18.75
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Items" type="ItemList" parent="back"]
+anchor_top = 0.15
+anchor_right = 1.0
+anchor_bottom = 0.55
+margin_left = 25.0
+margin_top = -1.52588e-05
+margin_right = -25.0
+margin_bottom = -3.05176e-05
+rect_min_size = Vector2( 550, 200 )
+items = [ "Objet 0", null, false, "Objet 1", null, false, "Objet 2", null, false, "Objet 3", null, false, "Objet 4", null, false, "Objet 5", null, false ]
+max_columns = 5
+fixed_column_width = 110
+icon_scale = 2.0
+fixed_icon_size = Vector2( 32, 32 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Usables" type="ItemList" parent="back"]
+anchor_top = 0.575
+anchor_right = 1.0
+anchor_bottom = 0.725
+margin_left = 25.0
+margin_top = -6.10352e-05
+margin_right = -25.0
+margin_bottom = -3.05176e-05
+rect_min_size = Vector2( 550, 75 )
+items = [ "Objet 0", null, false, "Objet 1", null, false, "Objet 2", null, false, "Objet 3", null, false, "Objet 4", null, false ]
+max_columns = 5
+fixed_column_width = 110
+icon_scale = 2.0
+fixed_icon_size = Vector2( 32, 32 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buildings" type="ItemList" parent="back"]
+anchor_top = 0.75
+anchor_right = 1.0
+anchor_bottom = 0.95
+margin_left = 23.5681
+margin_top = -3.05176e-05
+margin_right = -26.4319
+margin_bottom = -3.05176e-05
+rect_min_size = Vector2( 550, 100 )
+items = [ "Objet 0", null, false, "Objet 1", null, false, "Objet 2", null, false, "Objet 3", null, false, "Objet 4", null, false, "Objet 5", null, false, "Objet 6", null, false ]
+max_columns = 4
+fixed_column_width = 137
+fixed_icon_size = Vector2( 64, 64 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="item_activated" from="back/Usables" to="." method="_on_Usables_item_activated"]
+[connection signal="item_activated" from="back/Buildings" to="." method="_on_Buildings_item_activated"]

@@ -39,12 +39,17 @@ public class UI_breakingBlocks : TileMap
             b.Heal(Block.healStrength*delta);
             int tile_id = Mathf.FloorToInt(((16 - 23) / Block.durabilities[b.GetType]) * b.health + 23);
             SetCell(b.x, -b.y+Chunk.height, tile_id);
+            SetCell(b.x+World.size*Chunk.size, -b.y+Chunk.height, tile_id);
+            SetCell(b.x-World.size*Chunk.size, -b.y+Chunk.height, tile_id);
         }
 
         while (blocks2delete.Count != 0)
         {
             Block b = blocks2delete[0];
-            GetInstance().SetCell(b.x, -b.y+Chunk.height, -1);
+            SetCell(b.x, -b.y+Chunk.height, -1);
+            SetCell(b.x+World.size*Chunk.size, -b.y+Chunk.height, -1);
+            SetCell(b.x-World.size*Chunk.size, -b.y+Chunk.height, -1);
+            
             damagedBlocks.Remove(b);
             blocks2delete.Remove(b);
         }

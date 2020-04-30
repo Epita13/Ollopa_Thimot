@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Runtime.CompilerServices;
 
 public static class PlayerState
 {
@@ -14,13 +15,16 @@ public static class PlayerState
 
 
     public static State state = State.Normal;
+    public static State prec_state = State.Normal;
 
     public enum State
     {
         Normal,
         Build,
         Inventory,
-        Dead
+        Dead,
+        BuildingInterface,
+        Link
     }
 
     /// Retourne l'etat du joueur 
@@ -32,7 +36,34 @@ public static class PlayerState
     /// Change l'etat du joueur
     public static void SetState(State st)
     {
+        if (st == State.Build || st == State.Normal || st == State.Link)
+            prec_state = st;
         state = st;
     }
 
+    public static bool Is(params State[] states)
+    {
+        bool res = false;
+        foreach (var state in states)
+        {
+            if (GetState() == state)
+            {
+                res = true;
+            }
+        }
+        return res;
+    }
+    
+    public static bool IsNot(params State[] states)
+    {
+        bool res = true;
+        foreach (var state in states)
+        {
+            if (GetState() == state)
+            {
+                res = false;
+            }
+        }
+        return res;
+    }
 }

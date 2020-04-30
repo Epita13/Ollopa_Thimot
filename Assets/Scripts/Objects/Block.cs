@@ -9,23 +9,41 @@ public class Block
         Air = -1,
         Stone = 0,
         Grass = 1,
-        Dirt = 2
+        Dirt = 2,
+        WestStone = 3,
+        SonarOre = 4,
+        OspiritOre = 5,
+        BedRock = 6,
+        WarningBlock = 7,
+        IronBlock = 8,
     }
     
     public static Dictionary<Type, Drop> drops = new Dictionary<Type, Drop>
     {
         {Type.Air, null},
-        {Type.Stone, new Drop(new Drop.Loot(Item.Type.Stone,8), new Drop.Loot(Item.Type.Composite,1))},
+        {Type.Stone, new Drop(new Drop.Loot(Item.Type.Stone,1))},
         {Type.Grass, new Drop(new Drop.Loot(Item.Type.Dirt,1))},
-        {Type.Dirt, new Drop(new Drop.Loot(Item.Type.Dirt,2))}
+        {Type.Dirt, new Drop(new Drop.Loot(Item.Type.Dirt,1))},
+        {Type.WestStone, null},
+        {Type.SonarOre, new Drop(new Drop.Loot(Item.Type.Sonar, 1))},
+        {Type.OspiritOre, new Drop(new Drop.Loot(Item.Type.Composite, 1))},
+        {Type.BedRock, new Drop(new Drop.Loot(Item.Type.Composite, 1))},
+        {Type.WarningBlock, new Drop(new Drop.Loot(Item.Type.Composite, 1)) },
+        {Type.IronBlock, new Drop(new Drop.Loot(Item.Type.Composite, 1))},
     };
-    
     public static Dictionary<Type, float> durabilities = new Dictionary<Type, float>
     {
+    
         {Type.Air, -1.0f},
         {Type.Stone, 100.0f},
         {Type.Grass, 40.0f},
-        {Type.Dirt, 30.0f}
+        {Type.Dirt, 30.0f},
+        {Type.WestStone, -1.0f},
+        {Type.SonarOre, 200.0f},
+        {Type.OspiritOre, 300.0f},
+        {Type.BedRock, 10f},
+        {Type.WarningBlock, 150f},
+        {Type.IronBlock, 300f},
     };
 
     public static float healStrength = 10.0f;
@@ -56,7 +74,7 @@ public class Block
 
     public int x,y;
     
-    private Type type;
+    public Type type;
     public Type GetType => type;
         
     public float health;
@@ -79,6 +97,8 @@ public class Block
     
     public void Damage(float damage)
     {
+        if (durabilities[type] == -1) 
+            return;
         health -= damage;
         if (health <= 0)
         {

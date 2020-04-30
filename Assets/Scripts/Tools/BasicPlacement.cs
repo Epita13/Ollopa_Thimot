@@ -100,7 +100,7 @@ public class BasicPlacement : Node2D
 			i = 0;
 			while (i < sizeX && res)
 			{
-				res = res && IsAir(x-i-1, y+j) && IsNoBuilding(x-i,y+j);;
+				res = res && IsAir(x-i, y+j) && IsNoBuilding(x-i,y+j);;
 				i++;
 			}
 			j++;
@@ -110,8 +110,9 @@ public class BasicPlacement : Node2D
 
 
 	///place un batiment selon les regles
-	public static void PlaceWithMouse(Building building,Vector2 mouse,bool right)
+	public static bool PlaceWithMouse(Building building,Vector2 mouse,bool right)
 	{
+		bool succeed = false;
 		Vector2 mouseC = Convertion.Location2WorldFloor(mouse);
 		if (right)
 		{
@@ -121,7 +122,7 @@ public class BasicPlacement : Node2D
 				mouseC.y += building.size / 2;
 				building.Place(mouseC);
 				placedBuilding.Add(building);
-
+				succeed = true;
 			}
 		}
 		else
@@ -132,8 +133,11 @@ public class BasicPlacement : Node2D
 				mouseC.y += building.size / 2;
 				building.Place(mouseC);
 				placedBuilding.Add(building);
+				succeed = true;
 			}
 		}
+
+		return succeed;
 	}
 	
 

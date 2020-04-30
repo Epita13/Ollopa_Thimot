@@ -14,7 +14,7 @@ public class Rafinery : Building
 
 	private Timer timer;
 
-	public Rafinery() : base (100)
+	public Rafinery() : base (100, 100.0f)
 	{
 		this.oil = 0;
 		this.fuel = 0;
