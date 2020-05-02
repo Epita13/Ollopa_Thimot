@@ -17,8 +17,8 @@ public class LiquidMove : Node2D
 	private List<Tuple<int,int>> listLiquid = new List<Tuple<int,int >>{};
 	private List<Tuple<int,int>> ToRemove = new List<Tuple<int,int>>{};
 	private const int Capacity = Liquid.Capacity;
-	private int width; 
-	private readonly int height;
+	private static int width; 
+	private static int height;
 	private readonly Liquid.Type type;
 	private int[,] map;
 	private readonly Thread init;
@@ -26,19 +26,14 @@ public class LiquidMove : Node2D
 
 	public LiquidMove(Liquid.Type type)
 	{
-		height = Chunk.height;
 		this.type = type;
 		init = new Thread(Init);
 		init.Start();
 	}
 	
-	
 	private void Init()
 	{
-		while (!World.IsInit)
-		{
-		}
-		World.IsInitWorldTest("Liquid." + type);
+		height = Chunk.height;
 		width = World.size * Chunk.size - 1;
 		map = new int[width + 1,height];
 	}

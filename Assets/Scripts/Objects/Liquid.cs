@@ -23,14 +23,18 @@ public class Liquid : Node2D
     { Water, Oil, Fuel }
 
     private int test = 0;
-    public override void _Ready()
+    public static void Init()
     {
-        Watermap = GetNode<TileMap>("Watermap");
-        Oilmap = GetNode<TileMap>("Oilmap");
         list.Add(Type.Water, new LiquidMove(Type.Water));
         list.Add(Type.Oil, new LiquidMove(Type.Oil));
         listMap.Add(Type.Water, Watermap);
         listMap.Add(Type.Oil, Oilmap);
+    }
+
+    public override void _Ready()
+    {
+        Watermap = GetNode<TileMap>("Watermap");
+        Oilmap = GetNode<TileMap>("Oilmap");
         TimerWater = GetNode<Timer>("TimerWater");
         TimerOil = GetNode<Timer>("TimerOil");
     }
