@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 window/size/width=1500
 window/size/height=1080
+window/vsync/use_vsync=false
 window/stretch/aspect="keep"
 
 [importer_defaults]
@@ -117,6 +118,10 @@ escape={
 2d_physics/layer_2="Blocks"
 2d_physics/layer_3="Trees"
 
+[memory]
+
+limits/message_queue/max_size_kb=2048
+
 [mono]
 
 debugger_agent/wait_timeout=10000
@@ -125,4 +130,5 @@ debugger_agent/wait_timeout=10000
 
 quality/2d/gles2_use_nvidia_rect_flicker_workaround=true
 quality/2d/use_pixel_snap=true
+threads/thread_model=2
 environment/default_environment="res://default_env.tres"

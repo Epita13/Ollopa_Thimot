@@ -128,7 +128,6 @@ public static class World
             chunks.Add(instance_chunk);
         }
         OreGenerate();
-        Structure.Generate(20,15);
     }
 
     /// Affiche tous les Chunks de la map

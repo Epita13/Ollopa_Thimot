@@ -46,12 +46,17 @@
           </e>
           <e p="UI" t="Include">
             <e p="Building" t="Include">
+              <e p="Other" t="Include" />
               <e p="Printer3DInterface.cs" t="Include" />
               <e p="SolarPanelInterface.cs" t="Include" />
+              <e p="SpaceShipInterface.cs" t="Include" />
               <e p="StorageInterface.cs" t="Include" />
             </e>
             <e p="Graphics" t="Include">
               <e p="Graph.cs" t="Include" />
+            </e>
+            <e p="Menus" t="Include">
+              <e p="End.cs" t="Include" />
             </e>
             <e p="Notification" t="Include">
               <e p="Notifications.cs" t="Include" />

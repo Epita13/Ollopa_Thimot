@@ -7,7 +7,7 @@ public static class Structure
    /*Faire des structure de longueur multiple de n - 1 pour faire joli*/
 
    private static int n = 4;
-   public static void Generate(int x, int lgr)
+   public static Vector2 Generate(int x, int lgr)
    {
       int modulo = n;
       if (lgr > World.size * Chunk.size)
@@ -52,6 +52,8 @@ public static class Structure
          }
          nb++;
       }
+
+      return new Vector2(x,Y);
    }
    
    
@@ -70,6 +72,4 @@ public static class Structure
 
       return y;
    }
-   
-   
 }

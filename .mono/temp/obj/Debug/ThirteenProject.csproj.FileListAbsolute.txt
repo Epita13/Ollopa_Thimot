@@ -3,3 +3,12 @@ D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot\.mono\temp\bin\Debug\ThirteenProje
 D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.csprojAssemblyReference.cache
 D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.dll
 D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.pdb
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\bin\Debug\ThirteenProject.dll
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\bin\Debug\ThirteenProject.pdb
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\bin\Debug\Newtonsoft.Json.dll
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\bin\Debug\Newtonsoft.Json.xml
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.csprojAssemblyReference.cache
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.csproj.CoreCompileInputs.cache
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.csproj.CopyComplete
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.dll
+D:\Dossier Windows\Documents\EPITA\Ollopa_Thimot\.mono\temp\obj\Debug\ThirteenProject.pdb

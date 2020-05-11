@@ -6,9 +6,7 @@ public class PlayerInputs : Node2D
 
 	public static bool playerInputActive = true;
 	
-
-	[Signal] delegate void BlockPlaced();
-
+	
 	private Vector2 mousePos;
 	private PlayerState.State lastState;
 	private Usable.Type lastSelectedUsable;
@@ -24,18 +22,10 @@ public class PlayerInputs : Node2D
 		Player.inventoryUsables.Add(Usable.Type.IronBlock, 100000);
 		Player.inventoryUsables.Add(Usable.Type.WarningBlock, 100000);
 		Player.inventoryUsables.Add(Usable.Type.BedRock, 100000);
-		ConnectSignals();
 		Player.inventoryItems.Add(Item.Type.Composite, 120);
-
 	}
 
-	private void ConnectSignals()
-	{
-		if (GetTree().GetNodesInGroup("ToolBar").Count==1)
-			Connect("BlockPlaced", (Node)GetTree().GetNodesInGroup("ToolBar")[0], "SendRefresh"); // Pour Actualisation de la ToolBar
-	}
 
-  
 	public override void _Process(float delta)
 	{
 		
@@ -78,10 +68,14 @@ public class PlayerInputs : Node2D
 			else if (PlayerState.GetState() == PlayerState.State.Build)
 			{
 				PlayerState.SetState(PlayerState.State.Normal);
-			}else if (PlayerState.GetState() == PlayerState.State.BuildingInterface)
+			}
+			else if (PlayerState.GetState() == PlayerState.State.BuildingInterface)
 			{
 				BuildingInterface.CloseInterface();
-			}else if (PlayerState.GetState() == PlayerState.State.Link)
+				if(SpaceShip.inventoryOpen)
+					SpaceShip.close_interface();
+			}
+			else if (PlayerState.GetState() == PlayerState.State.Link)
 			{
 				Link._Link();
 				Link.Reset();
@@ -105,6 +99,10 @@ public class PlayerInputs : Node2D
 				if (Building.HasBuildingSelected)
 				{
 					ClickOnBuilding();
+				}
+				if (SpaceShip.ShipSelected)
+				{
+					SpaceShipClick();
 				}
 			}
 			if (PlayerState.GetState() == PlayerState.State.Link)
@@ -308,5 +306,16 @@ public class PlayerInputs : Node2D
 		}
 	}
 
+	private void SpaceShipClick()
+	{
+		if (MouseInRange(10, true))
+		{
+			if(!SpaceShip.inventoryOpen)
+				SpaceShip.open_interface();
+			else
+				SpaceShip.close_interface();	
+		}
+		
+	}
 
 }

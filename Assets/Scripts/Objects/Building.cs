@@ -6,7 +6,7 @@ public abstract class Building : Node2D
 {
     
     // Enumeration : Type de batiment disponible
-    public static int nbBuildings = 3;
+    public static int nbBuildings = 4;
     public enum Type
     {
         SolarPanel,

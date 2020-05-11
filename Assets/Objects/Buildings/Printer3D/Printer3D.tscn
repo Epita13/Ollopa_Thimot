@@ -107,6 +107,7 @@ autostart = true
 [node name="TimerEnergy" type="Timer" parent="."]
 wait_time = 0.4
 autostart = true
+[connection signal="area_entered" from="ZONE" to="." method="mouse_entered"]
 [connection signal="mouse_entered" from="ZONE" to="." method="_on_ZONE_mouse_entered"]
 [connection signal="mouse_exited" from="ZONE" to="." method="_on_ZONE_mouse_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -22,6 +22,7 @@ public class Game : Node2D
             Tree.Init(this);
             CurrentCamera.Init(camera);
             BuildingInterface.Init(GetNode("CanvasLayer"));
+            SpaceShip.Init(GetNode("CanvasLayer"));
             World.SetSize(10);
             World.Init(ground, uiground, uiground2, back);
         }

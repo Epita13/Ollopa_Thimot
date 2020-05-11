@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Inventory/sliders/energy/energyArrowbar.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Inventory/sliders/energy/energyArrow.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Ressources/Shaders/mask.shader" type="Shader" id=3]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Inventory/sliders/energy/energyArrowMask.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Objects/UI/Sliders/Energy/PowerBar.cs" type="Script" id=5]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 3 )
+shader_param/y = 0.5
+shader_param/mask_texture = ExtResource( 4 )
+
+[node name="PowerOutBar" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -760.0
+margin_bottom = -372.0
+rect_min_size = Vector2( 240, 348 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="slide" type="TextureRect" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+material = SubResource( 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -174.0
+margin_right = 120.0
+margin_bottom = 174.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -174.0
+margin_right = 120.0
+margin_bottom = 174.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

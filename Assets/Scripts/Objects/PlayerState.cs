@@ -24,7 +24,8 @@ public static class PlayerState
         Inventory,
         Dead,
         BuildingInterface,
-        Link
+        Link,
+        Finish
     }
 
     /// Retourne l'etat du joueur 

@@ -61,7 +61,7 @@
     <Compile Include="Assets\Objects\Buildings\Printer3D\Printer3D.cs" />
     <Compile Include="Assets\Objects\Buildings\SolarPanel\SolarPanel.cs" />
     <Compile Include="Assets\Objects\Buildings\Rafinery\Rafinery.cs" />
-    <Compile Include="Assets\Objects\Buildings\Spaceship\Spaceship.cs" />
+    <Compile Include="Assets\Objects\Buildings\Spaceship\SpaceShip.cs" />
     <Compile Include="Assets\Objects\Buildings\Storage\Storage.cs" />
     <Compile Include="Assets\Objects\Player\PlayerInputs.cs" />
     <Compile Include="Assets\Objects\Player\PlayerMouvements.cs" />
@@ -69,8 +69,10 @@
     <Compile Include="Assets\Objects\Tools\Raygun\Raygun.cs" />
     <Compile Include="Assets\Objects\UI\Building\Printer3DInterface.cs" />
     <Compile Include="Assets\Objects\UI\Building\SolarPanelInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\SpaceShipInterface.cs" />
     <Compile Include="Assets\Objects\UI\Building\StorageInterface.cs" />
     <Compile Include="Assets\Objects\UI\Graphics\Graph.cs" />
+    <Compile Include="Assets\Objects\UI\Menus\End.cs" />
     <Compile Include="Assets\Objects\UI\Notification\Notifications.cs" />
     <Compile Include="Assets\Objects\UI\PlayerInventory\UI_PlayerInventory.cs" />
     <Compile Include="Assets\Objects\UI\PlayerInventory\UI_PlayerInventory2.cs" />
@@ -121,6 +123,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Objects\UI\Building\Other" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

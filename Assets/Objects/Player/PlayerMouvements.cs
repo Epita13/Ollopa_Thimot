@@ -70,6 +70,7 @@ public class PlayerMouvements : KinematicBody2D
     public override void _PhysicsProcess(float delta)
     {
         vel.x = 0;
+        
         if (canMove && (PlayerState.GetState()==PlayerState.State.Normal || PlayerState.GetState()==PlayerState.State.Build || PlayerState.GetState()==PlayerState.State.Link)){
             HorizontalMouvement();
             JUMP();
