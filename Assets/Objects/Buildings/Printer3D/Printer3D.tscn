@@ -58,6 +58,9 @@ shader_param/outline_color = Color( 0, 0.588235, 1, 1 )
 [node name="Printer3D" type="Node2D"]
 z_index = -2
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ]
+}
 
 [node name="Image" type="Sprite" parent="."]
 z_index = -2
@@ -107,7 +110,6 @@ autostart = true
 [node name="TimerEnergy" type="Timer" parent="."]
 wait_time = 0.4
 autostart = true
-[connection signal="area_entered" from="ZONE" to="." method="mouse_entered"]
 [connection signal="mouse_entered" from="ZONE" to="." method="_on_ZONE_mouse_entered"]
 [connection signal="mouse_exited" from="ZONE" to="." method="_on_ZONE_mouse_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

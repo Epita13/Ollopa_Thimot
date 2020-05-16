@@ -6,25 +6,10 @@ public class PlayerInputs : Node2D
 
 	public static bool playerInputActive = true;
 	
-	
+
 	private Vector2 mousePos;
 	private PlayerState.State lastState;
 	private Usable.Type lastSelectedUsable;
-
-	public override void _Ready()
-	{
-		Player.inventoryUsables.Add(Usable.Type.Dirt, 30);
-		Player.inventoryUsables.Add(Usable.Type.Grass, 30);
-		Player.inventoryUsables.Add(Usable.Type.Stone, 300);
-		Player.inventoryBuildings.Add(Building.Type.SolarPanel, 1);
-		Player.inventoryBuildings.Add(Building.Type.Storage, 3);
-		Player.inventoryBuildings.Add(Building.Type.Printer3D, 3);
-		Player.inventoryUsables.Add(Usable.Type.IronBlock, 100000);
-		Player.inventoryUsables.Add(Usable.Type.WarningBlock, 100000);
-		Player.inventoryUsables.Add(Usable.Type.BedRock, 100000);
-		Player.inventoryItems.Add(Item.Type.Composite, 120);
-	}
-
 
 	public override void _Process(float delta)
 	{
@@ -68,12 +53,9 @@ public class PlayerInputs : Node2D
 			else if (PlayerState.GetState() == PlayerState.State.Build)
 			{
 				PlayerState.SetState(PlayerState.State.Normal);
-			}
-			else if (PlayerState.GetState() == PlayerState.State.BuildingInterface)
+			}else if (PlayerState.GetState() == PlayerState.State.BuildingInterface)
 			{
 				BuildingInterface.CloseInterface();
-				if(SpaceShip.inventoryOpen)
-					SpaceShip.close_interface();
 			}
 			else if (PlayerState.GetState() == PlayerState.State.Link)
 			{
@@ -100,6 +82,7 @@ public class PlayerInputs : Node2D
 				{
 					ClickOnBuilding();
 				}
+
 				if (SpaceShip.ShipSelected)
 				{
 					SpaceShipClick();
@@ -305,7 +288,7 @@ public class PlayerInputs : Node2D
 			UI_PlayerInventory2.Close();
 		}
 	}
-
+	
 	private void SpaceShipClick()
 	{
 		if (MouseInRange(10, true))

@@ -23,7 +23,10 @@ public class BuildingInterface : Control
     {
         {Building.Type.SolarPanel, GD.Load<PackedScene>("res://Assets/Objects/UI/Building/SolarPanelInterface.tscn")},
         {Building.Type.Storage, GD.Load<PackedScene>("res://Assets/Objects/UI/Building/StorageInterface.tscn")},
-        {Building.Type.Printer3D, GD.Load<PackedScene>("res://Assets/Objects/UI/Building/Printer3DInterface.tscn")}
+        {Building.Type.Printer3D, GD.Load<PackedScene>("res://Assets/Objects/UI/Building/Printer3DInterface.tscn")},
+        {Building.Type.Compactor, GD.Load<PackedScene>("res://Assets/Objects/UI/Building/CompactorInterface.tscn")},
+        {Building.Type.Infirmary, GD.Load<PackedScene>("res://Assets/Objects/UI/Building/InfirmaryInterface.tscn")},
+        {Building.Type.O2Generator, GD.Load<PackedScene>("res://Assets/Objects/UI/Building/O2GeneratorInterface.tscn")},
     };
 
     public static bool interfaceOpen = false;
@@ -53,6 +56,7 @@ public class BuildingInterface : Control
             interfaceOpen = false;
             PlayerState.SetState(PlayerState.prec_state);
         }
+        if (SpaceShip.inventoryOpen){SpaceShip.close_interface();}
     }
 
     /*-----*/

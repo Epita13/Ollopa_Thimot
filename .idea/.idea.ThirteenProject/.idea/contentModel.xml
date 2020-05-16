@@ -9,6 +9,9 @@
       <e p="Assets" t="Include">
         <e p="Objects" t="Include">
           <e p="Autres" t="Include">
+            <e p="Grass" t="Include">
+              <e p="Grass.cs" t="Include" />
+            </e>
             <e p="Loot.cs" t="Include" />
             <e p="Tree" t="Include">
               <e p="Tree.cs" t="Include" />
@@ -17,6 +20,15 @@
           <e p="Buildings" t="Include">
             <e p="Barrel" t="Include">
               <e p="Barrel.cs" t="Include" />
+            </e>
+            <e p="Compactor" t="Include">
+              <e p="Compactor.cs" t="Include" />
+            </e>
+            <e p="Infirmary" t="Include">
+              <e p="Infirmary.cs" t="Include" />
+            </e>
+            <e p="O2Generator" t="Include">
+              <e p="O2Generator.cs" t="Include" />
             </e>
             <e p="Printer3D" t="Include">
               <e p="Printer3D.cs" t="Include" />
@@ -46,7 +58,9 @@
           </e>
           <e p="UI" t="Include">
             <e p="Building" t="Include">
-              <e p="Other" t="Include" />
+              <e p="CompactorInterface.cs" t="Include" />
+              <e p="InfirmaryInterface.cs" t="Include" />
+              <e p="O2GeneratorInterface.cs" t="Include" />
               <e p="Printer3DInterface.cs" t="Include" />
               <e p="SolarPanelInterface.cs" t="Include" />
               <e p="SpaceShipInterface.cs" t="Include" />
@@ -56,7 +70,8 @@
               <e p="Graph.cs" t="Include" />
             </e>
             <e p="Menus" t="Include">
-              <e p="End.cs" t="Include" />
+              <e p="DeathMenu.cs" t="Include" />
+              <e p="EndMenu.cs" t="Include" />
             </e>
             <e p="Notification" t="Include">
               <e p="Notifications.cs" t="Include" />
@@ -70,6 +85,7 @@
                 <e p="EnergyBar.cs" t="Include" />
                 <e p="PowerBar.cs" t="Include" />
               </e>
+              <e p="OxygeneBar.cs" t="Include" />
             </e>
             <e p="TestsTemporaire" t="Include">
               <e p="ValuesPanel.cs" t="Include" />
@@ -107,6 +123,7 @@
             <e p="Block.cs" t="Include" />
             <e p="Building.cs" t="Include" />
             <e p="BuildingInterface.cs" t="Include" />
+            <e p="Cave.cs" t="Include" />
             <e p="Chunk.cs" t="Include" />
             <e p="Drop.cs" t="Include" />
             <e p="Item.cs" t="Include" />

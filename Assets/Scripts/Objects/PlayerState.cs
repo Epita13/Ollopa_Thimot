@@ -25,7 +25,7 @@ public static class PlayerState
         Dead,
         BuildingInterface,
         Link,
-        Finish
+        Finish,
     }
 
     /// Retourne l'etat du joueur 

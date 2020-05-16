@@ -27,7 +27,7 @@ public class Printer3DInterface : BuildingInterface
     private ProgressBar progressBar;
     private Label stateLabel;
 
-    public override void _Ready()
+    public override void _EnterTree()
     {
         printer3D = (Printer3D)building;
 
@@ -48,9 +48,8 @@ public class Printer3DInterface : BuildingInterface
         progressBar = GetNode<ProgressBar>("back/VBox/Progress");
         stateLabel = GetNode<Label>("back/VBox/HBox/State");
         
-        
-        _on_BuildingList_item_selected(0);
         InitBuildingSelector();
+        _on_BuildingList_item_selected(0);
         RefreshBtns();
 
     }

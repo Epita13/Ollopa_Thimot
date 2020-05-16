@@ -4,15 +4,14 @@ using System.Collections.Generic;
 
 public class Usable
 {
-    public static int nbUsables = 7;
+    public static int nbUsables = 6;
     public enum Type{
         Laser,
         Dirt,
         Grass,
         Stone,
-        BedRock,
-        WarningBlock,
         IronBlock,
+        WarningBlock,
     }
 
     public enum Category
@@ -27,7 +26,6 @@ public class Usable
         {(int)Type.Dirt, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Blocks/dirt.png")},
         {(int)Type.Grass, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Blocks/grass.png")},
         {(int)Type.Stone, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Blocks/stone.png")},
-        {(int)Type.BedRock, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Blocks/BedRock.png")},
         {(int)Type.WarningBlock, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Blocks/warning_block.png")},
         {(int)Type.IronBlock, GD.Load<Texture>("res://Assets/Ressources/Imgs/Usables/Blocks/iron_block.png")}
     };
@@ -37,9 +35,17 @@ public class Usable
         {Type.Dirt, Block.Type.Dirt},
         {Type.Grass, Block.Type.Grass},
         {Type.Stone, Block.Type.Stone},
-        {Type.BedRock, Block.Type.BedRock},
         {Type.WarningBlock, Block.Type.WarningBlock},
         {Type.IronBlock, Block.Type.IronBlock}
+    };
+    
+    public static Dictionary<Type, float> energyToCreat = new Dictionary<Type, float>
+    {
+        {Type.Dirt, 1},
+        {Type.Grass, 2},
+        {Type.Stone, 4},
+        {Type.WarningBlock, 10},
+        {Type.IronBlock, 10}
     };
 
     public static Dictionary<int, Category> category = new Dictionary<int, Category>
@@ -48,9 +54,17 @@ public class Usable
         {(int)Type.Dirt, Category.Block},
         {(int)Type.Grass, Category.Block},
         {(int)Type.Stone, Category.Block},
-        {(int)Type.BedRock, Category.Block},
         {(int)Type.WarningBlock, Category.Block},
         {(int)Type.IronBlock, Category.Block}
+    };
+    
+    public static Dictionary<Type, Drop> crafts = new Dictionary<Type, Drop>
+    {
+        {Type.Dirt, new Drop(new Drop.Loot(Item.Type.Dirt, 2))},
+        {Type.Grass, new Drop(new Drop.Loot(Item.Type.Dirt, 2))},
+        {Type.Stone, new Drop(new Drop.Loot(Item.Type.Stone, 2))},
+        {Type.IronBlock, new Drop(new Drop.Loot(Item.Type.Stone, 30))},
+        {Type.WarningBlock, new Drop(new Drop.Loot(Item.Type.Stone, 20))},
     };
 
 }

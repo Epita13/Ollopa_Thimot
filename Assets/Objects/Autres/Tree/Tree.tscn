@@ -3,29 +3,14 @@
 [ext_resource path="res://Assets/Ressources/Imgs/Environement/Tree/treebot.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Ressources/Imgs/Environement/Tree/treetop.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Objects/Autres/Tree/Tree.cs" type="Script" id=3]
+[ext_resource path="res://Assets/Ressources/Shaders/Tree.shader" type="Shader" id=4]
 
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-uniform float hair_vertical_offs;
-uniform float hair_horizontal_offs = - 60.0;
-
-void fragment() {
-    float t = TIME;
-    vec2 uv = UV;
-    float uv_x_deform = cos(uv.x);
-    vec2 offs_uv = 0.25*vec2(cos(t * 2.0 + uv.y * 10.0) + hair_horizontal_offs * ( uv.x) * ( uv.x) * 0.3, cos(t * 2.0 + uv.x * 20.0) + hair_vertical_offs * (1.2 - uv.x)) * 0.03 * (1.0 - uv.x);
-    
-    vec4 img = texture(TEXTURE, uv + vec2(offs_uv.x, offs_uv.y));
-    COLOR = img;
-    
-}"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 4 )
 shader_param/hair_vertical_offs = 0.0
 shader_param/hair_horizontal_offs = -60.0
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "BREAKING"
 length = 0.2
 step = 0.05
@@ -54,7 +39,7 @@ tracks/1/keys = {
 "values": [ 0.0, -1.0, 0.0, 1.0 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "DEATH"
 length = 2.0
 tracks/0/type = "value"
@@ -106,7 +91,7 @@ tracks/3/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "DEATH2"
 length = 2.0
 tracks/0/type = "value"
@@ -168,7 +153,7 @@ collision_mask = 0
 script = ExtResource( 3 )
 
 [node name="top" type="Sprite" parent="."]
-material = SubResource( 2 )
+material = SubResource( 1 )
 texture = ExtResource( 2 )
 offset = Vector2( -25, -256 )
 
@@ -181,7 +166,7 @@ position = Vector2( -25, -256 )
 polygon = PoolVector2Array( 1.99419, 255.529, 52.0574, 256.129, 49.0596, 244.287, 54.1559, 206.065, 21.2098, 45.8536, 41.7368, -0.219025, 82.0727, -39.9247, 135.644, -46.2271, 109.173, -119.336, 29.7621, -131.941, -84.9431, -126.269, -139.144, -51.2691, -74.2289, -32.9919, -13.0948, 86.125, 8.33362, 175.62 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/BREAKING = SubResource( 3 )
-anims/DEATH = SubResource( 4 )
-anims/DEATH2 = SubResource( 5 )
+anims/BREAKING = SubResource( 2 )
+anims/DEATH = SubResource( 3 )
+anims/DEATH2 = SubResource( 4 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

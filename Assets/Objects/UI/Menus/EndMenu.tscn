@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Objects/UI/Menus/EndMenu.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Ressources/Fonts/American Captain.otf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 80
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 60
+font_data = ExtResource( 2 )
+
+[node name="EndMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 800.0
+margin_top = 200.0
+margin_right = 1075.0
+margin_bottom = 280.0
+custom_fonts/font = SubResource( 1 )
+text = "YOU WIN !!!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+margin_left = 850.0
+margin_top = 500.0
+margin_right = 1050.0
+margin_bottom = 650.0
+custom_fonts/font = SubResource( 2 )
+text = "Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="button_down" from="Button" to="." method="_on_Button_button_down"]

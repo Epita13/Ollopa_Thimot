@@ -4,24 +4,44 @@ using System.Collections.Generic;
 
 public static class Player
 {
+    
 
-
+    /*Player sounds*/
+    public enum Sounds
+    {
+        PlayerDeath,
+    }
+    public static Dictionary<Sounds, AudioStream> sounds = new Dictionary<Sounds, AudioStream>
+    {
+        {Sounds.PlayerDeath, GD.Load<AudioStream>("res://Assets/Ressources/Sounds/Player/player_death.wav")}
+    };
+    
+    
+    
     public static float healthMax = 100.0f;
     public static float health = 100.0f;
 
     public static float oxygeneMax = 100.0f;
     public static float oxygene = 100.0f;
+    public static float oxygeneLoss = 0.7f;
+    public static float oxygeneDamage = 10.0f;
 
     public static float energyMax = 100.0f;
     public static float energy = 100.0f;
+    public static float energyLoss = 0.4f;
+    public static float energyDamage = 0.1f;
 
     // Ex : laser, blocks..
-    public static  StorageUsables inventoryUsables = new StorageUsables(1000000);
+    private static int inventoryUsablesSize = 100;
+    public static  StorageUsables inventoryUsables = new StorageUsables(inventoryUsablesSize);
     // Ex : bois, composite (matieres premieres)
-    public static StorageItems inventoryItems = new StorageItems(20000);
-    // Ex : eau, petrol (Liquide)
-    public static StorageLiquids inventoryLiquids = new StorageLiquids(30.0f);
-    public static StorageBuildings inventoryBuildings = new StorageBuildings(10);
+    private static int inventoryItemsSize = 20000;
+    public static StorageItems inventoryItems = new StorageItems(inventoryItemsSize);
+    // Ex : eau, petrole (Liquide)
+    private static float inventoryLiquidsSize = 30.0f;
+    public static StorageLiquids inventoryLiquids = new StorageLiquids(inventoryLiquidsSize);
+    private static int inventoryBuildingsSize = 1000000000;
+    public static StorageBuildings inventoryBuildings = new StorageBuildings(inventoryBuildingsSize);
 
 
     public static Usable.Type UsableSelected = Usable.Type.Laser;
@@ -95,5 +115,24 @@ public static class Player
     }
     public static void PrintHealth(){
         GD.Print("Le Joueur a " + health + "/" + healthMax + " de santé.");
+    }
+
+
+    public static void Revive()
+    {
+        if (health <= 0)
+        {
+            health = healthMax;
+            oxygene = oxygeneMax;
+            energy = energyMax;
+            inventoryUsables = new StorageUsables(inventoryUsablesSize);
+            inventoryItems = new StorageItems(inventoryItemsSize);
+            inventoryLiquids = new StorageLiquids(inventoryLiquidsSize);
+            inventoryBuildings = new StorageBuildings(inventoryBuildingsSize);
+            UsableSelected = Usable.Type.Laser;
+            BuildingSelected = Building.Type.SolarPanel;
+            PlayerMouvements.Teleport(PlayerMouvements.initialPosition.x, PlayerMouvements.initialPosition.y);
+            PlayerMouvements.canMove = true;
+        }
     }
 }

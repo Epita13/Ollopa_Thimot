@@ -29,13 +29,12 @@ public class ToolBar : Control
             if (Input.IsActionJustPressed("ui_toolbar_right"))
             {
                 Player.UsableSelected = (Usable.Type)(((int)Player.UsableSelected + 1) % Usable.nbUsables);
-                SendRefresh();
             }
             else if (Input.IsActionJustPressed("ui_toolbar_left"))
             {
                 Player.UsableSelected = (Usable.Type)(((int)Player.UsableSelected + 1) % Usable.nbUsables);
-                SendRefresh();
             }
+            SendRefresh();
         }
     }
 

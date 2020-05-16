@@ -18,13 +18,12 @@ scale = Vector2( 3, 3 )
 script = ExtResource( 1 )
 
 [node name="ZONE" type="Area2D" parent="."]
-position = Vector2( -47.9907, 42.6091 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ZONE"]
-position = Vector2( 80, -80 )
+position = Vector2( 32, -37.5 )
 shape = SubResource( 1 )
 __meta__ = {
 "_edit_group_": true

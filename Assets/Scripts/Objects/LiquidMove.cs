@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Thread = System.Threading.Thread;
 
 
-public class LiquidMove : Node2D
+public class LiquidMove 
 {
 	/*Pour utiliser l'eau, il suffit d'appeler la fonction DrawWaterLevel(), pour les niveaux, le niveau max est
 	 défini par capacity. Pour fonctionner correctement le TileSet associé doit contenir au minimum un sprite pour chaque
@@ -14,13 +14,13 @@ public class LiquidMove : Node2D
 	/*Petit bug que j'ai remarqué, le block contenant de l'eau ne se mets pas à jour donc si il est seul on peut mettre
 	 bloc dessus sans que ca le fasse disparaitre*/
 	
-	private List<Tuple<int,int>> listLiquid = new List<Tuple<int,int >>{};
+	public List<Tuple<int,int>> listLiquid = new List<Tuple<int,int >>{};
 	private List<Tuple<int,int>> ToRemove = new List<Tuple<int,int>>{};
 	private const int Capacity = Liquid.Capacity;
 	private static int width; 
 	private static int height;
 	private readonly Liquid.Type type;
-	private int[,] map;
+	public int[,] map;
 	private readonly Thread init;
 	private int i = 0;
 
@@ -36,6 +36,13 @@ public class LiquidMove : Node2D
 		height = Chunk.height;
 		width = World.size * Chunk.size - 1;
 		map = new int[width + 1,height];
+		for (int j = 0; j < map.GetLength(0); j++)
+		{
+			for (int k = 0; k < map.GetLength(1); k++)
+			{
+				map[j, k] = -1;
+			}
+		}
 	}
 
 	public void CloneWater(float viewportX, Vector2 origin)
@@ -87,7 +94,8 @@ public class LiquidMove : Node2D
 		
 		if (map[x, y] == -1)
 		{
-			Liquid.listMap[type].SetCell(x, height - y, 8);
+			if (Liquid.listMap.Count!=0)
+				Liquid.listMap[type].SetCell(x, height - y, 8);
 			map[x, y] = 8;
 			listLiquid.Add(new Tuple<int, int>(x,y));
 			res = true;
@@ -105,8 +113,8 @@ public class LiquidMove : Node2D
 		 for (int i = 0; i < lgr; i++)
 		 {
 			 Tuple<int, int> block = listLiquid[i];
-			 
 
+			 map[block.Item1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'C');
 			 if(block.Item1 > 0)
 				 map[block.Item1 - 1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'L');
 			 else
@@ -218,7 +226,7 @@ public class LiquidMove : Node2D
 		 for(int i = 0; i < lgr; i++)
 		 {
 			 Tuple<int, int> block = listLiquid[i];
-
+			 map[block.Item1, block.Item2] = UpdateBlock(block.Item1, block.Item2, 'C');
 			 if(block.Item2 > 0)
 				map[block.Item1, block.Item2 - 1] = UpdateBlock(block.Item1, block.Item2, 'D');
 			 
@@ -264,7 +272,7 @@ public class LiquidMove : Node2D
 	 {
 		 /*Dessine sur la Tilemap les niveaux d'eau correspondant à la matrice*/
 
-		 foreach (Tuple<int, int> block in ToRemove)
+			foreach (Tuple<int, int> block in ToRemove)
 		 {
 			 Liquid.listMap[type].SetCell(block.Item1, height - block.Item2, -1);
 			 listLiquid.Remove(block);

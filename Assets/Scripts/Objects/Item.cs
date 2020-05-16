@@ -22,5 +22,16 @@ public class Item
         {(int)Type.Dirt, GD.Load<Texture>("res://Assets/Ressources/Imgs/Items/Dirt.png")},
         {(int)Type.Sonar, GD.Load<Texture>("res://Assets/Ressources/Imgs/Items/Sonar.png")}
     };
+    
+    public static List<Type> item2heal = new List<Type>
+    {
+        Type.Sonar,
+        Type.Wood
+    };
 
+    public static Dictionary<Type, float> healingPower = new Dictionary<Type, float>
+    {
+        {Type.Sonar, 80f},
+        {Type.Wood, 25f}
+    };
 }

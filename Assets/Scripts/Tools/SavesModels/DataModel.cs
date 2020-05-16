@@ -45,6 +45,8 @@ public class WorldDataModel
     public List<Chunk> chunks { get; set; }
     public List<Tree.SaveStruct> trees { get; set; } 
     
+    public Dictionary<Liquid.Type, List<((int,int),int)>> liquids { get; set; }
+    
     
     public void GetValues()
     {
@@ -55,6 +57,18 @@ public class WorldDataModel
         {
             trees.Add(tree.GetSaveStruct());
         }
+        
+        liquids = new Dictionary<Liquid.Type, List<((int, int), int)>>();
+        foreach (var lq in Liquid.list)
+        {
+            List<((int, int), int)> liquid = new List<((int, int), int)>();
+            foreach (var coord in lq.Value.listLiquid)
+            {
+                liquid.Add(((coord.Item1, coord.Item2), Liquid.list[lq.Key].map[coord.Item1, coord.Item2]));
+            }
+            liquids.Add(lq.Key,liquid);
+        }
+        
     }
 
     public void SetValues()
@@ -74,6 +88,19 @@ public class WorldDataModel
             t.treeSize = saveTree.treeSize;
             t.Place((int)saveTree.location.x, (int)saveTree.location.y);
         }
+        
+        Liquid.Init();
+        foreach (var lq in Liquid.list)
+        {
+            int[,] map = new int[World.size * Chunk.size + 1, Chunk.height];
+            foreach (var values in liquids[lq.Key])
+            {
+                Liquid.list[lq.Key].listLiquid
+                    .Add(new Tuple<int, int>(values.Item1.Item1, values.Item1.Item2));
+                map[values.Item1.Item1, values.Item1.Item2] = values.Item2;
+            }
+            Liquid.list[lq.Key].map = map;
+        }
     }
 
     
@@ -88,12 +115,14 @@ public class WorldDataModel
 
 public class PlayerDataModel
 {
-    public static float healthMax;
-    public static float health;
-    public static float oxygeneMax;
-    public static float oxygene;
-    public static float energyMax;
-    public static float energy;
+    public float healthMax;
+    public float health;
+    public float oxygeneMax;
+    public float oxygene;
+    public float energyMax;
+    public float energy;
+
+    public Vector2 playerPosition;
     
     public Dictionary<Usable.Type, int> storageUsables;
     public Dictionary<Item.Type, int> storageItems;
@@ -109,6 +138,8 @@ public class PlayerDataModel
         oxygene = Player.oxygene;
         energyMax = Player.energyMax;
         energy = Player.energy;
+        
+        playerPosition = new Vector2(PlayerMouvements.GetX(), PlayerMouvements.GetY());
     
         storageUsables = Player.inventoryUsables.stokage;
         storageItems = Player.inventoryItems.stokage;
@@ -124,6 +155,8 @@ public class PlayerDataModel
         Player.oxygene = oxygene;
         Player.energyMax = energyMax;
         Player.energy = energy;
+
+        PlayerMouvements.initialPosition = playerPosition;
         
         Player.inventoryUsables.stokage = storageUsables;
         Player.inventoryItems.stokage = storageItems;

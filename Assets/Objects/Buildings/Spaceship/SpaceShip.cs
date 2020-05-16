@@ -6,6 +6,9 @@ public class SpaceShip : Node2D
     /*public const float ENERGYWIN = 1000.0f; 
     public const float FUELWIN = 500.0f;
     public const int COMPOSITEWIN = 2500;*/
+
+    private static PackedScene spaceShip = GD.Load<PackedScene>("res://Assets/Objects/Buildings/Spaceship/SpaceShip.tscn");
+    
     
     public const float ENERGYWIN = 0.0f; 
     public const float FUELWIN = 0.0f;
@@ -27,6 +30,7 @@ public class SpaceShip : Node2D
     
     public override void _EnterTree()
     {
+        canvas = Game.root.GetNode("CanvasLayer");
         instance = this;
         image = GetNode<Sprite>("Image");
         image.Visible = false;
@@ -34,9 +38,10 @@ public class SpaceShip : Node2D
         Generate(Convertion.World2Location(new Vector2(pos.x + 4, pos.y + 1)));
     }
 
-    public static void Init(Node canva)
+    public static void Init()
     {
-        canvas = canva;
+        SpaceShip sp = (SpaceShip)spaceShip.Instance();
+        Game.root.AddChild(sp);
     }
     
     public static void Generate(Vector2 pos)

@@ -1,0 +1,357 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Inventory/inventoryPanel.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Ressources/Fonts/F25_Bank_Printer.otf" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Infirmary/Infirmary.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Objects/UI/Graphics/Graph.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Inventory/inventoryPanel2.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Objects/UI/Sliders/Energy/EnergyBar.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Objects/UI/Sliders/Energy/PowerInBar.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Assets/Objects/UI/Sliders/Energy/PowerOutBar.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/Ressources/Imgs/Usables/Blocks/grass.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Ressources/Imgs/Usables/Blocks/stone.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Objects/UI/Building/InfirmaryInterface.cs" type="Script" id=12]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 25
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 24
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=6]
+font_data = ExtResource( 2 )
+
+[node name="InfirmaryInterface" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -600.0
+margin_top = -250.0
+margin_right = 600.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 900, 500 )
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="back" type="NinePatchRect" parent="."]
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 1.71475
+margin_right = 1.71472
+margin_bottom = 3.05176e-05
+texture = ExtResource( 1 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="Panel" parent="back"]
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.3
+anchor_bottom = 0.35
+margin_bottom = -1.52588e-05
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="back/Image"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -75.0
+margin_top = -75.0
+margin_right = 75.0
+margin_bottom = 75.0
+texture = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSplit" type="VBoxContainer" parent="back"]
+anchor_left = 0.35
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="back/VSplit"]
+margin_right = 330.0
+margin_bottom = 32.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "INFIRMARY"
+align = 1
+valign = 1
+
+[node name="BlocksList" type="ItemList" parent="back"]
+anchor_left = 0.05
+anchor_top = 0.4
+anchor_right = 0.3
+anchor_bottom = 0.95
+margin_left = 1.90735e-06
+margin_bottom = -3.05176e-05
+items = [ "Solarpanel", ExtResource( 11 ), false, "Storage", ExtResource( 10 ), false ]
+fixed_icon_size = Vector2( 64, 64 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BlockDescription" type="Control" parent="back"]
+anchor_left = 0.35
+anchor_top = 0.400584
+anchor_right = 0.95
+anchor_bottom = 0.95
+margin_left = 1.52588e-05
+margin_top = -0.292007
+margin_bottom = -0.292023
+rect_min_size = Vector2( 360, 225 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ImageBlock" type="Panel" parent="back/BlockDescription"]
+margin_right = 100.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="back/BlockDescription/ImageBlock"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -50.0
+margin_right = 50.0
+margin_bottom = 50.0
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Panel" parent="back/BlockDescription"]
+anchor_top = 0.38
+anchor_right = 1.0
+anchor_bottom = 0.98
+margin_top = 7.62939e-06
+margin_right = 360.0
+margin_bottom = 164.825
+rect_scale = Vector2( 0.5, 0.5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="back/BlockDescription/Description"]
+anchor_left = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="back/BlockDescription/Description/HBox"]
+margin_right = 322.0
+margin_bottom = 65.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 2 )
+text = "Stone"
+valign = 1
+
+[node name="Energy" type="Label" parent="back/BlockDescription/Description/HBox"]
+margin_left = 326.0
+margin_right = 648.0
+margin_bottom = 65.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 1, 1, 0, 1 )
+text = "-> 1.5e"
+align = 2
+valign = 1
+
+[node name="Description" type="Label" parent="back/BlockDescription/Description"]
+anchor_left = 0.02
+anchor_top = 0.2
+anchor_right = 0.98
+anchor_bottom = 0.55
+margin_left = 2.38419e-05
+margin_top = -5.72205e-05
+margin_right = -6.10352e-05
+margin_bottom = -6.10352e-05
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.45098, 0.45098, 0.45098, 1 )
+text = "Health : 50"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Items" type="HBoxContainer" parent="back/BlockDescription/Description"]
+anchor_top = 0.55
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.100021
+margin_bottom = -0.500031
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnHeal" type="Button" parent="back/BlockDescription"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -227.0
+margin_right = -1.0
+margin_bottom = 100.0
+custom_fonts/font = SubResource( 5 )
+disabled = true
+text = "HEAL"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="id" type="Label" parent="back"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -340.0
+margin_top = 12.65
+margin_right = -10.0
+margin_bottom = 28.65
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+text = "ID : 0"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="back2" type="NinePatchRect" parent="."]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 10.0
+margin_bottom = -10.0
+texture = ExtResource( 6 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Graph" parent="back2" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_right = 0.95
+anchor_bottom = 0.3
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = 6.0
+rect_min_size = Vector2( 250, 140 )
+
+[node name="Graph2" parent="back2" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_top = 0.3
+anchor_right = 0.95
+anchor_bottom = 0.6
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = 6.0
+rect_min_size = Vector2( 250, 140 )
+
+[node name="Graph3" parent="back2" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_top = 0.6
+anchor_right = 0.95
+anchor_bottom = 0.9
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = 6.0
+rect_min_size = Vector2( 250, 140 )
+
+[node name="HSlider" type="HSlider" parent="back2"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = -55.0
+margin_right = -10.0
+margin_bottom = 4.0
+min_value = 0.02
+max_value = 1.0
+step = 0.01
+value = 0.2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnergyBar" parent="back2" instance=ExtResource( 7 )]
+margin_left = 77.4369
+margin_top = 31.9671
+margin_right = -132.563
+margin_bottom = 10.9671
+rect_scale = Vector2( 0.4, 0.4 )
+
+[node name="PowerInBar" parent="back2" instance=ExtResource( 8 )]
+margin_left = 171.194
+margin_top = 266.426
+margin_right = -188.806
+margin_bottom = 134.426
+rect_scale = Vector2( 0.5, 0.5 )
+
+[node name="PowerOutBar" parent="back2" instance=ExtResource( 9 )]
+margin_left = 31.1361
+margin_top = 268.441
+margin_right = -328.864
+margin_bottom = 136.441
+rect_scale = Vector2( 0.5, 0.5 )
+
+[node name="TimerEnergy" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+[connection signal="ChangeEnergyBar" from="." to="back2/EnergyBar" method="Change"]
+[connection signal="ChangePowerInBar" from="." to="back2/PowerInBar" method="Change"]
+[connection signal="ChangePowerOutBar" from="." to="back2/PowerOutBar" method="Change"]
+[connection signal="item_selected" from="back/BlocksList" to="." method="_on_BlocksList_item_selected"]
+[connection signal="button_down" from="back/BlockDescription/BtnHeal" to="." method="_on_BtnHeal_button_down"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph" method="_on_HSlider_value_changed"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph2" method="_on_HSlider_value_changed"]
+[connection signal="timeout" from="TimerEnergy" to="." method="_on_TimerEnergy_timeout"]

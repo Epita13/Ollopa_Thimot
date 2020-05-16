@@ -6,8 +6,10 @@ public class Raygun : Node2D
 {
 
 
-    public const float POWER = 10f;
-    public const float RADIUS = 200;
+    public const float POWER = 80f;
+    public const float RADIUS = 250;
+
+    private float delta;
     
     [Signal]
     public delegate void hit(Vector2 xy,Vector2 az);
@@ -16,13 +18,16 @@ public class Raygun : Node2D
     public delegate void shooting(Vector2 xy, Vector2 az);
 
     private RayCast2D raycast;
-    private AnimatedSprite anSprite;
+    
+    private Sprite anSprite;
+    private Line2D ray;
 	
 
     public override void _Ready()
     {
-        anSprite = GetNode<AnimatedSprite>("Sprite_Raygun");
+        anSprite = GetNode<Sprite>("Sprite_Raygun");
         raycast = anSprite.GetNode<RayCast2D>("shoot_ray");
+        ray = GetNode<Line2D>("Ray");
         raycast.CastTo = new Vector2(RADIUS,raycast.CastTo.y);
     }
 	
@@ -47,10 +52,6 @@ public class Raygun : Node2D
             }
             
             
-        }
-        else
-        {
-            //GD.Print("shoot");
         }
     }
 
@@ -80,23 +81,36 @@ public class Raygun : Node2D
 
         Block block_hit = World.GetBlock((int) block_posF.x, (int) block_posF.y);
         if (block_hit.GetType != Block.Type.Air)
-            block_hit.Damage(POWER);
+            block_hit.Damage(POWER*delta);
     }
 
     private void TreeCollosion()
     {
         Tree t = (Tree)raycast.GetCollider();
-        t.Damage(POWER);
+        t.Damage(POWER*delta);
     }
 
 
     public override void _Process(float delta)
     {
+        this.delta = delta;
         if (PlayerState.GetState() != PlayerState.State.Normal || Player.UsableSelected != Usable.Type.Laser)
+        {
+            ray.Visible = false;
+            anSprite.Visible = false;
             return;
-        
+        }
+        ray.Visible = true;
+        anSprite.Visible = true;
         LookAt(GetGlobalMousePosition());
-
+        if (GlobalRotation < -Mathf.Pi / 2 || GlobalRotation > Mathf.Pi / 2)
+        {
+            anSprite.FlipV = true;
+        }
+        else
+        {
+            anSprite.FlipV = false;
+        }
         if (Input.IsActionPressed("mouse1"))
         {
             shoot();

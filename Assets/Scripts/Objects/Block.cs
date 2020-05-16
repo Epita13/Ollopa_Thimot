@@ -13,9 +13,8 @@ public class Block
         WestStone = 3,
         SonarOre = 4,
         OspiritOre = 5,
-        BedRock = 6,
+        IronBlock = 6,
         WarningBlock = 7,
-        IronBlock = 8,
     }
     
     public static Dictionary<Type, Drop> drops = new Dictionary<Type, Drop>
@@ -27,13 +26,12 @@ public class Block
         {Type.WestStone, null},
         {Type.SonarOre, new Drop(new Drop.Loot(Item.Type.Sonar, 1))},
         {Type.OspiritOre, new Drop(new Drop.Loot(Item.Type.Composite, 1))},
-        {Type.BedRock, new Drop(new Drop.Loot(Item.Type.Composite, 1))},
         {Type.WarningBlock, new Drop(new Drop.Loot(Item.Type.Composite, 1)) },
         {Type.IronBlock, new Drop(new Drop.Loot(Item.Type.Composite, 1))},
     };
+    
     public static Dictionary<Type, float> durabilities = new Dictionary<Type, float>
     {
-    
         {Type.Air, -1.0f},
         {Type.Stone, 100.0f},
         {Type.Grass, 40.0f},
@@ -41,9 +39,8 @@ public class Block
         {Type.WestStone, -1.0f},
         {Type.SonarOre, 200.0f},
         {Type.OspiritOre, 300.0f},
-        {Type.BedRock, 10f},
-        {Type.WarningBlock, 150f},
-        {Type.IronBlock, 300f},
+        {Type.WarningBlock, 250f},
+        {Type.IronBlock, 350f},
     };
 
     public static float healStrength = 10.0f;

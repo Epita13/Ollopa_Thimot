@@ -30,6 +30,8 @@ public static class PlaceBlock
 
     public static bool Place(int x, int y, Block.Type type)
     {
+        int displayX = x;
+        int displayY = y;
         if (x < 0)
             x = World.size * Chunk.size + x;
         else if (x >= World.size * Chunk.size)
@@ -37,8 +39,7 @@ public static class PlaceBlock
         bool res;
         if (CanPlace(x, y, out res))
         {
-            Save._Save("saveThimot2");
-            World.GetChunk(x).AddBlock(Chunk.GetLocaleX(x), y, type);
+            World.GetChunk(x).AddBlock(Chunk.GetLocaleX(x), y, displayX, displayY, type);
             Delay.StartDelay(World.BlockTilemap, 0.3f,
                 () =>
                 {

@@ -12,28 +12,27 @@
 [ext_resource path="res://Assets/Ressources/Imgs/Buildings/SolarPanel/SolarPanel.png" type="Texture" id=10]
 [ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/Stockage.png" type="Texture" id=13]
 
-
 [sub_resource type="DynamicFont" id=1]
 size = 32
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 size = 32
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=3]
 size = 25
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=4]
 size = 22
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=5]
 size = 24
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=6]
 font_data = ExtResource( 2 )
 
 [node name="Printer3DInterface" type="Control"]
@@ -184,7 +183,7 @@ margin_right = 322.0
 margin_bottom = 65.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "SolarPanel"
 valign = 1
 
@@ -199,7 +198,7 @@ margin_right = 322.0
 margin_bottom = 26.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0.741176, 1, 1 )
 text = "20.5s"
 align = 2
@@ -211,7 +210,7 @@ margin_right = 322.0
 margin_bottom = 56.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 0, 1 )
 text = "-> 25.0e"
 align = 2
@@ -226,7 +225,7 @@ margin_left = 2.38419e-05
 margin_top = -5.72205e-05
 margin_right = -6.10352e-05
 margin_bottom = -6.10352e-05
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0.45098, 0.45098, 0.45098, 1 )
 text = "Blabla bla blablabla b bla bla.gfgs"
 align = 1
@@ -254,7 +253,7 @@ anchor_right = 1.0
 margin_left = -227.0
 margin_right = -1.0
 margin_bottom = 100.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 5 )
 disabled = true
 text = "PRINT"
 __meta__ = {
@@ -269,7 +268,7 @@ margin_top = 10.0
 margin_right = -10.0
 margin_bottom = 26.0
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 6 )
 text = "ID : 0"
 align = 2
 valign = 1
@@ -429,7 +428,7 @@ autostart = true
 [connection signal="button_down" from="back/VBox/HBox/BtnPause" to="." method="_on_BtnPause_button_down"]
 [connection signal="button_down" from="back/VBox/HBox/BtnCancel" to="." method="_on_BtnCancel_button_down"]
 [connection signal="button_down" from="back/VBox/HBox/BtnClaim" to="." method="_on_BtnClaim_button_down"]
-[connection signal="value_changed" from="back2/HSlider" to="back2/Graph2" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph2" method="_on_HSlider_value_changed"]
 [connection signal="timeout" from="TimerEnergy" to="." method="_on_TimerEnergy_timeout"]

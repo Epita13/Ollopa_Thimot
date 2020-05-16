@@ -10,6 +10,7 @@
 [ext_resource path="res://Assets/Objects/UI/Sliders/Energy/PowerInBar.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Objects/UI/Sliders/Energy/PowerOutBar.tscn" type="PackedScene" id=9]
 
+
 [sub_resource type="DynamicFont" id=1]
 size = 32
 font_data = ExtResource( 2 )
@@ -75,7 +76,6 @@ anchor_left = 0.35
 anchor_top = 0.1
 anchor_right = 0.9
 anchor_bottom = 0.3
-margin_top = -3.8147e-06
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -209,6 +209,6 @@ autostart = true
 [connection signal="ChangePowerOutBar" from="." to="back2/PowerOutBar" method="Change"]
 [connection signal="button_down" from="back/LinkBtn" to="." method="_on_LinkBtn_button_down"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph" method="_on_HSlider_value_changed"]
-[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph2" method="_on_HSlider_value_changed"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
 [connection signal="timeout" from="TimerEnergy" to="." method="_on_TimerEnergy_timeout"]

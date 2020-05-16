@@ -1,0 +1,88 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Menus/Skull.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Objects/UI/Menus/DeathMenu.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Ressources/Fonts/American Captain.otf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 80
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 40
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 32
+font_data = ExtResource( 3 )
+
+[node name="DeathMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DeathLogo" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -500.0
+margin_right = 250.0
+margin_bottom = -5.0
+texture = ExtResource( 1 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="c" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -300.0
+margin_right = 300.0
+margin_bottom = 300.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="c"]
+anchor_right = 1.0
+anchor_bottom = 0.3
+margin_bottom = 7.62939e-06
+custom_fonts/font = SubResource( 1 )
+text = "DEAD"
+align = 1
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnRevive" type="Button" parent="c"]
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 0.7
+margin_top = 7.62939e-06
+margin_bottom = 1.52588e-05
+custom_fonts/font = SubResource( 2 )
+text = "RESPAWN"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnQuit" type="Button" parent="c"]
+anchor_top = 0.725
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.52588e-05
+custom_fonts/font = SubResource( 3 )
+text = "Save and Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="button_down" from="c/BtnRevive" to="." method="_on_BtnRevive_button_down"]

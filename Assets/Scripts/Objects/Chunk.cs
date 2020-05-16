@@ -36,8 +36,8 @@ public class Chunk
     public const int chunkMax = 100;
     public const int chunkMin = 0;
     public const int height = (chunkMax-chunkMin)+1;
-    public const int seaLevel = chunkMin + 20;
-    public const int minYGeneration = seaLevel - 5;
+    public const int seaLevel = chunkMin + 30;
+    public const int minYGeneration = seaLevel - 12;
     public const int maxYGeneration = seaLevel + 20;
 
     /*Trees*/
@@ -93,20 +93,29 @@ public class Chunk
         for (int x = 0; x < size; x++)
         {
             float r = (float)World.random.NextDouble();
+            
+            
+            int yy = GetGroundY(x);
+            
+            Grass.Spawn(x+id*size, yy);
+            
             if (r <= TREE_FREQUENCY)
             {
                 int y = GetGroundY(x);
-                Tree.SpawnTree(new Vector2(x+id*size,y));
+                if (y > seaLevel)
+                {
+                    Tree.SpawnTree(new Vector2(x + id * size, y));
+                }
             }
         }
     }
 
-    private int GetGroundY(int x)
+    public int GetGroundY(int x)
     {
-        int y = 0;
-        while (y < height && blocks[x][y].GetType!=Block.Type.Air)
-            y++;
-        return y;
+        int y = maxYGeneration + 1;
+        while (y >= minYGeneration && blocks[x][y].GetType==Block.Type.Air)
+            y--;
+        return y+1;
     }
     
     private int GetMaximumY(int x, OpenSimplexNoise noise)
@@ -135,25 +144,39 @@ public class Chunk
         {
             foreach (var block in colon)
             {
-                DrawBlockClone(block, x);
-                DrawBlockBackClone(block, x);
+                DrawBlock(block, x);
+                DrawBlockBack(block, x);
             }
         }
-        World.visibleChunks.Add(this);
+        World.visibleChunks.Add((id,x));
     }
 
     /// Cache le chunk du tilemap de la scene
     public void Hide()
     {
-        foreach (var colon in blocks)
+        int index = -1;
+        int i = 0;
+        while (i < World.visibleChunks.Count && index==-1)
         {
-            foreach (var block in colon)
+            if (World.visibleChunks[i].Item1 == id)
             {
-                HideBlock(block);
-                HideBlockBack(block);
+                index = i;
+            }
+            i++;
+        }
+
+        int chunkX = World.visibleChunks[index].Item2;
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                HideBlock(chunkX+x,y);
+                HideBlockBack(chunkX+x,y);
             }
         }
-        World.visibleChunks.Remove(this);
+        
+        if (index!=-1)
+            World.visibleChunks.RemoveAt(index);
     }
 
     /// Verifie si les coordonées sont correct
@@ -170,6 +193,9 @@ public class Chunk
         return blocks[x][y];
     }
 
+    
+    
+    
     /// Ajoute un block au Chunk (coordonées locales)
     public void AddBlock(int x, int y, Block.Type type)
     {
@@ -178,43 +204,88 @@ public class Chunk
         blocks[x][y].SetType(type);
         DrawBlock(blocks[x][y]);
     }
+    
+    /// Ajoute un block au Chunk (coordonées locales)
+    public void AddBlock(int x, int y, int displayX, int displayY, Block.Type type)
+    {
+        if (!IsInChunk(x,y))
+            throw new OutOfBoundsException2D("AddBlock", x, 0, size-1, y, chunkMin, chunkMax);
+        blocks[x][y].SetType(type);
+        DrawBlock(blocks[x][y], displayX, displayY);
+    }
 
+    
+    
+    
+    
     /// Enleve un block au Chunk (coordonées locales)
     public void RemoveBlock(int x, int y)
     {
         if (!IsInChunk(x,y))
             throw new OutOfBoundsException2D("RemoveBlock", x, 0, size-1, y, chunkMin, chunkMax);
-        HideBlock(blocks[x][y]);
+        HideBlock3(blocks[x][y]);
         blocks[x][y].SetType(Block.Type.Air);
     }
 
+    
+    
+    
+    
     /// Affiche un block au Chunk
     public void DrawBlock(Block b)
     {
         World.IsInitWorldTest("DrawBlock");
         World.BlockTilemap.SetCell(b.x, -b.y+height, Block.GetIDTile(b.GetType));
     }
+    /// Affiche un block au Chunk
+    public void DrawBlock(Block b, int x, int y)
+    {
+        World.IsInitWorldTest("DrawBlock");
+        World.BlockTilemap.SetCell(x, -y+height, Block.GetIDTile(b.GetType));
+    }
+    
+    
+    
+    
     
     /// Affiche un block au Chunk a une position specifique
-    public void DrawBlockClone(Block b, int x)
+    public void DrawBlock(Block b, int x)
     {
         World.IsInitWorldTest("DrawBlock");
         World.BlockTilemap.SetCell(b.x-(id*size)+x, -b.y+height, Block.GetIDTile(b.GetType));
     }
 
+    
+    
+    
+    
     /// Cache un block au Chunk
     public void HideBlock(Block b)
     {
         World.IsInitWorldTest("HideBlock");
         World.BlockTilemap.SetCell(b.x, -b.y+height, Block.GetIDTile(Block.Type.Air));
     }
+    public void HideBlock(int displayX, int displayY)
+    {
+        World.IsInitWorldTest("HideBlock");
+        World.BlockTilemap.SetCell(displayX, -displayY+height, Block.GetIDTile(Block.Type.Air));
+    }
+    public void HideBlock3(Block b)
+    {
+        World.IsInitWorldTest("HideBlock");
+        World.BlockTilemap.SetCell(b.x, -b.y+height, Block.GetIDTile(Block.Type.Air));
+        World.BlockTilemap.SetCell(b.x+World.size*size, -b.y+height, Block.GetIDTile(Block.Type.Air));
+        World.BlockTilemap.SetCell(b.x-World.size*size, -b.y+height, Block.GetIDTile(Block.Type.Air));
+    }
+
+
 
     public void DrawBlockBack(Block b)
     {
         if (b.isAutoGenerated)
             World.BackBlockTilemap.SetCell(b.x, -b.y+height, 0);
     }
-    public void DrawBlockBackClone(Block b, int x)
+    public void DrawBlockBack(Block b, int x)
     {
         if (b.isAutoGenerated)
             World.BackBlockTilemap.SetCell(b.x-(id*size)+x, -b.y+height, 0);
@@ -223,6 +294,10 @@ public class Chunk
     public void HideBlockBack(Block b)
     {
         World.BackBlockTilemap.SetCell(b.x, -b.y+height, -1);
+    }
+    public void HideBlockBack(int displayX, int displayY)
+    {
+        World.BackBlockTilemap.SetCell(displayX, -displayY+height, -1);
     }
 
     /// Renvoie la position x local a partir de la position x globale (=> modulo la taille d'un chunk)
