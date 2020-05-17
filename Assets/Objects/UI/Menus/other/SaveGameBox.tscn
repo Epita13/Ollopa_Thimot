@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Ressources/Fonts/F25_Bank_Printer.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Objects/UI/Menus/other/SaveGameBox.cs" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 18
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 14
+font_data = ExtResource( 1 )
+
+[node name="SaveGame" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1000.0
+margin_bottom = -930.0
+rect_min_size = Vector2( 250, 75 )
+size_flags_horizontal = 3
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="screen" type="TextureRect" parent="."]
+anchor_left = 0.08
+anchor_top = 0.101
+anchor_right = 0.32
+anchor_bottom = 0.901
+margin_left = -0.177013
+margin_top = -0.0172186
+margin_right = -0.177017
+margin_bottom = -0.0172272
+texture = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="."]
+anchor_left = 0.667
+anchor_top = 0.3
+anchor_right = 0.667
+anchor_bottom = 0.3
+margin_left = -154.5
+margin_top = -23.0
+margin_right = 154.5
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 1 )
+text = "WeshSave 1 "
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="."]
+anchor_left = 0.683
+anchor_top = 0.693
+anchor_right = 0.683
+anchor_bottom = 0.693
+margin_left = -146.5
+margin_top = -29.95
+margin_right = 146.5
+margin_bottom = 30.05
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.0352941, 0.65098, 0.831373, 1 )
+text = "Time played : /"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 3.05176e-05
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="mouse_entered" from="Area" to="." method="_on_Area_mouse_entered"]
+[connection signal="mouse_exited" from="Area" to="." method="_on_Area_mouse_exited"]

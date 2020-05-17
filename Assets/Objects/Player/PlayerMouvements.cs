@@ -14,11 +14,14 @@ public class PlayerMouvements : KinematicBody2D
     public static Vector2 size = new Vector2(1.5f,2.5f);
 
     public static float GRAVITY = 900;
-    public static float YLIMITESPEED = 400.0f;
+    public static float YLIMITESPEED = 500.0f;
     public static float SPEED = 125;
     public static float JUMP_POWER = -16000;
     public static bool canMove = true;
 
+    public static float FALLSPEEDDAMAGE1 = 400.0f; 
+    public static float FALLSPEEDDAMAGE2 = 675.0f; 
+    
     public static float LiquidCoefMove = 1.0f; 
 
     public static Vector2 initialPosition = new Vector2(10,46f);
@@ -132,25 +135,21 @@ public class PlayerMouvements : KinematicBody2D
 				bond.Play("Turn_Back");
 		}
     }
-
     private void JUMP(float delta)
     {
 		AnimationPlayer bond = GetNode<AnimationPlayer>("AnimationPlayer");
 		Sprite image = GetNode<Sprite>("Image");
 		
-		if (IsOnFloor())
+		if (on_ground)
 		{
-			on_ground = true;
 			vel.y = 0;
 		}
-		else
-		{
-			on_ground = false;
-		}
+
 
 		if (LiquidCoefMove != 1.0f && Input.IsActionPressed("ui_up"))
 		{
-			vel.y += JUMP_POWER * 0.2f * LiquidCoefMove * delta;
+			vel.y += JUMP_POWER * 0.1f * LiquidCoefMove * delta;
+			vel.y = vel.y < -YLIMITESPEED ? -YLIMITESPEED : vel.y;
 		}
 		else if (on_ground && Input.IsActionPressed("ui_up") && LiquidCoefMove==1.0f)
 		{
@@ -169,7 +168,13 @@ public class PlayerMouvements : KinematicBody2D
         AnimationPlayer bond = GetNode<AnimationPlayer>("AnimationPlayer");
 		Sprite image = GetNode<Sprite>("Image");
 
-		if (IsInWater())
+		bool isOnWater = IsInWater();
+
+		if (isOnWater && LiquidCoefMove == 1.0f && Mathf.Abs(vel.y) > 80)
+		{
+			vel.y *= Liquid.density[Liquid.Type.Water];
+		}
+		if (isOnWater)
 		{
 			LiquidCoefMove = Liquid.density[Liquid.Type.Water];
 		}
@@ -186,6 +191,21 @@ public class PlayerMouvements : KinematicBody2D
 			canMove = false;
 			PlaySound(Player.Sounds.PlayerDeath);
 			PlayerState.SetState(PlayerState.State.Dead);
+			vel = new Vector2();
+		}
+		
+		if (!on_ground && IsOnFloor())
+		{
+			on_ground = true;
+			if (vel.y >= FALLSPEEDDAMAGE1 && LiquidCoefMove==1.0f)
+			{
+				float a = (100.0f - 5.0f) / (FALLSPEEDDAMAGE2 - FALLSPEEDDAMAGE1);
+				float b = 5 - FALLSPEEDDAMAGE1 * a;
+				Player.RemoveHealth(a * vel.y + b);
+			}
+		}else if (!IsOnFloor())
+		{
+			on_ground = false;
 		}
 		
 		if(canMove && (PlayerState.GetState()==PlayerState.State.Normal || PlayerState.GetState()==PlayerState.State.Build || PlayerState.GetState()==PlayerState.State.Link))
@@ -201,10 +221,9 @@ public class PlayerMouvements : KinematicBody2D
 				}
 			}
 		}
-		
+
 		vel.y += GRAVITY * LiquidCoefMove * delta;
-		vel.y = vel.y < -YLIMITESPEED ? -YLIMITESPEED : vel.y; 
-		vel.y = vel.y > YLIMITESPEED ? YLIMITESPEED : vel.y; 
+
 		
 		MoveAndSlide(vel,UP);
     }

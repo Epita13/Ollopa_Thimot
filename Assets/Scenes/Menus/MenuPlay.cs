@@ -3,38 +3,46 @@ using System;
 
 public class MenuPlay : Node2D
 {
+    private Label labelBtn;
 
-    private SpinBox spb;
-    private CheckBox ckb;
-
-    private ItemList saves;
     public override void _Ready()
     {
-        spb = GetNode<SpinBox>("CanvasLayer/SpinBox");
-        ckb = GetNode<CheckBox>("CanvasLayer/CheckBox");
-        saves = GetNode<ItemList>("CanvasLayer/saves");
+        labelBtn = GetNode<Label>("CanvasLayer/labelBtn");
+        labelBtn.Text = "";
 
-        foreach (var s in Save.GetSaves())
-        {
-            saves.AddItem(s);
-        }
+        GetNode("CanvasLayer/BtnNewGame").Connect("mouse_click", this, "_on_BtnNewGame_mouse_click");
+        GetNode("CanvasLayer/BtnLoadGame").Connect("mouse_click", this, "_on_BtnLoadGame_mouse_click");
+    }
+    
+    
+
+    public void _on_BtnSettings_mouse_entered()
+    {
+        labelBtn.Text = "Settings (unavailable)";
     }
 
-    public void Play()
+    public void _on_BtnLoadGame_mouse_entered()
     {
-        if (ckb.Pressed)
-        {
-            World.SetSeed((int)spb.Value);
-        }
-        GetTree().ChangeScene("res://Assets/Scenes/Jeux/Game.tscn");
+        labelBtn.Text = "Continue";
     }
 
-
-    public void _on_saves_item_activated(int id)
+    public void _on_BtnNewGame_mouse_entered()
     {
-        string saveName = saves.GetItemText(id);
-        Game.load = true;
-        Game.saveName = saveName;
-        GetTree().ChangeScene("res://Assets/Scenes/Jeux/Game.tscn");
+        labelBtn.Text = "New game";
+    }
+
+    public void _on_Btn_mouse_exited()
+    {
+        labelBtn.Text = "";
+    }
+
+    public void _on_BtnNewGame_mouse_click()
+    {
+        GetTree().ChangeScene("res://Assets/Scenes/Menus/MenuNewGame.tscn");
+    }
+
+    public void _on_BtnLoadGame_mouse_click()
+    {
+        GetTree().ChangeScene("res://Assets/Scenes/Menus/MenuLoadGame.tscn");
     }
 }

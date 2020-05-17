@@ -45,7 +45,11 @@ public static class World
     public static TileMap UI2BlockTilemap;
     /*********/
 
+    public static Vector2 spawn;
+
     public static Random random;
+
+    public static string saveName = "default";
 
     // SimplexNoise
     public static OpenSimplexNoise noise = new OpenSimplexNoise();
@@ -78,7 +82,10 @@ public static class World
     {
         World.seed = seed;
     }
-
+    public static void SetSaveName(string name)
+    {
+        World.saveName = name;
+    }
     /// Initialise le monde et le calcule.
     public static void Init(TileMap BlockTilemap, TileMap UIBlockTilemap, TileMap UI2BlockTilemap, TileMap BackBlockTilemap, bool generate = true)
     {
@@ -130,6 +137,7 @@ public static class World
         SeasGenerate();
         CaveGenerate();
         OreGenerate();
+        GrassGenerate();
     }
 
     /// Affiche tous les Chunks de la map
@@ -251,6 +259,19 @@ public static class World
                     if (t == Block.Type.Stone)
                         c.AddBlock(xChunk, yWorld, Block.Type.Air);
                 }
+            }
+        }
+    }
+
+    public static void GrassGenerate()
+    {
+        for (int x = 0; x < World.size * Chunk.size; x++)
+        {
+            Chunk c = GetChunk(x);
+            int yground = c.GetGroundY(Chunk.GetLocaleX(x));
+            if (World.GetBlock(x, yground - 1).GetType == Block.Type.Grass)
+            {
+                Grass.Spawn(x,yground);
             }
         }
     }

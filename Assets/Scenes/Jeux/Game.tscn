@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Assets/Scenes/Jeux/Game.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Objects/Player/Player.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://Assets/Objects/UI/PlayerInventory/PlayerInventory2.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Assets/Scenes/Liquid/Liquid.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Assets/Objects/UI/TestsTemporaire/ValuesPanel.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Assets/Objects/UI/other/PlayerVariables.tscn" type="PackedScene" id=15]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 8 )
@@ -86,6 +87,8 @@ rect_scale = Vector2( 0.5, 0.5 )
 visible = false
 
 [node name="ValuesPanel" parent="CanvasLayer" instance=ExtResource( 14 )]
+
+[node name="PlayerVariables" parent="CanvasLayer" instance=ExtResource( 15 )]
 
 [node name="Liquid" parent="." instance=ExtResource( 13 )]
 position = Vector2( 0, 0 )

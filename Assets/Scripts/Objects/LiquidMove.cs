@@ -414,18 +414,18 @@ public class LiquidMove
 			 case'L':
 				 if (x > 0)
 				 {
-					 if (Block.GetIDTile(World.GetBlock(x - 1, y).GetType) == -1 && map[x - 1, y] == 0)
+					 if (World.GetBlock(x - 1, y).GetType == Block.Type.Air && map[x - 1, y] == 0)
 						 res = -1;
-					 else if (Block.GetIDTile(World.GetBlock(x - 1, y).GetType) != -1)
+					 else if (World.GetBlock(x - 1, y).GetType != Block.Type.Air)
 						 res = 0;
 					 else
 						 res = map[x - 1, y];
 				 }
 				 else
 				 {
-					 if (Block.GetIDTile(World.GetBlock(width, y).GetType) == -1 && map[width, y] == 0)
+					 if (World.GetBlock(width, y).GetType == Block.Type.Air && map[width, y] == 0)
 						 res = -1;
-					 else if (Block.GetIDTile(World.GetBlock(width, y).GetType) != -1)
+					 else if (World.GetBlock(width, y).GetType != Block.Type.Air)
 						 res = 0;
 					 else
 						 res = map[width, y];
@@ -434,18 +434,18 @@ public class LiquidMove
 			 case'R':
 				 if (x < width)
 				 {
-					 if (Block.GetIDTile(World.GetBlock(x + 1, y).GetType) == -1 && map[x + 1, y] == 0)
+					 if (World.GetBlock(x + 1, y).GetType == Block.Type.Air && map[x + 1, y] == 0)
 						 res = -1;
-					 else if (Block.GetIDTile(World.GetBlock(x + 1, y).GetType) != -1)
+					 else if (World.GetBlock(x + 1, y).GetType != Block.Type.Air)
 						 res = 0;
 					 else
 						 res = map[x + 1, y];
 				 }
 				 else
 				 {
-					 if (Block.GetIDTile(World.GetBlock(0, y).GetType) == -1 && map[0, y] == 0)
+					 if (World.GetBlock(0, y).GetType == Block.Type.Air && map[0, y] == 0)
 						 res = -1;
-					 else if (Block.GetIDTile(World.GetBlock(0, y).GetType) != -1)
+					 else if (World.GetBlock(0, y).GetType != Block.Type.Air)
 						 res = 0;
 					 else
 						 res = map[0, y];
@@ -454,9 +454,9 @@ public class LiquidMove
 			 case 'D':
 				 if (y > 0)
 				 {
-					 if (Block.GetIDTile(World.GetBlock(x, y - 1).GetType) == -1 && map[x, y - 1] == 0)
+					 if (World.GetBlock(x, y - 1).GetType == Block.Type.Air && map[x, y - 1] == 0)
 						 res = -1;
-					 else if (Block.GetIDTile(World.GetBlock(x, y - 1).GetType) != -1)
+					 else if (World.GetBlock(x, y - 1).GetType != Block.Type.Air)
 						 res = 0;
 					 else
 						 res = map[x, y - 1];
@@ -465,18 +465,18 @@ public class LiquidMove
 			 case 'U':
 				 if (y < height)
 				 {
-					 if (Block.GetIDTile(World.GetBlock(x, y + 1).GetType) == -1 && map[x, y + 1] == 0)
+					 if (World.GetBlock(x, y + 1).GetType == Block.Type.Air && map[x, y + 1] == 0)
 						 res = -1;
-					 else if (Block.GetIDTile(World.GetBlock(x, y + 1).GetType) != -1)
+					 else if (World.GetBlock(x, y + 1).GetType != Block.Type.Air)
 						 res = 0;
 					 else
 						 res = map[x, y + 1];
 				 }
 				 break;
 			 case 'C':
-				 if (Block.GetIDTile(World.GetBlock(x, y).GetType) == -1 && map[x, y] == 0)
+				 if (World.GetBlock(x, y).GetType == Block.Type.Air && map[x, y] == 0)
 						 res = -1;
-				 else if (Block.GetIDTile(World.GetBlock(x, y).GetType) != -1)
+				 else if (World.GetBlock(x, y).GetType != Block.Type.Air)
 					 res = 0;
 				 else
 					 res = map[x, y];

@@ -21,7 +21,7 @@ public class Liquid : Node2D
     public const int Capacity = 8;
     public enum Type 
     { Water, Oil, Fuel }
-    public static Dictionary<Type, float> density = new Dictionary<Type, float>{{Type.Water, 0.5f}, {Type.Oil, 0.3f}, {Type.Fuel, 0.3f}};
+    public static Dictionary<Type, float> density = new Dictionary<Type, float>{{Type.Water, 0.7f}, {Type.Oil, 0.3f}, {Type.Fuel, 0.3f}};
 
     private int test = 0;
     public static void Init()

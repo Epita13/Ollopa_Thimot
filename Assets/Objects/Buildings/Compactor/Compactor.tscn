@@ -5,10 +5,10 @@
 [ext_resource path="res://Assets/Ressources/Imgs/Buildings/Compactor/Compactor.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Ressources/Shaders/outline.shader" type="Shader" id=5]
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 30.65, 32.0258 )
 
-[sub_resource type="ShaderMaterial" id=5]
+[sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 5 )
 shader_param/width = 0.0
 shader_param/outline_color = Color( 0, 0.588235, 1, 1 )
@@ -27,10 +27,10 @@ texture = ExtResource( 3 )
 [node name="ZONE" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ZONE"]
-shape = SubResource( 4 )
+shape = SubResource( 1 )
 
 [node name="OUTLINE" type="Sprite" parent="."]
-material = SubResource( 5 )
+material = SubResource( 2 )
 z_index = 10
 texture = ExtResource( 1 )
 

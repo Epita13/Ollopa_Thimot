@@ -87,6 +87,7 @@ public class SpaceShipInterface : Control
         Control endMenu = (Control)GD.Load<PackedScene>("res://Assets/Objects/UI/Menus/EndMenu.tscn").Instance();
         SpaceShip.canvas.AddChild(endMenu);
         PlayerState.state = PlayerState.State.Finish;
+        Save.DeleteSave(World.saveName);
     }
 
 

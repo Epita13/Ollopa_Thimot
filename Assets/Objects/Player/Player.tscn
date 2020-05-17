@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Objects/Player/PlayerMouvements.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Ressources/Imgs/Joueur/All_animation.png" type="Texture" id=2]
@@ -41,6 +41,23 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=4]
+resource_name = "Hurt"
+length = 0.2
+step = 0.02
+tracks/0/type = "value"
+tracks/0/path = NodePath("Image:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 59 ]
+}
+
+[sub_resource type="Animation" id=5]
 length = 3.9
 loop = true
 tracks/0/type = "value"
@@ -56,7 +73,7 @@ tracks/0/keys = {
 "values": [ 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Image:frame")
@@ -71,7 +88,7 @@ tracks/0/keys = {
 "values": [ 23 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 length = 1.5
 loop = true
 tracks/0/type = "value"
@@ -87,7 +104,7 @@ tracks/0/keys = {
 "values": [ 6, 7, 8, 9, 10, 11, 12, 13, 11, 14, 9, 10, 11, 12, 13 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=8]
 length = 0.3
 step = 0.05
 tracks/0/type = "value"
@@ -103,7 +120,7 @@ tracks/0/keys = {
 "values": [ 19, 20, 21, 22 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Image:frame")
@@ -118,7 +135,7 @@ tracks/0/keys = {
 "values": [ 15, 16, 17, 18, 19 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=10]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Image:frame")
@@ -133,16 +150,17 @@ tracks/0/keys = {
 "values": [ 15 ]
 }
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 13, 22.8181 )
 
-[sub_resource type="CapsuleShape2D" id=11]
+[sub_resource type="CapsuleShape2D" id=12]
 radius = 12.8554
 height = 23.7424
 
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
 ]]
+position = Vector2( -1.42696, -0.951309 )
 collision_mask = 2
 script = ExtResource( 1 )
 __meta__ = {
@@ -154,23 +172,25 @@ material = SubResource( 1 )
 position = Vector2( -0.0657806, -1.47209 )
 scale = Vector2( 0.540114, 0.479862 )
 texture = ExtResource( 2 )
-vframes = 8
+vframes = 9
 hframes = 8
-frame = 45
+frame = 59
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Death = SubResource( 2 )
 anims/End_Jump = SubResource( 3 )
-anims/Idle = SubResource( 4 )
-anims/Jump = SubResource( 5 )
-anims/Run = SubResource( 6 )
-anims/Start_Jump = SubResource( 7 )
-anims/Turn = SubResource( 8 )
-anims/Turn_Back = SubResource( 9 )
+anims/Hurt = SubResource( 4 )
+anims/Idle = SubResource( 5 )
+anims/Jump = SubResource( 6 )
+anims/Run = SubResource( 7 )
+anims/Start_Jump = SubResource( 8 )
+anims/Turn = SubResource( 9 )
+anims/Turn_Back = SubResource( 10 )
 
 [node name="Collision" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0.263519, -1.3176 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="Inputs" type="Node2D" parent="."]
 script = ExtResource( 3 )
@@ -182,12 +202,14 @@ energy = 0.0
 shadow_enabled = true
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 script = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 11 )
+shape = SubResource( 12 )
 
 [node name="Raygun" parent="." instance=ExtResource( 6 )]
+visible = false
 position = Vector2( 2.63524, -2.89874 )
 scale = Vector2( 0.580428, 0.516497 )
 

@@ -44,6 +44,7 @@ public static class Save
         saveEnvironementData(savePath);
         saveWorldData(savePath);
         savePlayerData(savePath);
+        saveSpaceShipData(savePath);
     }
     public static void _Load(string saveName)
     {
@@ -56,6 +57,7 @@ public static class Save
         LoadEnvironementData(Path.Combine(savesPath, saveName));
         LoadWorldData(Path.Combine(savesPath, saveName));
         LoadPlayerData(Path.Combine(savesPath, saveName));
+        LoadSpaceShipData(Path.Combine(savesPath, saveName));
     }
     
     
@@ -74,9 +76,17 @@ public static class Save
             sw.Write(name);
         }
     }
-    
-    
-    
+
+
+    public static void DeleteSave(string saveName)
+    {
+        InitDirectoriesSave();
+        string savePath = Path.Combine(savesPath, saveName);
+        if (Directory.Exists(savePath))
+        {
+            Directory.Delete(savePath, true);
+        }
+    }
     
     
     private static void saveWorldData(string path)
@@ -171,6 +181,38 @@ public static class Save
         catch
         {
             throw new Exception("savePlayerData: invalid syntaxe json");
+        }
+        data.SetValues();
+    }
+    
+    
+    private static void saveSpaceShipData(string path)
+    {
+        string fileName = Path.Combine(path, "Spaceship.data");
+        if (File.Exists(fileName))
+        {    
+            File.Delete(fileName);    
+        }
+        SpaceshipDataModel data = new SpaceshipDataModel();
+        data.GetValues();
+        string json = JsonConvert.SerializeObject(data);
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(json);
+        }
+    }
+    private static void LoadSpaceShipData(string path)
+    {
+        string filePath = Path.Combine(path, "Spaceship.data");
+        string jsonString = File.ReadAllText(filePath);
+        SpaceshipDataModel data = null;
+        try
+        {
+            data = SpaceshipDataModel.Deserialize(jsonString);
+        }
+        catch
+        {
+            throw new Exception("LoadSpaceShipData: invalid syntaxe json");
         }
         data.SetValues();
     }

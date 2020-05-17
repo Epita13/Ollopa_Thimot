@@ -60,4 +60,6 @@ public class SolarPanel : Building
         
         EmitSignal("EnergyChange", energy, energyMax);
     }
+    
+
 }

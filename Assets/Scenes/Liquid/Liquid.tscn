@@ -16,7 +16,7 @@ wait_time = 0.2
 autostart = true
 
 [node name="Watermap" type="TileMap" parent="."]
-modulate = Color( 0, 0.364706, 0.658824, 0.729412 )
+modulate = Color( 0, 0.0313726, 0.054902, 0.941176 )
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 16, 16 )
 occluder_light_mask = 0

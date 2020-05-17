@@ -17,16 +17,16 @@ public class SpaceShip : Node2D
     
     public static SpaceShip instance;
     
-    public static int composite = 0;
-    public static float fuel = 0;
-    public static float energy = 0;
+    public static int composite;
+    public static float fuel;
+    public static float energy;
     private static Sprite image;
     private static Control inventory;
-    private static Vector2 pos = new Vector2(0,0);
     public static bool ShipSelected = false;
     public static bool inventoryOpen = false;
     public static Node canvas;
     private static SpaceShipInterface Interface = new SpaceShipInterface();
+    
     
     public override void _EnterTree()
     {
@@ -34,8 +34,7 @@ public class SpaceShip : Node2D
         instance = this;
         image = GetNode<Sprite>("Image");
         image.Visible = false;
-        pos = Structure.Generate(20, 19);
-        Generate(Convertion.World2Location(new Vector2(pos.x + 4, pos.y + 1)));
+        Generate(Convertion.World2Location(new Vector2(Structure.structurePos.x + 4, Structure.structurePos.y + 1)));
     }
 
     public static void Init()

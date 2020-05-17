@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Objects/Buildings/Spaceship/SpaceShip.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Ressources/Imgs/Buildings/SpaceShip/SpaceShip.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Ressources/Imgs/Buildings/SpaceShip/mask.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Ressources/Shaders/outline.shader" type="Shader" id=4]
+[ext_resource path="res://Assets/Ressources/Imgs/Joueur/SpotLigth.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 24.137, 37.7302 )
@@ -39,5 +40,23 @@ material = SubResource( 2 )
 position = Vector2( 32, -42 )
 z_index = -5
 texture = ExtResource( 3 )
+
+[node name="Light2D2" type="Light2D" parent="."]
+position = Vector2( 40, -48 )
+rotation = -2.26893
+scale = Vector2( 0.49959, 0.995161 )
+texture = ExtResource( 5 )
+texture_scale = 0.51
+energy = 1.5
+shadow_enabled = true
+
+[node name="Light2D3" type="Light2D" parent="."]
+position = Vector2( 20, -48 )
+rotation = 2.26893
+scale = Vector2( 0.49959, 0.995161 )
+texture = ExtResource( 5 )
+texture_scale = 0.51
+energy = 1.5
+shadow_enabled = true
 [connection signal="mouse_entered" from="ZONE" to="." method="mouse_entered"]
 [connection signal="mouse_exited" from="ZONE" to="." method="mouse_exit"]

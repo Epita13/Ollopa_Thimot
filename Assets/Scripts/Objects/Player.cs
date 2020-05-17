@@ -40,7 +40,7 @@ public static class Player
     // Ex : eau, petrole (Liquide)
     private static float inventoryLiquidsSize = 30.0f;
     public static StorageLiquids inventoryLiquids = new StorageLiquids(inventoryLiquidsSize);
-    private static int inventoryBuildingsSize = 1000000000;
+    private static int inventoryBuildingsSize = 10;
     public static StorageBuildings inventoryBuildings = new StorageBuildings(inventoryBuildingsSize);
 
 
@@ -131,7 +131,7 @@ public static class Player
             inventoryBuildings = new StorageBuildings(inventoryBuildingsSize);
             UsableSelected = Usable.Type.Laser;
             BuildingSelected = Building.Type.SolarPanel;
-            PlayerMouvements.Teleport(PlayerMouvements.initialPosition.x, PlayerMouvements.initialPosition.y);
+            PlayerMouvements.Teleport(World.spawn.x, World.spawn.y);
             PlayerMouvements.canMove = true;
         }
     }

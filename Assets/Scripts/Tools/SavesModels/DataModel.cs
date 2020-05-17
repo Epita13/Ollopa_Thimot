@@ -47,7 +47,7 @@ public class WorldDataModel
     
     public Dictionary<Liquid.Type, List<((int,int),int)>> liquids { get; set; }
     
-    
+    public Vector2 worldSpawn { get; set; }
     public void GetValues()
     {
         size = World.size;
@@ -68,7 +68,8 @@ public class WorldDataModel
             }
             liquids.Add(lq.Key,liquid);
         }
-        
+
+        worldSpawn = World.spawn;
     }
 
     public void SetValues()
@@ -101,6 +102,8 @@ public class WorldDataModel
             }
             Liquid.list[lq.Key].map = map;
         }
+        World.spawn = worldSpawn;
+        World.GrassGenerate();
     }
 
     
@@ -167,5 +170,38 @@ public class PlayerDataModel
     public static PlayerDataModel Deserialize(string json)
     {
         return JsonConvert.DeserializeObject<PlayerDataModel>(json);
+    }
+}
+
+
+
+
+
+
+public class SpaceshipDataModel
+{
+
+    public Vector2 structurePosition { get; set; }
+    public int composite { get; set; }
+    public float fuel { get; set; }
+    public float energy { get; set; }
+    public void GetValues()
+    {
+        structurePosition = Structure.structurePos;
+        composite = SpaceShip.composite;
+        fuel = SpaceShip.fuel;
+        energy = SpaceShip.energy;
+    }
+    public void SetValues()
+    {
+        Structure.structurePos = structurePosition;
+        SpaceShip.composite = composite;
+        SpaceShip.fuel = fuel;
+        SpaceShip.energy = energy;
+    }
+
+    public static SpaceshipDataModel Deserialize(string json)
+    {
+        return JsonConvert.DeserializeObject<SpaceshipDataModel>(json);
     }
 }

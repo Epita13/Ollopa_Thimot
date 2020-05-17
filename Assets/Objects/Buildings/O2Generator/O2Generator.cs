@@ -40,7 +40,10 @@ public class O2Generator : Building
             o2 += O2produc * timer.WaitTime;   
         }
 
-        on = energy >= power2wake && !on || energy > 0 && on;
+        if (o2 > o2MAX)
+            o2 = o2MAX;
+
+        on = (energy >= power2wake && !on || energy > 0 && on) && o2 < o2MAX;
     }
 
     public O2Generator() : base(100, 200)

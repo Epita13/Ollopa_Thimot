@@ -14,8 +14,13 @@ public class Block
         SonarOre = 4,
         OspiritOre = 5,
         IronBlock = 6,
-        WarningBlock = 7,
+        WarningBlock = 7, // Jump +1
     }
+    
+    public static List<Type> unsymetricBlocks = new List<Type>
+    {
+        Type.WarningBlock
+    };
     
     public static Dictionary<Type, Drop> drops = new Dictionary<Type, Drop>
     {
@@ -44,9 +49,15 @@ public class Block
     };
 
     public static float healStrength = 10.0f;
-    public static int GetIDTile(Type type)
+    public static int GetIDTile(Type type, int x, int y)
     {
-        return (int) type;
+        int i = (int) type;
+        if (Block.unsymetricBlocks.Contains(type))
+        {
+            int res = x + y;
+            i = res % 2 == 0 ? i : i + 1;
+        }
+        return i;
     }
 
     public static int cellSize = 16;

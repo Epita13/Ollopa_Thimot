@@ -45,6 +45,8 @@ margin_top = -250.0
 margin_right = 600.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 900, 500 )
+rect_clip_content = true
+mouse_filter = 1
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -352,7 +354,7 @@ autostart = true
 [connection signal="ChangePowerOutBar" from="." to="back2/PowerOutBar" method="Change"]
 [connection signal="item_selected" from="back/BlocksList" to="." method="_on_BlocksList_item_selected"]
 [connection signal="button_down" from="back/BlockDescription/BtnCompact" to="." method="_on_BtnCompact_button_down"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph2" method="_on_HSlider_value_changed"]
-[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
 [connection signal="timeout" from="TimerEnergy" to="." method="_on_TimerEnergy_timeout"]

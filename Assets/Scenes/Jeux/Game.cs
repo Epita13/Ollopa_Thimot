@@ -27,10 +27,11 @@ public class Game : Node2D
             Loot.Init(this);
             Tree.Init(this);
             BuildingInterface.Init(GetNode("CanvasLayer"));
-            World.SetSize(50);
             Liquid.Init();
             World.Init(ground, uiground, uiground2, back);
+            Structure.Init();
             SpaceShip.Init();
+            PlayerMouvements.initialPosition = World.spawn;
             InitialiseIverntories();
         }
         else
@@ -55,16 +56,23 @@ public class Game : Node2D
         Player.inventoryUsables.Add(Usable.Type.Dirt, 30);
         Player.inventoryUsables.Add(Usable.Type.Grass, 30);
         Player.inventoryUsables.Add(Usable.Type.Stone, 300);
-        Player.inventoryBuildings.Add(Building.Type.SolarPanel, 100000);
+        Player.inventoryBuildings.Add(Building.Type.SolarPanel, 2);
         Player.inventoryBuildings.Add(Building.Type.Storage, 3);
         Player.inventoryBuildings.Add(Building.Type.Printer3D, 3);
         Player.inventoryBuildings.Add(Building.Type.Compactor, 3);
-        Player.inventoryItems.Add(Item.Type.Composite, 120);
-        Player.inventoryBuildings.Add(Building.Type.Infirmary, 1);
+        Player.inventoryBuildings.Add(Building.Type.Infirmary, 3);
         Player.inventoryBuildings.Add(Building.Type.O2Generator, 3);
-        Player.inventoryItems.Add(Item.Type.Sonar, 1000);
+        Player.inventoryBuildings.Add(Building.Type.OilPump, 3);
+        Player.inventoryBuildings.Add(Building.Type.Refinery, 3);
+        Player.inventoryItems.Add(Item.Type.Composite, 120);
+        
     }
 
+
+    public override void _Process(float delta)
+    {
+        WorldScreenSizeX = GetViewport().Size.x * CurrentCamera.GetXZoom();
+    }
 
     public static float GetScreenMinX() => PlayerMouvements.GetX() - (Convertion.Location2World(new Vector2(Game.WorldScreenSizeX/2, 0))).x;
     public static float GetScreenMaxX() => PlayerMouvements.GetX() + (Convertion.Location2World(new Vector2(Game.WorldScreenSizeX/2, 0))).x;

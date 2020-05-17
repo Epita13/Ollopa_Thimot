@@ -5,7 +5,15 @@ using System.Collections.Generic;
 public static class Structure
 {
     /*Faire des structure de longueur multiple de n - 1 pour faire joli*/
-
+    public static Vector2 structurePos;
+    public static void Init()
+    {
+        int size = 19;
+        int x = World.size * Chunk.size / 2 - (19/2);
+        structurePos = Structure.Generate(x, size);
+        World.spawn = new Vector2(x+size/2.0f, World.GetChunk(x+size/2).GetGroundY(Chunk.GetLocaleX(x+size/2))+1);
+    }
+    
     private static int n = 4;
     public static Vector2 Generate(int x, int lgr)
     {

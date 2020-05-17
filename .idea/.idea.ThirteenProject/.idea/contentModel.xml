@@ -30,11 +30,14 @@
             <e p="O2Generator" t="Include">
               <e p="O2Generator.cs" t="Include" />
             </e>
+            <e p="PetrolGenerator" t="Include">
+              <e p="PetrolGenerator.cs" t="Include" />
+            </e>
             <e p="Printer3D" t="Include">
               <e p="Printer3D.cs" t="Include" />
             </e>
-            <e p="Rafinery" t="Include">
-              <e p="Rafinery.cs" t="Include" />
+            <e p="Refinery" t="Include">
+              <e p="Refinery.cs" t="Include" />
             </e>
             <e p="SolarPanel" t="Include">
               <e p="SolarPanel.cs" t="Include" />
@@ -61,7 +64,9 @@
               <e p="CompactorInterface.cs" t="Include" />
               <e p="InfirmaryInterface.cs" t="Include" />
               <e p="O2GeneratorInterface.cs" t="Include" />
+              <e p="PetrolGeneratorInterface.cs" t="Include" />
               <e p="Printer3DInterface.cs" t="Include" />
+              <e p="RefineryInterface.cs" t="Include" />
               <e p="SolarPanelInterface.cs" t="Include" />
               <e p="SpaceShipInterface.cs" t="Include" />
               <e p="StorageInterface.cs" t="Include" />
@@ -72,9 +77,17 @@
             <e p="Menus" t="Include">
               <e p="DeathMenu.cs" t="Include" />
               <e p="EndMenu.cs" t="Include" />
+              <e p="other" t="Include">
+                <e p="Animation.cs" t="Include" />
+                <e p="ButtonMenu.cs" t="Include" />
+                <e p="SaveGameBox.cs" t="Include" />
+              </e>
             </e>
             <e p="Notification" t="Include">
               <e p="Notifications.cs" t="Include" />
+            </e>
+            <e p="other" t="Include">
+              <e p="PlayerVariablesShow.cs" t="Include" />
             </e>
             <e p="PlayerInventory" t="Include">
               <e p="UI_PlayerInventory.cs" t="Include" />
@@ -85,7 +98,13 @@
                 <e p="EnergyBar.cs" t="Include" />
                 <e p="PowerBar.cs" t="Include" />
               </e>
-              <e p="OxygeneBar.cs" t="Include" />
+              <e p="Oxygene" t="Include">
+                <e p="OxygeneBar.cs" t="Include" />
+              </e>
+              <e p="Petrol" t="Include">
+                <e p="FuelBar.cs" t="Include" />
+                <e p="PetrolBar.cs" t="Include" />
+              </e>
             </e>
             <e p="TestsTemporaire" t="Include">
               <e p="ValuesPanel.cs" t="Include" />
@@ -104,6 +123,8 @@
             <e p="Game.cs" t="Include" />
           </e>
           <e p="Menus" t="Include">
+            <e p="MenuLoadGame.cs" t="Include" />
+            <e p="MenuNewGame.cs" t="Include" />
             <e p="MenuPlay.cs" t="Include" />
           </e>
           <e p="PlayerTests" t="Include">

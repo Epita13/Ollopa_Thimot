@@ -39,7 +39,6 @@ public class DeathMenu : Control
         time += delta;
         float a = time * 255.0f / fadeTime;
         a = a > 255 ? 255 : a;
-        GD.Print(a);
         Modulate = Color.Color8(255,255,255,(byte)a);
         if (time  >= fadeTime)
         {
@@ -53,8 +52,14 @@ public class DeathMenu : Control
     public void _on_BtnRevive_button_down()
     {
         menuOn = false;
-        PlayerState.SetState(PlayerState.State.Normal);
         Player.Revive();
+        PlayerState.SetState(PlayerState.State.Normal);
         QueueFree();
+    }
+
+    public void _on_BtnQuit_button_down()
+    {
+        Save._Save(World.saveName);
+        GetTree().Quit();
     }
 }

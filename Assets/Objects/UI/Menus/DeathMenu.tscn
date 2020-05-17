@@ -67,8 +67,6 @@ __meta__ = {
 anchor_top = 0.3
 anchor_right = 1.0
 anchor_bottom = 0.7
-margin_top = 7.62939e-06
-margin_bottom = 1.52588e-05
 custom_fonts/font = SubResource( 2 )
 text = "RESPAWN"
 __meta__ = {
@@ -86,3 +84,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="button_down" from="c/BtnRevive" to="." method="_on_BtnRevive_button_down"]
+[connection signal="button_down" from="c/BtnQuit" to="." method="_on_BtnQuit_button_down"]
