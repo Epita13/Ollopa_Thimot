@@ -12,7 +12,7 @@ public class ScreenAdapt : Node2D
 
     public override void _Ready()
     {
-        //OS.WindowMaximized = true;
+        OS.WindowMaximized = true;
         //OS.WindowFullscreen = true;
         viewport = GetTree().Root;
     }

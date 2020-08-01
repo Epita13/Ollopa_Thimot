@@ -41,9 +41,10 @@ public class PetrolGeneratorInterface : BuildingInterface
 
     public void _on_BtnO2_button_down()
     {
-        if (petrolGenerator.oil > 0)
+        float nb = Math.Min(petrolGenerator.oil, Player.inventoryLiquids.max - Player.inventoryLiquids.GetItemCount(Liquid.Type.Oil));
+        if (petrolGenerator.oil > 0 && Player.inventoryLiquids.CanAdd(Liquid.Type.Oil, nb))
         {
-            petrolGenerator.togive += Math.Min(petrolGenerator.oil, Player.oxygeneMax - Player.oxygene);
+            petrolGenerator.togive += nb;
         }
     }
 

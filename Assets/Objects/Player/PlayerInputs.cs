@@ -46,7 +46,17 @@ public class PlayerInputs : Node2D
 		/*Escape*/
 		if (Input.IsActionJustPressed("escape"))
 		{
-			if (PlayerState.GetState() == PlayerState.State.Inventory)
+			if (PlayerState.GetState() == PlayerState.State.Pause)
+			{
+				PlayerState.SetState(PlayerState.prec_state);
+				PauseMenu.Close();
+			}
+			else if (PlayerState.GetState() == PlayerState.State.Normal)
+			{
+				PlayerState.SetState(PlayerState.State.Pause);
+				PauseMenu.Open();
+			}
+			else if (PlayerState.GetState() == PlayerState.State.Inventory)
 			{
 				UI_PlayerInventory2.Close();
 			}
@@ -64,7 +74,7 @@ public class PlayerInputs : Node2D
 				PlayerState.SetState(PlayerState.State.Normal);
 			}
 		}
-		
+
 		//Inputs
 		if (Input.IsActionJustPressed("mouse1"))
 		{
@@ -157,6 +167,7 @@ public class PlayerInputs : Node2D
 		Vector2 vec = mousePos;
 		int x = (int) mousePos.x;
 		int y = (int) mousePos.y;
+		bool res = y > 0 && y <= Chunk.height;
 		World.UIBlockTilemap.Clear();
 		Vector2 playerPos = Convertion.Location2World(PlayerMouvements.instance.Position);
 		bool right = playerPos.x-1 < mousePos.x;
@@ -164,7 +175,7 @@ public class PlayerInputs : Node2D
 		Building.Type type = Player.BuildingSelected;
 		bool haveBuilding = Player.inventoryBuildings.GetItemCount(type) >= 1;
 		
-		if (right)
+		if (res && right)
 		{
 			if (haveBuilding && BasicPlacement.IsPlacableRight(x, y, 4, 4) && MouseInRange(9, true))
 			{
@@ -175,7 +186,7 @@ public class PlayerInputs : Node2D
 				PrintBatRight(0);
 			}
 		}
-		else 
+		else if(res)
 		{
 			if (haveBuilding && BasicPlacement.IsPlacableLeft(x, y, 4, 4) && MouseInRange(9, true))
 			{
@@ -218,7 +229,8 @@ public class PlayerInputs : Node2D
 	{
 		Vector2 playerPos = Convertion.Location2World(PlayerMouvements.instance.Position);
 		bool right = playerPos.x-1 < mousePos.x;
-		if (MouseInRange(10,true))
+		bool res = mousePos.y > 0 && mousePos.y <= Chunk.height;
+		if (res && MouseInRange(9,true))
 		{
 			Building.Type type = Player.BuildingSelected;
 			if (Player.inventoryBuildings.GetItemCount(type) >= 1)
@@ -237,7 +249,7 @@ public class PlayerInputs : Node2D
 
 	private void ClickOnBuilding()
 	{
-		if (MouseInRange(10, true))
+		if (PositionInRange(10, Building.BuildingSelected.location))
 		{
 			if (BuildingInterface.interfaceOpen && BuildingInterface.buildingInterface.building == Building.BuildingSelected)
 			{
@@ -273,6 +285,12 @@ public class PlayerInputs : Node2D
 		float distance = Mathf.Sqrt( Mathf.Pow((x-playerPos.x),2) + Mathf.Pow((y-playerPos.y),2));
 		return (distance<range); 
 	}
+	
+	private bool PositionInRange(int range, Vector2 pos)
+	{
+		float distance = Mathf.Sqrt( Mathf.Pow((pos.x-PlayerMouvements.GetX()),2) + Mathf.Pow((pos.y-PlayerMouvements.GetY()),2));
+		return (distance<=range); 
+	}
 
 
 	private void InventoryClick()
@@ -291,7 +309,7 @@ public class PlayerInputs : Node2D
 	
 	private void SpaceShipClick()
 	{
-		if (MouseInRange(10, true))
+		if (PositionInRange(15, SpaceShip.location))
 		{
 			if(!SpaceShip.inventoryOpen)
 				SpaceShip.open_interface();

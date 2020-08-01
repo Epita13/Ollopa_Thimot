@@ -8,7 +8,7 @@ public static class Link
     {
         building2BeLinked = null;
         buildingTargets = new List<Building>();
-        foreach (var building in Building.placedBuildings)
+        foreach (var building in World.placedBuildings)
         {
             building.ResetOutline();
         }
@@ -18,7 +18,7 @@ public static class Link
     {
         SetBuilding2BeLinked(building2BeLinked);
         SetBuildingTarget(Building2BeLinked.linkedBuildings);
-        foreach (var building in Building.placedBuildings)
+        foreach (var building in World.placedBuildings)
         {
             if (building == Link.building2BeLinked)
             {

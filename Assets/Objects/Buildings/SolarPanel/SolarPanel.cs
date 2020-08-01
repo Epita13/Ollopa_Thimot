@@ -13,6 +13,21 @@ public class SolarPanel : Building
     private Sprite stateSprite;
     
     
+    
+    /*Structure de sauvegarde*/
+    public struct SaveStruct
+    {
+        public Building.SaveStruct buildingSave;
+    }
+
+    public SaveStruct GetSaveStruct()
+    {
+        SaveStruct s = new SaveStruct();
+        s.buildingSave = GetBuildingSaveStruct();
+        return s;
+    }
+    /*************************/
+    
 
     public SolarPanel() : base (100, 200.0f)
     {
@@ -42,6 +57,8 @@ public class SolarPanel : Building
 
     public void _on_Timer_timeout()
     {
+        if (PlayerState.Is(PlayerState.State.Pause))
+            return;
         if (isPlaced && Environement.sunPower>0)
         {
             Color color = Color.Color8(66, 190, 40);

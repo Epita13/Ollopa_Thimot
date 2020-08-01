@@ -28,13 +28,25 @@ public class ToolBar : Control
             Visible = true;
             if (Input.IsActionJustPressed("ui_toolbar_right"))
             {
-                Player.UsableSelected = (Usable.Type)(((int)Player.UsableSelected + 1) % Usable.nbUsables);
+                Player.UsableSelected = (Usable.Type) Modulo((int)Player.UsableSelected + 1, Usable.nbUsables);
             }
             else if (Input.IsActionJustPressed("ui_toolbar_left"))
             {
-                Player.UsableSelected = (Usable.Type)(((int)Player.UsableSelected + 1) % Usable.nbUsables);
+                Player.UsableSelected = (Usable.Type) Modulo((int)Player.UsableSelected - 1, Usable.nbUsables);
             }
             SendRefresh();
+        }
+    }
+
+    private int Modulo(int value, int mod)
+    {
+        if (value < 0)
+        {
+            return mod + (value % mod);
+        }
+        else
+        {
+            return value % mod;
         }
     }
 
@@ -51,6 +63,20 @@ public class ToolBar : Control
         }
         GetInstance().EmitSignal("Refresh", GetInstance().displayTools);
         Player.UsableSelected = (Usable.Type)index;
+    }
+    
+    public override void _UnhandledInput(InputEvent @event){
+        if (@event is InputEventMouseButton){
+            InputEventMouseButton emb = (InputEventMouseButton)@event;
+            if (emb.IsPressed()){
+                if (emb.ButtonIndex == (int)ButtonList.WheelUp){
+                    Player.UsableSelected = (Usable.Type) Modulo((int)Player.UsableSelected - 1, Usable.nbUsables);
+                }
+                if (emb.ButtonIndex == (int)ButtonList.WheelDown){
+                    Player.UsableSelected = (Usable.Type) Modulo((int)Player.UsableSelected + 1, Usable.nbUsables);
+                }
+            }
+        }
     }
 
 }

@@ -4,16 +4,15 @@ using System;
 public class SpaceShipInterface : Control
 {
     private static Control inventory;
-    private static Label Energy;
-    private static Label Fuel;
-    private static Label Composite;
-    private static LineEdit EnergyTrans;
-    private static LineEdit FuelTrans;
-    private static LineEdit CompositeTrans;
     private static Button Launch;
-    private static Button Transfer;
+    private static Button BtnCompoT;
+    private static Button BtnFuelT;
+    private static Button BtnEnerT;
 
 
+    private static bool CompositeOn = false;
+    private static bool FuelOn = false;
+    private static bool EnergyeOn = false;
     public static void open_interface()
     {
         inventory = (Control) GD.Load<PackedScene>("res://Assets/Objects/UI/Building/SpaceShipInterface.tscn").Instance(); 
@@ -21,79 +20,171 @@ public class SpaceShipInterface : Control
         SpaceShip.inventoryOpen = true;
         PlayerState.SetState(PlayerState.State.BuildingInterface);
         Launch = inventory.GetNode("back").GetNode<Button>("Launch");
-        Transfer = inventory.GetNode("back").GetNode("Transfer").GetNode<Button>("Transfer");
-        Energy = inventory.GetNode("back").GetNode("Ressource").GetNode<Label>("Energy");
-        Fuel = inventory.GetNode("back").GetNode("Ressource").GetNode<Label>("Fuel");
-        Composite = inventory.GetNode("back").GetNode("Ressource").GetNode<Label>("Composite");
-        EnergyTrans = inventory.GetNode("back").GetNode("Transfer").GetNode("EnergyTrans").GetNode<LineEdit>("ETrans");
-        FuelTrans = inventory.GetNode("back").GetNode("Transfer").GetNode("FuelTrans").GetNode<LineEdit>("FTrans");
-        CompositeTrans = inventory.GetNode("back").GetNode("Transfer").GetNode("CompositeTrans").GetNode<LineEdit>("CTrans");
+        BtnCompoT = inventory.GetNode<Button>("back/ItemBox/BtnTran");
+        BtnFuelT = inventory.GetNode<Button>("back/FuelBar/BtnTran");
+        BtnEnerT = inventory.GetNode<Button>("back/EnergyBar/BtnTran");
+
+        RefreshLaunchBTN();
+    }
+    
+    public static void close_interface()
+    {
+        CompositeOn = false;
+        FuelOn = false;
+        EnergyeOn = false;
+        inventory.QueueFree();
+        SpaceShip.inventoryOpen = false;
+        PlayerState.SetState(PlayerState.State.Normal);
+    }
+
+
+    
+    public void _on_Launch_button_down()
+    {
+        SpaceShip.close_interface();
+        PlayerState.state = PlayerState.State.Finish;
+        Save.DeleteSave(Game.saveName);
+        GetTree().ChangeScene("res://Assets/Objects/UI/Menus/EndMenu.tscn");
+    }
+
+    public override void _Process(float delta)
+    {
+        GetNode<FuelBar>("back2/FuelBar").Change(Player.inventoryLiquids.GetItemCount(Liquid.Type.Fuel), Player.inventoryLiquidsSize);
+        GetNode<EnergyBar>("back2/EnergyBar").Change(Player.energy, Player.energyMax);
+        GetNode<Label>("back2/ItemBox/texte").Text = Player.inventoryItems.GetItemCount(Item.Type.Composite).ToString();
+
+        GetNode<FuelBar>("back/FuelBar").Change(SpaceShip.fuel, SpaceShip.FUELWIN);
+        GetNode<EnergyBar>("back/EnergyBar").Change(SpaceShip.energy, SpaceShip.ENERGYWIN);
+        GetNode<Label>("back/ItemBox/texte").Text = SpaceShip.composite + "/" + SpaceShip.COMPOSITEWIN;
+
+        if (SpaceShip.energy >= SpaceShip.ENERGYWIN)
+        {
+            BtnEnerT.Disabled = true;
+            BtnEnerT.Text = "OFF";
+            EnergyeOn = false;
+        }
+        if (SpaceShip.fuel >= SpaceShip.FUELWIN)
+        {
+            BtnFuelT.Disabled = true;
+            BtnFuelT.Text = "OFF";
+            FuelOn = false;
+        }
+        if (SpaceShip.composite >= SpaceShip.COMPOSITEWIN)
+        {
+            BtnCompoT.Disabled = true;
+            BtnCompoT.Text = "OFF";
+            CompositeOn = false;
+        }
         
-        EnergyTrans.Text = "0";
-        FuelTrans.Text = "0";
-        CompositeTrans.Text = "0";
+        if (FuelOn)
+        {
+            if (Player.inventoryLiquids.GetItemCount(Liquid.Type.Fuel) > 0)
+            {
+                float fuel = 5 * delta;
+                fuel = Player.inventoryLiquids.GetItemCount(Liquid.Type.Fuel) < fuel
+                    ? Player.inventoryLiquids.GetItemCount(Liquid.Type.Fuel)
+                    : fuel;
+                fuel = SpaceShip.fuel + fuel > SpaceShip.FUELWIN ? SpaceShip.FUELWIN - SpaceShip.fuel : fuel;
+                SpaceShip.AddFuel(fuel);
+                Player.inventoryLiquids.Remove(Liquid.Type.Fuel, fuel);
+            }
+            else
+            {
+                FuelOn = false;
+                BtnFuelT.Text = "OFF";
+            }
+        }
         
-        Energy.Text = SpaceShip.energy + "  /  " + SpaceShip.ENERGYWIN + "  Energy";
-        Fuel.Text = SpaceShip.fuel + "  /  " + SpaceShip.FUELWIN + "  Fuel";
-        Composite.Text = SpaceShip.composite + "  /  " + SpaceShip.COMPOSITEWIN + "  Composite";
+        if (EnergyeOn)
+        {
+            if (Player.energy > 0)
+            {
+                float energy = 5 * delta;
+                energy = Player.energy < energy
+                    ? Player.energy
+                    : energy;
+                energy = SpaceShip.energy + energy > SpaceShip.ENERGYWIN ? SpaceShip.ENERGYWIN - SpaceShip.energy : energy;
+                SpaceShip.AddEnergy(energy);
+                Player.RemoveEnergy(energy);
+            }
+            else
+            {
+                EnergyeOn = false;
+                BtnEnerT.Text = "OFF";
+            }
+        }
         
+        RefreshLaunchBTN();
+    }
+
+    public void _on_TimerComposite_timeout()
+    {
+        if (CompositeOn)
+        {
+            if (Player.inventoryItems.GetItemCount(Item.Type.Composite) > 0)
+            {
+                if (SpaceShip.composite < SpaceShip.COMPOSITEWIN)
+                {
+                    SpaceShip.AddComposite(1);
+                    Player.inventoryItems.Remove(Item.Type.Composite, 1);
+                }
+            }
+            else
+            {
+                CompositeOn = false;
+                BtnCompoT.Text = "OFF";
+            }
+        }
+    }
+
+    private static void RefreshLaunchBTN()
+    {
         if (SpaceShip.composite >= SpaceShip.COMPOSITEWIN && SpaceShip.fuel >= SpaceShip.FUELWIN &&
             SpaceShip.energy >= SpaceShip.ENERGYWIN)
             Launch.Disabled = false;
         else
             Launch.Disabled = true;
     }
-    
-    public static void close_interface()
-    {
-        inventory.QueueFree();
-        SpaceShip.inventoryOpen = false;
-        PlayerState.SetState(PlayerState.State.Normal);
-    }
 
-    public void _on_Transfer_button_down()
+    public void _on_BtnTranEner_button_down()
     {
-        float e = 0 ;
-        float f = 0;
-        int c = 0;
-
-        bool corect = float.TryParse(EnergyTrans.Text, out e);
-        corect = corect && float.TryParse(FuelTrans.Text, out f);
-        corect = corect && int.TryParse(CompositeTrans.Text, out c);
-        
-        if (corect && c <= Player.inventoryItems.GetItemCount(Item.Type.Composite) /*&& f <= Player.inventoryLiquids.GetItemCount(Liquid.Type.Fuel)*/)
+        if (EnergyeOn)
         {
-            SpaceShip.AddComposite(c);
-            SpaceShip.AddEnergy(e);
-            SpaceShip.AddFuel(f);
-            Player.inventoryItems.Remove(Item.Type.Composite, c);
-            //Player.inventoryLiquids.Remove(Liquid.Type.Fuel, f);
-                
-            Energy.Text = SpaceShip.energy + "  /  " + SpaceShip.ENERGYWIN + "  Energy";
-            Fuel.Text = SpaceShip.fuel + "  /  " + SpaceShip.FUELWIN + "  Fuel";
-            Composite.Text = SpaceShip.composite + "  /  " + SpaceShip.COMPOSITEWIN + "  Composite";
-        
-            if (SpaceShip.composite >= SpaceShip.COMPOSITEWIN && SpaceShip.fuel >= SpaceShip.FUELWIN &&
-                SpaceShip.energy >= SpaceShip.ENERGYWIN)
-                Launch.Disabled = false;
-            else
-                Launch.Disabled = true;
+            EnergyeOn = false;
+            BtnEnerT.Text = "OFF";
+        }
+        else
+        {
+            EnergyeOn = true;
+            BtnEnerT.Text = "ON";
         }
     }
-    
-    public void _on_Launch_button_down()
+
+    public void _on_BtnTranFuel_button_down()
     {
-        SpaceShip.close_interface();
-        Control endMenu = (Control)GD.Load<PackedScene>("res://Assets/Objects/UI/Menus/EndMenu.tscn").Instance();
-        SpaceShip.canvas.AddChild(endMenu);
-        PlayerState.state = PlayerState.State.Finish;
-        Save.DeleteSave(World.saveName);
+        if (FuelOn)
+        {
+            FuelOn = false;
+            BtnFuelT.Text = "OFF";
+        }
+        else
+        {
+            FuelOn = true;
+            BtnFuelT.Text = "ON";
+        }
     }
 
-
-    
-    public void _on_TimerEnergy_timeout()
+    public void _on_BtnTranCompo_button_down()
     {
-        
+        if (CompositeOn)
+        {
+            CompositeOn = false;
+            BtnCompoT.Text = "OFF";
+        }
+        else
+        {
+            CompositeOn = true;
+            BtnCompoT.Text = "ON";
+        }
     }
 }

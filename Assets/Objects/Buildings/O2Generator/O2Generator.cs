@@ -5,14 +5,36 @@ public class O2Generator : Building
 {
     public static int nbO2Generator;
     private static float power = 1f;
-    private static readonly float O2produc = 1f;
-    public float o2MAX = 500f;
+    private static readonly float O2produc = 2f;
+    public float o2MAX = 200f;
     public float o2 = 0;
     public float togive = 0;
-    private bool on = false;
+    public bool on = false;
     private static float power2wake = 2 * power;
     private static float giveSpeed = 2.5f;
 
+    
+    
+    /*Structure de sauvegarde*/
+    public struct SaveStruct
+    {
+        public Building.SaveStruct buildingSave;
+        public float o2;
+        public bool on;
+        public float togive;
+    }
+
+    public SaveStruct GetSaveStruct()
+    {
+        SaveStruct s = new SaveStruct();
+        s.buildingSave = GetBuildingSaveStruct();
+        s.togive = togive;
+        s.o2 = o2;
+        s.@on = @on;
+        return s;
+    }
+    /*************************/
+    
     public override void _EnterTree()
     {
         id = nbO2Generator;
@@ -21,6 +43,9 @@ public class O2Generator : Building
 
     public void _on_Timer_timeout()
     {
+        if (PlayerState.Is(PlayerState.State.Pause))
+            return;
+        
         if (togive >= giveSpeed)
         {
             Player.AddOxygene(giveSpeed);
@@ -46,7 +71,7 @@ public class O2Generator : Building
         on = (energy >= power2wake && !on || energy > 0 && on) && o2 < o2MAX;
     }
 
-    public O2Generator() : base(100, 200)
+    public O2Generator() : base(100, 150f)
     {
         
     }

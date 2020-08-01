@@ -3,6 +3,9 @@ using System;
 
 public class UI_PlayerInventory2 : Control
 {
+    
+    
+    
     public static UI_PlayerInventory2 instance;
     public static UI_PlayerInventory2 GetInstance() => instance;
     
@@ -19,6 +22,12 @@ public class UI_PlayerInventory2 : Control
         usablesList = GetNode<ItemList>("back/Usables");
         buildingsList = GetNode<ItemList>("back/Buildings");
         btClose = GetNode<Button>("back/topbar/Close"); 
+        
+        GetNode<EnergyBar>("back2/EnergyBar").Change(Player.energy, Player.energyMax);
+        GetNode<OxygeneBar>("back2/OxygeneBar").Change(Player.oxygene, Player.oxygeneMax);
+        GetNode<HealthBar>("back2/HealthBar").Change(Player.health, Player.healthMax);
+        GetNode<FuelBar>("back2/FuelBar").Change(Player.inventoryLiquids.GetItemCount(Liquid.Type.Fuel), Player.inventoryLiquidsSize);
+        GetNode<PetrolBar>("back2/PetrolBar").Change(Player.inventoryLiquids.GetItemCount(Liquid.Type.Oil), Player.inventoryLiquidsSize);
     }
     
     public override void _Process(float delta)
@@ -29,6 +38,11 @@ public class UI_PlayerInventory2 : Control
                 Close();
             Update();
         }
+        GetNode<EnergyBar>("back2/EnergyBar").Change(Player.energy, Player.energyMax);
+        GetNode<OxygeneBar>("back2/OxygeneBar").Change(Player.oxygene, Player.oxygeneMax);
+        GetNode<HealthBar>("back2/HealthBar").Change(Player.health, Player.healthMax);
+        GetNode<FuelBar>("back2/FuelBar").Change(Player.inventoryLiquids.GetItemCount(Liquid.Type.Fuel), Player.inventoryLiquidsSize);
+        GetNode<PetrolBar>("back2/PetrolBar").Change(Player.inventoryLiquids.GetItemCount(Liquid.Type.Oil), Player.inventoryLiquidsSize);
     }
     
     

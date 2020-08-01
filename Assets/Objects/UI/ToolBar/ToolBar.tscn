@@ -31,6 +31,7 @@ size_flags_vertical = 1
 id = 1
 
 [node name="ItemBox3" parent="Hbox" instance=ExtResource( 2 )]
+self_modulate = Color( 0, 1, 0.207843, 1 )
 margin_left = 440.0
 margin_right = 640.0
 size_flags_vertical = 1
@@ -47,8 +48,8 @@ margin_left = 880.0
 margin_right = 1080.0
 size_flags_vertical = 1
 id = 4
-[connection signal="Refresh" from="." to="Hbox/ItemBox" method="Change"]
 [connection signal="Refresh" from="." to="Hbox/ItemBox3" method="Change"]
-[connection signal="Refresh" from="." to="Hbox/ItemBox5" method="Change"]
-[connection signal="Refresh" from="." to="Hbox/ItemBox4" method="Change"]
 [connection signal="Refresh" from="." to="Hbox/ItemBox2" method="Change"]
+[connection signal="Refresh" from="." to="Hbox/ItemBox4" method="Change"]
+[connection signal="Refresh" from="." to="Hbox/ItemBox5" method="Change"]
+[connection signal="Refresh" from="." to="Hbox/ItemBox" method="Change"]

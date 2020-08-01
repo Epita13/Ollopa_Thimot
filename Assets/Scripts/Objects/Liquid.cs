@@ -58,6 +58,9 @@ public class Liquid : Node2D
 
     public override void _Process(float delta)
     { 
+        if (PlayerState.Is(PlayerState.State.Pause))
+            return;
+        
        foreach (KeyValuePair<Type, LiquidMove> liquid in list)
            liquid.Value.CloneWater(GetViewport().Size.x, GetViewportTransform().origin);
     }
@@ -65,6 +68,9 @@ public class Liquid : Node2D
 
     private void TimeOutWater()
     {
+        if (PlayerState.Is(PlayerState.State.Pause))
+            return;
+        
         try
         {
              list[Type.Water].Move();
@@ -77,6 +83,9 @@ public class Liquid : Node2D
     
     private void TimeOutOil()
     {
+        if (PlayerState.Is(PlayerState.State.Pause))
+            return;
+        
         try
         {
             list[Type.Oil].Move();

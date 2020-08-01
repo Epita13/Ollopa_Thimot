@@ -47,5 +47,6 @@ wait_time = 0.4
 autostart = true
 [connection signal="mouse_entered" from="ZONE" to="." method="_on_ZONE_mouse_entered"]
 [connection signal="mouse_exited" from="ZONE" to="." method="_on_ZONE_mouse_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="TimerHistory" to="." method="_on_TimerHistory_timeout"]
 [connection signal="timeout" from="TimerEnergy" to="." method="_on_TimerEnergy_timeout"]

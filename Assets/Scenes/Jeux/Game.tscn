@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Scenes/Jeux/Game.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Objects/Player/Player.tscn" type="PackedScene" id=2]
@@ -13,8 +13,9 @@
 [ext_resource path="res://Assets/Objects/UI/ToolBar/ToolBar.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Assets/Objects/UI/PlayerInventory/PlayerInventory2.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Assets/Scenes/Liquid/Liquid.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Assets/Objects/UI/TestsTemporaire/ValuesPanel.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Assets/Ressources/Fonts/F25_Bank_Printer.otf" type="DynamicFontData" id=14]
 [ext_resource path="res://Assets/Objects/UI/other/PlayerVariables.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Assets/Objects/Enemy/Enemies.tscn" type="PackedScene" id=16]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 8 )
@@ -22,6 +23,10 @@ shader_param/color = Vector3( 0.1, 0.15, 0.7 )
 shader_param/OCTAVES = 3
 shader_param/size = 160.0
 shader_param/mult = 0.7
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 14 )
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
@@ -54,7 +59,7 @@ script = ExtResource( 4 )
 speed = 0.3
 texture = ExtResource( 9 )
 zIndex = -99
-y = 1344.0
+y = 1225.0
 
 [node name="Environement" parent="." instance=ExtResource( 10 )]
 
@@ -86,9 +91,19 @@ rect_scale = Vector2( 0.5, 0.5 )
 [node name="Control" parent="CanvasLayer" instance=ExtResource( 12 )]
 visible = false
 
-[node name="ValuesPanel" parent="CanvasLayer" instance=ExtResource( 14 )]
-
 [node name="PlayerVariables" parent="CanvasLayer" instance=ExtResource( 15 )]
+
+[node name="BTNSAVE" type="Button" parent="CanvasLayer"]
+margin_right = 241.0
+margin_bottom = 57.0
+custom_fonts/font = SubResource( 2 )
+text = "SAVE"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Liquid" parent="." instance=ExtResource( 13 )]
 position = Vector2( 0, 0 )
+
+[node name="Enemies" parent="." instance=ExtResource( 16 )]
+[connection signal="button_down" from="CanvasLayer/BTNSAVE" to="." method="_on_BTNSAVE_button_down"]

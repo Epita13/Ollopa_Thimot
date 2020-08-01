@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Ressources/Imgs/UI/Inventory/inventoryPanel.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Ressources/Fonts/F25_Bank_Printer.otf" type="DynamicFontData" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Assets/Objects/UI/Sliders/Energy/PowerInBar.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Objects/UI/Sliders/Energy/PowerOutBar.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Assets/Ressources/Imgs/Buildings/SolarPanel/SolarPanel.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Objects/UI/Building/Other/ItemBox.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/Stockage.png" type="Texture" id=13]
 
 [sub_resource type="DynamicFont" id=1]
@@ -240,12 +241,24 @@ __meta__ = {
 anchor_top = 0.55
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -0.100021
-margin_bottom = -0.500031
+margin_left = -54.0
+margin_top = -0.307419
+margin_right = 49.0
+margin_bottom = -0.649841
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ItemBox" parent="back/BuildingDescription/Description/Items" instance=ExtResource( 11 )]
+margin_left = 269.0
+margin_right = 409.0
+margin_bottom = 148.0
+
+[node name="ItemBox2" parent="back/BuildingDescription/Description/Items" instance=ExtResource( 11 )]
+margin_left = 413.0
+margin_right = 553.0
+margin_bottom = 148.0
 
 [node name="BtnPrint" type="Button" parent="back/BuildingDescription"]
 anchor_left = 1.0

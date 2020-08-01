@@ -25,6 +25,7 @@ public static class PlayerState
         Dead,
         BuildingInterface,
         Link,
+        Pause,
         Finish,
     }
 

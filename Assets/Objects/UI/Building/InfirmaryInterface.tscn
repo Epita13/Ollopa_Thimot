@@ -17,6 +17,7 @@ size = 32
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=2]
+size = 32
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=3]
@@ -351,7 +352,7 @@ autostart = true
 [connection signal="ChangePowerOutBar" from="." to="back2/PowerOutBar" method="Change"]
 [connection signal="item_selected" from="back/BlocksList" to="." method="_on_BlocksList_item_selected"]
 [connection signal="button_down" from="back/BlockDescription/BtnHeal" to="." method="_on_BtnHeal_button_down"]
-[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph" method="_on_HSlider_value_changed"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph2" method="_on_HSlider_value_changed"]
 [connection signal="timeout" from="TimerEnergy" to="." method="_on_TimerEnergy_timeout"]

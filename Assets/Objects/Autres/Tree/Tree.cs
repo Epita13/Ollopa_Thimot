@@ -120,7 +120,7 @@ public class Tree : StaticBody2D
         GetNode<Sprite>("top").Texture = trees_textures[treeNumber].Item2;
 
         Scale = new Vector2(treeSize, treeSize);
-        health = treeSize * 750 / 0.3f;
+        health = treeSize * 750 / 0.9f;
         drop = new Drop(new Drop.Loot(Item.Type.Wood, Mathf.CeilToInt(treeSize*4/0.3f)));
     }
 
@@ -157,7 +157,6 @@ public class Tree : StaticBody2D
             {
                 Vector2 npos = new Vector2(pos.x + ((float) World.random.NextDouble() * 0.8f - 0.4f),
                     pos.y + ((float) World.random.NextDouble() * 0.8f - 0.4f));
-                GD.Print(npos);
                 Loot.SpawnLoot(npos, l.type, l.amount);
             }
         }

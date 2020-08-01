@@ -6,17 +6,21 @@ public abstract class Building : Node2D
 {
     
     // Enumeration : Type de batiment disponible
-    public static int nbBuildings = 8;
+    public static int nbBuildings = 11;
+
     public enum Type
     {
         SolarPanel,
+        O2Generator,
+        Thermogenerator,
 		Storage,
+        Grinder,
         Printer3D,
         Compactor,
         Infirmary,
-        O2Generator,
         OilPump,
-        Refinery
+        Refinery,
+        Drill,
     }
     
     // Dictionaire : Stock les scnenes batiment en fonction du type de batiment
@@ -29,7 +33,10 @@ public abstract class Building : Node2D
         {Type.Infirmary, GD.Load<PackedScene>("res://Assets/Objects/Buildings/Infirmary/Infirmary.tscn")},
         {Type.O2Generator, GD.Load<PackedScene>("res://Assets/Objects/Buildings/O2Generator/O2Generator.tscn")},
         {Type.OilPump, GD.Load<PackedScene>("res://Assets/Objects/Buildings/PetrolGenerator/PetrolGenerator.tscn")},
-        {Type.Refinery, GD.Load<PackedScene>("res://Assets/Objects/Buildings/Refinery/Refinery.tscn")}
+        {Type.Refinery, GD.Load<PackedScene>("res://Assets/Objects/Buildings/Refinery/Refinery.tscn")},
+        {Type.Drill, GD.Load<PackedScene>("res://Assets/Objects/Buildings/Drill/Drill.tscn")},
+        {Type.Grinder, GD.Load<PackedScene>("res://Assets/Objects/Buildings/Grinder/Grinder.tscn")},
+        {Type.Thermogenerator, GD.Load<PackedScene>("res://Assets/Objects/Buildings/thermogenerator/thermogenerator.tscn")},
     };
     public static Dictionary<Type, Texture> textures = new Dictionary<Type, Texture>
     {
@@ -41,42 +48,54 @@ public abstract class Building : Node2D
         {Type.O2Generator, GD.Load<Texture>("res://Assets/Ressources/Imgs/Buildings/O2Generator/O2Generator.png")},
         {Type.OilPump, GD.Load<Texture>("res://Assets/Ressources/Imgs/Buildings/Oilwell/PetrolGenerator.png")},
         {Type.Refinery, GD.Load<Texture>("res://Assets/Ressources/Imgs/Buildings/Refinery/Refinery.png")},
+        {Type.Drill, GD.Load<Texture>("res://Assets/Ressources/Imgs/Buildings/Drill/forreuse.png")},
+        {Type.Grinder, GD.Load<Texture>("res://Assets/Ressources/Imgs/Buildings/Broyeur/Broyeur.png")},
+        {Type.Thermogenerator, GD.Load<Texture>("res://Assets/Ressources/Imgs/Buildings/Thermogenerator/generateur thermique.png")}
     };
     
     public static Dictionary<Type, string> descriptions = new Dictionary<Type, string>
     {
-        {Type.SolarPanel, "Generate energy from the sun's energy"},
-        {Type.Storage, "Stores energy and oxygen"},
-        {Type.Printer3D, "Create buildings"},
-        {Type.Compactor, "Create blocks"},
-        {Type.Infirmary, "Heal the player"},
-        {Type.O2Generator, "Give oxygene"},
-        {Type.OilPump, "Give Oil"},
-        {Type.Refinery, "Transform oil in fuel"}
+        {Type.SolarPanel, "Generates energy from the sun's energy"},
+        {Type.Storage, "Stores energy and charges the player's energy"},
+        {Type.Printer3D, "Creates buildings"},
+        {Type.Compactor, "Creates blocks"},
+        {Type.Infirmary, "Heals the player"},
+        {Type.O2Generator, "Gives oxygene"},
+        {Type.OilPump, "Gives Oil"},
+        {Type.Refinery, "Transforms oil in fuel"},
+        {Type.Drill, "Extracts item from the ground"},
+        {Type.Grinder, "Grinds every item into composite"},
+        {Type.Thermogenerator, "Generate energy with wood or fuel"},
     };
     
     public static Dictionary<Type, float> times2Create = new Dictionary<Type, float>
     {
-        {Type.SolarPanel, 20.0f},
+        {Type.SolarPanel, 60.0f},
         {Type.Storage, 120.0f},
         {Type.Printer3D, 300.0f},
         {Type.Compactor, 150.0f},
-        {Type.Infirmary, 30f},
-        {Type.O2Generator, 30f},
+        {Type.Infirmary, 200f},
+        {Type.O2Generator, 45f},
         {Type.OilPump, 60f},
-        {Type.Refinery, 60f}
+        {Type.Refinery, 60f},
+        {Type.Drill, 45f},
+        {Type.Grinder, 150f},
+        {Type.Thermogenerator, 60f},
     };
     
     public static Dictionary<Type, Drop> crafts = new Dictionary<Type, Drop>
     {
-        {Type.SolarPanel, new Drop(new Drop.Loot(Item.Type.Composite, 25), new Drop.Loot(Item.Type.Stone, 10))},
-        {Type.Storage, new Drop(new Drop.Loot(Item.Type.Composite, 45), new Drop.Loot(Item.Type.Stone, 15), new Drop.Loot(Item.Type.Wood, 5))},
-        {Type.Printer3D, new Drop(new Drop.Loot(Item.Type.Composite, 60))},
-        {Type.Compactor, new Drop(new Drop.Loot(Item.Type.Composite, 10))},
-        {Type.Infirmary, new Drop(new Drop.Loot(Item.Type.Composite, 10))},
-        {Type.O2Generator, new Drop(new Drop.Loot(Item.Type.Composite, 10))},
-        {Type.OilPump, new Drop(new Drop.Loot(Item.Type.Composite, 10))},
-        {Type.Refinery, new Drop(new Drop.Loot(Item.Type.Composite, 10))}
+        {Type.SolarPanel, new Drop(new Drop.Loot(Item.Type.Sonar, 12), new Drop.Loot(Item.Type.Stone, 10), new Drop.Loot(Item.Type.Wood, 4))},
+        {Type.Storage, new Drop(new Drop.Loot(Item.Type.Stone, 30), new Drop.Loot(Item.Type.Wood, 5))},
+        {Type.Printer3D, new Drop(new Drop.Loot(Item.Type.Composite, 40), new Drop.Loot(Item.Type.Ospirit,1))},
+        {Type.Compactor, new Drop( new Drop.Loot(Item.Type.Sonar,5), new Drop.Loot(Item.Type.Stone, 15), new Drop.Loot(Item.Type.Ospirit, 3))},
+        {Type.Infirmary, new Drop(new Drop.Loot(Item.Type.Stone, 15), new Drop.Loot(Item.Type.Ospirit, 2), new Drop.Loot(Item.Type.Sonar,7), new Drop.Loot(Item.Type.Composite,10))},
+        {Type.O2Generator, new Drop( new Drop.Loot(Item.Type.Wood,5),new Drop.Loot(Item.Type.Stone,15))},
+        {Type.OilPump, new Drop(new Drop.Loot(Item.Type.Composite, 10), new Drop.Loot(Item.Type.Stone, 35), new Drop.Loot(Item.Type.Ospirit,2))},
+        {Type.Refinery, new Drop(new Drop.Loot(Item.Type.Composite, 25), new Drop.Loot(Item.Type.Stone,40), new Drop.Loot(Item.Type.Ospirit,4))},
+        {Type.Drill, new Drop(new Drop.Loot(Item.Type.Composite, 30),new Drop.Loot(Item.Type.Sonar, 10),new Drop.Loot(Item.Type.Ospirit, 5))},
+        {Type.Grinder, new Drop(new Drop.Loot(Item.Type.Sonar, 1),new Drop.Loot(Item.Type.Dirt, 30),new Drop.Loot(Item.Type.Stone, 15))},
+        {Type.Thermogenerator, new Drop(new Drop.Loot(Item.Type.Stone, 15), new Drop.Loot(Item.Type.Sonar,2))}
     };
     
     public static List<Building.Type> buildingReceiverOfEnergy = new List<Type>
@@ -87,7 +106,16 @@ public abstract class Building : Node2D
         Type.Infirmary, 
         Type.O2Generator,
         Type.OilPump,
-        Type.Refinery
+        Type.Refinery,
+        Type.Drill,
+        Type.Grinder
+    };
+
+
+    public static float powerEnergy2Player = 5;
+    public static List<Building.Type> buildingGiveEnergy2Player = new List<Type>
+    {
+        Type.Storage,
     };
 
     /*
@@ -113,16 +141,24 @@ public abstract class Building : Node2D
             bool isPlaced : true si le batiment est placer dans la scene; false sinon.
             int health, maxGHealth : represente la vie du joueur et son maximum de vie.
     */
-    
-    public static List<Building> placedBuildings = new List<Building>();
 
     public static List<T> GetBuildingTypeList<T> () where T: Building
     {
         List<T> l = new List<T>();
-        foreach (var building in placedBuildings)
+        foreach (var building in World.placedBuildings)
         {
             if (building is T)
                 l.Add((T)building);
+        }
+        return l;
+    }
+    public static List<Building> GetBuildingTypeList (Type type)
+    {
+        List<Building> l = new List<Building>();
+        foreach (var building in World.placedBuildings)
+        {
+            if (building.type == type)
+                l.Add(building);
         }
         return l;
     }
@@ -139,6 +175,17 @@ public abstract class Building : Node2D
             }
         }
         return s;
+    }
+    public static Building GetBuildingById(Type type, int id)
+    {
+        foreach (var b in World.placedBuildings)
+        {
+            if (b.type == type && b.id == id)
+            {
+                return b;
+            }
+        }
+        return null;
     }
     
     public static Node parent;
@@ -162,6 +209,8 @@ public abstract class Building : Node2D
     /*Selection de batiment*/
     public static bool HasBuildingSelected = false;
     public static Building BuildingSelected = null;
+
+    private bool mouseOn = false;
     
     
     public int size = 4;
@@ -169,6 +218,7 @@ public abstract class Building : Node2D
     
 
     public Vector2 location;
+    public Vector2 locationNow;
     public bool isPlaced = false;
 
     public Building.Type type;
@@ -193,7 +243,7 @@ public abstract class Building : Node2D
     private float sumEnergyOut;
     public List<float> powerOuthistory = new List<float>();
     
-    public const float POWERMAXOUT = 0.8f; // e/s
+    public const float POWERMAXOUT = 1.5f; // e/s
 
     public Timer timer;
     
@@ -201,6 +251,55 @@ public abstract class Building : Node2D
     public bool isLinked = false;
     public List<Building> linkedBuildings = new List<Building>();
 
+    
+    /*Structure de sauvegarde*/
+    public struct SaveStruct
+    {
+        public Type type;
+        public int healthMax;
+        public int health;
+        public int id;
+        public float energyMax;
+        public float energy;
+        public Vector2 location;
+        public bool isLinked;
+        public List<float> energyhistory;
+        public List<float> powerInhistory;
+        public List<float> powerOuthistory;
+    }
+
+    public SaveStruct GetBuildingSaveStruct()
+    {
+        SaveStruct s = new SaveStruct();
+        s.type = type;
+        s.healthMax = healthMax;
+        s.health = health;
+        s.id = id;
+        s.energy = energy;
+        s.energyMax = energyMax;
+        s.location = location;
+        s.isLinked = isLinked;
+        s.energyhistory = energyhistory;
+        s.powerInhistory = powerInhistory;
+        s.powerOuthistory = powerOuthistory;
+        return s;
+    }
+    public void SetBuildingSaveStruct(SaveStruct st)
+    {
+        type = st.type;
+        healthMax = st.healthMax;
+        health = st.health;
+        id = st.id;
+        energy = st.energy;
+        energyMax = st.energyMax;
+        isLinked = st.isLinked;
+        energyhistory = st.energyhistory;
+        powerInhistory = st.powerInhistory;
+        powerOuthistory = st.powerOuthistory;
+    }
+    /*************************/
+    
+    
     public Building(int healthMax, float energyMax)
     {
         this.health = healthMax;
@@ -224,7 +323,8 @@ public abstract class Building : Node2D
         isPlaced = true;
         Position = Convertion.World2Location(location);
         parent.AddChild(this);
-        placedBuildings.Add(this);
+        World.placedBuildings.Add(this);
+        World.placedBuildingByChunk[World.GetChunk((int)location.x)].Add(this);
     }
 
     /// Enleve le batiment de la map
@@ -236,7 +336,8 @@ public abstract class Building : Node2D
         this.location = new Vector2(-1,-1);
         isPlaced = false;
         parent.RemoveChild(this);
-        placedBuildings.Remove(this);
+        World.placedBuildings.Remove(this);
+        World.placedBuildingByChunk[World.GetChunk((int) location.x)].Remove(this);
     }
 
     // Détruit le batmiment
@@ -303,6 +404,9 @@ public abstract class Building : Node2D
 
     public override void _Process(float delta)
     {
+        if (PlayerState.Is(PlayerState.State.Pause))
+            return;
+        
         /*Teleportation Tree*/
         Vector2 p = GetViewportTransform().origin * CurrentCamera.GetXZoom();
         int viewportSizeX = Mathf.FloorToInt(GetViewport().Size.x * CurrentCamera.GetXZoom());
@@ -366,6 +470,22 @@ public abstract class Building : Node2D
         }
         prev_x_viewport = vecMin.x;
         /*----------------------*/
+        locationNow = Convertion.Location2World(Position);
+
+        if (HasBuildingSelected && BuildingSelected==this)
+        {
+            if (!BuildingInRange(10))
+            {
+                ResetOutline();
+                HasBuildingSelected = false;
+                BuildingSelected = null;
+            }
+        }
+
+        if (mouseOn)
+        {
+            _on_ZONE_mouse_entered();
+        }
     }
     
     public float AddEnergy(float amount, bool correction = false)
@@ -447,6 +567,8 @@ public abstract class Building : Node2D
     /*History for graphs*/
     public void _on_TimerHistory_timeout()
     {
+        if (PlayerState.Is(PlayerState.State.Pause))
+            return;
         History<float>.Add(energyhistory, energy);
         History<float>.Add(powerInhistory, powerIn);
         History<float>.Add(powerOuthistory, powerOut);
@@ -456,21 +578,33 @@ public abstract class Building : Node2D
     private float timerEnergyWaitTime;
     public void _on_TimerEnergy_timeout()
     {
+        if (PlayerState.Is(PlayerState.State.Pause))
+            return;
         powerIn = sumEnergyIn / timerEnergyWaitTime;
         powerOut = sumEnergyOut / timerEnergyWaitTime;
         sumEnergyIn = 0;
         sumEnergyOut = 0;
     }
-    
+
+    public bool BuildingInRange(float range)
+    {
+        float distance = Mathf.Sqrt(Mathf.Pow(PlayerMouvements.GetX() - location.x, 2) +
+                                    Mathf.Pow(PlayerMouvements.GetY() - location.y, 2));
+        return distance <= range;
+    }
     /*OUTLINE buildings*/
     public void _on_ZONE_mouse_entered()
     {
+        mouseOn = true;
         Sprite p = GetNode<Sprite>("OUTLINE");
         if (PlayerState.Is(PlayerState.State.Normal, PlayerState.State.Build))
         {
-            SetOutline(1.5f, Color.Color8(0,150,255));
-            HasBuildingSelected = true;
-            BuildingSelected = this;
+            if (BuildingInRange(10))
+            {
+                SetOutline(1.5f, Color.Color8(0, 150, 255));
+                HasBuildingSelected = true;
+                BuildingSelected = this;
+            }
         } else if (PlayerState.Is(PlayerState.State.Link))
         {
             if (Building.buildingReceiverOfEnergy.Contains(type))
@@ -487,6 +621,12 @@ public abstract class Building : Node2D
     }
     public void _on_ZONE_mouse_exited()
     {
+        mouseOn = false;
+        if (HasBuildingSelected && BuildingSelected != this)
+        {
+            ResetOutline();
+            return;
+        }
         if (PlayerState.IsNot(PlayerState.State.Link))
         {
             ResetOutline();

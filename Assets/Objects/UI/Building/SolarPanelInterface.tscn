@@ -207,7 +207,7 @@ autostart = true
 [connection signal="ChangePowerInBar" from="." to="back2/PowerInBar" method="Change"]
 [connection signal="ChangePowerOutBar" from="." to="back2/PowerOutBar" method="Change"]
 [connection signal="button_down" from="back/LinkBtn" to="." method="_on_LinkBtn_button_down"]
-[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph2" method="_on_HSlider_value_changed"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="back2/HSlider" to="back2/Graph" method="_on_HSlider_value_changed"]
 [connection signal="timeout" from="TimerEnergy" to="." method="_on_TimerEnergy_timeout"]

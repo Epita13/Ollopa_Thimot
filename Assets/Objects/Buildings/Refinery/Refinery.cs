@@ -9,13 +9,38 @@ public class Refinery : Building
 	private static float oilToFuel = 0.5f;
 	public float oil;
 	public float fuel;
-	public float oilMAX = 500f;
-	public float fuelMAX = 500f;
+	public float oilMAX = 300f;
+	public float fuelMAX = 100f;
 	public float togive = 0;
 	public float toadd = 0;
 	private static float giveSpeed = 2.5f;
-	private bool on = false;
+	public bool on = false;
 
+	
+	/*Structure de sauvegarde*/
+	public struct SaveStruct
+	{
+		public Building.SaveStruct buildingSave;
+		public float oil;
+		public float fuel;
+		public float togive;
+		public float toadd;
+		public bool on;
+	}
+
+	public SaveStruct GetSaveStruct()
+	{
+		SaveStruct s = new SaveStruct();
+		s.buildingSave = GetBuildingSaveStruct();
+		s.togive = togive;
+		s.oil = oil;
+		s.fuel = fuel;
+		s.toadd = toadd;
+		s.@on = @on;
+		return s;
+	}
+	/*************************/
+	
 	public Refinery() : base (100, 100.0f)
 	{
 	}
@@ -28,28 +53,31 @@ public class Refinery : Building
 	
 	public void _on_Timer_timeout()
 	{
-		if (togive >= giveSpeed)
+		if (PlayerState.Is(PlayerState.State.Pause))
+			return;
+		
+		if (togive >= giveSpeed && Player.inventoryLiquids.CanAdd(Liquid.Type.Fuel, giveSpeed))
 		{
-			//Player.inventoryLiquids.Add(Liquid.Type.Fuel, giveSpeed);
+			Player.inventoryLiquids.Add(Liquid.Type.Fuel, giveSpeed);
 			togive -= giveSpeed;
 			fuel -= giveSpeed;
 		}
-		else if(togive > 0)
+		else if(togive > 0 && Player.inventoryLiquids.CanAdd(Liquid.Type.Fuel, togive))
 		{
-			//Player.inventoryLiquids.Add(Liquid.Type.Fuel, togive);
+			Player.inventoryLiquids.Add(Liquid.Type.Fuel, togive);
 			fuel -= togive;
 			togive = 0;
 		}
 		
 		if (toadd >= giveSpeed)
 		{
-			//Player.inventoryLiquids.Remove(Liquid.Type.Oil, giveSpeed);
+			Player.inventoryLiquids.Remove(Liquid.Type.Oil, giveSpeed);
 			toadd -= giveSpeed;
 			oil += giveSpeed;
 		}
 		else if(toadd > 0)
 		{
-			//Player.inventoryLiquids.Remove(Liquid.Type.Oil, toadd);
+			Player.inventoryLiquids.Remove(Liquid.Type.Oil, toadd);
 			oil += toadd;
 			toadd = 0;
 		}

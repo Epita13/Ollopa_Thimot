@@ -30,15 +30,15 @@ public class Block
         {Type.Dirt, new Drop(new Drop.Loot(Item.Type.Dirt,1))},
         {Type.WestStone, null},
         {Type.SonarOre, new Drop(new Drop.Loot(Item.Type.Sonar, 1))},
-        {Type.OspiritOre, new Drop(new Drop.Loot(Item.Type.Composite, 1))},
-        {Type.WarningBlock, new Drop(new Drop.Loot(Item.Type.Composite, 1)) },
-        {Type.IronBlock, new Drop(new Drop.Loot(Item.Type.Composite, 1))},
+        {Type.OspiritOre, new Drop(new Drop.Loot(Item.Type.Ospirit, 1))},
+        {Type.WarningBlock, new Drop(new Drop.Loot(Item.Type.Stone, 5)) },
+        {Type.IronBlock, new Drop(new Drop.Loot(Item.Type.Stone, 5))},
     };
     
     public static Dictionary<Type, float> durabilities = new Dictionary<Type, float>
     {
         {Type.Air, -1.0f},
-        {Type.Stone, 100.0f},
+        {Type.Stone, 80.0f},
         {Type.Grass, 40.0f},
         {Type.Dirt, 30.0f},
         {Type.WestStone, -1.0f},
@@ -111,6 +111,7 @@ public class Block
         if (health <= 0)
         {
             UI_breakingBlocks.RemoveUI(this);
+            PlayerMouvements.PlaySound(Sounds.Type.BlockBreak);
             SpawnDrop();
             Remove();
         } else if (health < durabilities[type])

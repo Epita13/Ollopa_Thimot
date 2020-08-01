@@ -1,14 +1,42 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Objects/UI/Menus/EndMenu.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Ressources/Fonts/American Captain.otf" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/Objects/UI/Menus/other/Animation.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Ressources/Fonts/F25_Bank_Printer.otf" type="DynamicFontData" id=4]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Menus/PlayMenu/background.png" type="Texture" id=5]
 
-[sub_resource type="DynamicFont" id=1]
-size = 80
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float lod: hint_range(0, 5);
+
+void fragment() {
+	COLOR.rgb = textureLod(SCREEN_TEXTURE, SCREEN_UV, lod).rgb;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/lod = 1.5
+
+[sub_resource type="DynamicFont" id=3]
+size = 60
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=2]
-size = 60
+[sub_resource type="DynamicFont" id=4]
+size = 200
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 45
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 32
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 48
 font_data = ExtResource( 2 )
 
 [node name="EndMenu" type="Control"]
@@ -19,25 +47,108 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="."]
-margin_left = 800.0
-margin_top = 200.0
-margin_right = 1075.0
-margin_bottom = 280.0
-custom_fonts/font = SubResource( 1 )
-text = "YOU WIN !!!"
+[node name="back" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.00012207
+texture = ExtResource( 5 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Animation" parent="." instance=ExtResource( 3 )]
+
+[node name="blur" type="TextureRect" parent="."]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.00012207
+texture = ExtResource( 5 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Button" type="Button" parent="."]
-margin_left = 850.0
-margin_top = 500.0
-margin_right = 1050.0
-margin_bottom = 650.0
-custom_fonts/font = SubResource( 2 )
+anchor_left = 0.5
+anchor_top = 0.877
+anchor_right = 0.5
+anchor_bottom = 0.877
+margin_left = -350.0
+margin_top = -95.16
+margin_right = 350.0
+margin_bottom = 94.84
+custom_fonts/font = SubResource( 3 )
 text = "Quit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.503
+anchor_top = 0.164
+anchor_right = 0.503
+anchor_bottom = 0.164
+margin_left = -446.596
+margin_top = -116.12
+margin_right = 445.404
+margin_bottom = 115.88
+custom_fonts/font = SubResource( 4 )
+text = "WIN"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Time" type="Label" parent="."]
+anchor_left = 0.503
+anchor_top = 0.42
+anchor_right = 0.503
+anchor_bottom = 0.42
+margin_left = -433.977
+margin_top = -67.3708
+margin_right = 435.023
+margin_bottom = 66.6292
+custom_fonts/font = SubResource( 5 )
+text = "Time :"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="LineEdit" parent="."]
+anchor_left = 0.5
+anchor_top = 0.558
+anchor_right = 0.5
+anchor_bottom = 0.558
+margin_left = -351.0
+margin_top = -56.7284
+margin_right = 343.0
+margin_bottom = 57.2716
+custom_fonts/font = SubResource( 6 )
+max_length = 40
+placeholder_text = "Your Name"
+placeholder_alpha = 0.4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnSendScore" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.679
+anchor_right = 0.5
+anchor_bottom = 0.679
+margin_left = -345.0
+margin_top = -70.32
+margin_right = 336.0
+margin_bottom = 70.68
+custom_fonts/font = SubResource( 7 )
+text = "publish your scrore"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_down" from="Button" to="." method="_on_Button_button_down"]
+[connection signal="button_down" from="BtnSendScore" to="." method="_on_BtnSendScore_button_down"]

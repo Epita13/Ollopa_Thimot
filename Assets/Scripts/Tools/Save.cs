@@ -29,7 +29,11 @@ public static class Save
         {
             if (File.Exists(Path.Combine(path, "ollopa.save")))
             {
-                res.Add(File.ReadAllText(Path.Combine(path, "ollopa.save")));
+                ConfigDataModel conf = GetConfigData(path);
+                if (conf.version == Game.VERSION)
+                {
+                    res.Add(conf.name);
+                }
             }
         }
         return res;
@@ -45,6 +49,7 @@ public static class Save
         saveWorldData(savePath);
         savePlayerData(savePath);
         saveSpaceShipData(savePath);
+        saveBuildingsData(savePath);
     }
     public static void _Load(string saveName)
     {
@@ -58,6 +63,7 @@ public static class Save
         LoadWorldData(Path.Combine(savesPath, saveName));
         LoadPlayerData(Path.Combine(savesPath, saveName));
         LoadSpaceShipData(Path.Combine(savesPath, saveName));
+        LoadBuildingsData(Path.Combine(savesPath, saveName));
     }
     
     
@@ -70,11 +76,33 @@ public static class Save
         {    
             File.Delete(fileName);    
         }
-
+        ConfigDataModel data = new ConfigDataModel();
+        data.GetValues();
         using (StreamWriter sw = File.CreateText(fileName))
         {
             sw.Write(name);
         }
+        string json = JsonConvert.SerializeObject(data);
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(json);
+        }
+    }
+
+    private static ConfigDataModel GetConfigData(string path)
+    {
+        string filePath = Path.Combine(path, "ollopa.save");
+        string jsonString = File.ReadAllText(filePath);
+        ConfigDataModel data = null;
+        try
+        {
+            data = ConfigDataModel.Deserialize(jsonString);
+        }
+        catch
+        {
+            throw new Exception("ConfigDataModel: invalid syntaxe json");
+        }
+        return data;
     }
 
 
@@ -209,6 +237,38 @@ public static class Save
         try
         {
             data = SpaceshipDataModel.Deserialize(jsonString);
+        }
+        catch
+        {
+            throw new Exception("LoadSpaceShipData: invalid syntaxe json");
+        }
+        data.SetValues();
+    }
+    
+    
+    private static void saveBuildingsData(string path)
+    {
+        string fileName = Path.Combine(path, "Buildings.data");
+        if (File.Exists(fileName))
+        {    
+            File.Delete(fileName);    
+        }
+        BuildingsDataModel data = new BuildingsDataModel();
+        data.GetValues();
+        string json = JsonConvert.SerializeObject(data);
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(json);
+        }
+    }
+    private static void LoadBuildingsData(string path)
+    {
+        string filePath = Path.Combine(path, "Buildings.data");
+        string jsonString = File.ReadAllText(filePath);
+        BuildingsDataModel data = null;
+        try
+        {
+            data = BuildingsDataModel.Deserialize(jsonString);
         }
         catch
         {

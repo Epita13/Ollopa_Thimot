@@ -22,6 +22,7 @@ public class PlayerZone : Area2D
             area.RemoveFromGroup("loot");
             if (canAdd)
             {
+            	PlayerMouvements.PlaySound(Sounds.Type.PlayerGetloot);
                 loot.QueueFree();
             }
             else

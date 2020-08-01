@@ -92,7 +92,7 @@ public class Animation : Control
     private void LoadTextures()
     {
         /*Items*/
-        for (int i = 0; i < Item.nbItems; i++)
+       for (int i = 0; i < Item.nbItems; i++)
         {
             alltextures.Add(Item.textures[i]);
         }

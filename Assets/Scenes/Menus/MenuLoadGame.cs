@@ -116,7 +116,7 @@ public class MenuLoadGame : Node2D
         {
             Game.load = true;
             Game.saveName = saveSelected;
-            World.SetSaveName(saveSelected);
+            Game.saveName = saveSelected;
             GetTree().ChangeScene("res://Assets/Scenes/Jeux/Game.tscn");
         }
     }

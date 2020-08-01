@@ -119,9 +119,4 @@ public class CompactorInterface : BuildingInterface
 
         SetDescription(blockSelected);
     }
-
-    public void _on_CompactorInterface_focus_exited()
-    {
-        GD.Print("salamamamamamam");
-    }
 }

@@ -34,6 +34,9 @@ public class UI_breakingBlocks : TileMap
 
     public override void _Process(float delta)
     {
+        if (PlayerState.Is(PlayerState.State.Pause))
+            return;
+        
         foreach (var b in damagedBlocks)
         {
             b.Heal(Block.healStrength*delta);

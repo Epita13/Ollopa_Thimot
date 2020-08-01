@@ -1,11 +1,12 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Assets/Objects/Player/PlayerMouvements.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Ressources/Imgs/Joueur/All_animation.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Objects/Player/PlayerInputs.cs" type="Script" id=3]
 [ext_resource path="res://Assets/Ressources/Imgs/Joueur/PointLigth.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Objects/Player/PlayerZone.cs" type="Script" id=5]
-[ext_resource path="res://Assets/Objects/Tools/RayGun/Raygun.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Objects/Tools/Raygun/Raygun.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Objects/Player/PlayerBuildingActions.cs" type="Script" id=7]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 light_mode = 1
@@ -188,12 +189,15 @@ anims/Turn = SubResource( 9 )
 anims/Turn_Back = SubResource( 10 )
 
 [node name="Collision" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0.263519, -1.3176 )
 shape = SubResource( 11 )
 
 [node name="Inputs" type="Node2D" parent="."]
 script = ExtResource( 3 )
+
+[node name="PlayerBuildingActions" type="Node2D" parent="."]
+position = Vector2( -1, 0 )
+script = ExtResource( 7 )
 
 [node name="light" type="Light2D" parent="."]
 position = Vector2( -0.946938, 0 )
@@ -202,14 +206,12 @@ energy = 0.0
 shadow_enabled = true
 
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 script = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 12 )
 
 [node name="Raygun" parent="." instance=ExtResource( 6 )]
-visible = false
 position = Vector2( 2.63524, -2.89874 )
 scale = Vector2( 0.580428, 0.516497 )
 

@@ -58,21 +58,29 @@
     <Compile Include="Assets\Objects\Autres\Grass\Grass.cs" />
     <Compile Include="Assets\Objects\Autres\Loot.cs" />
     <Compile Include="Assets\Objects\Autres\Tree\Tree.cs" />
+    <Compile Include="Assets\Objects\Enemy\Enemies.cs" />
+    <Compile Include="Assets\Objects\Enemy\Ennemy_Fly.cs" />
     <Compile Include="Assets\Objects\Buildings\Barrel\Barrel.cs" />
     <Compile Include="Assets\Objects\Buildings\Compactor\Compactor.cs" />
+    <Compile Include="Assets\Objects\Buildings\Drill\Drill.cs" />
+    <Compile Include="Assets\Objects\Buildings\Grinder\Grinder.cs" />
     <Compile Include="Assets\Objects\Buildings\Infirmary\Infirmary.cs" />
     <Compile Include="Assets\Objects\Buildings\O2Generator\O2Generator.cs" />
-    <Compile Include="Assets\Objects\Buildings\Printer3D\Printer3D.cs" />
     <Compile Include="Assets\Objects\Buildings\Refinery\Refinery.cs" />
+    <Compile Include="Assets\Objects\Buildings\Printer3D\Printer3D.cs" />
     <Compile Include="Assets\Objects\Buildings\SolarPanel\SolarPanel.cs" />
-    <Compile Include="Assets\Objects\Buildings\Spaceship\Spaceship.cs" />
+    <Compile Include="Assets\Objects\Buildings\Spaceship\SpaceShip.cs" />
     <Compile Include="Assets\Objects\Buildings\Storage\Storage.cs" />
     <Compile Include="Assets\Objects\Buildings\PetrolGenerator\PetrolGenerator.cs" />
+    <Compile Include="Assets\Objects\Buildings\thermogenerator\Thermogenerator.cs" />
+    <Compile Include="Assets\Objects\Player\PlayerBuildingActions.cs" />
     <Compile Include="Assets\Objects\Player\PlayerInputs.cs" />
     <Compile Include="Assets\Objects\Player\PlayerMouvements.cs" />
     <Compile Include="Assets\Objects\Player\PlayerZone.cs" />
     <Compile Include="Assets\Objects\Tools\Raygun\Raygun.cs" />
     <Compile Include="Assets\Objects\UI\Building\CompactorInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\GrinderInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\DrillInterface.cs" />
     <Compile Include="Assets\Objects\UI\Building\InfirmaryInterface.cs" />
     <Compile Include="Assets\Objects\UI\Building\O2GeneratorInterface.cs" />
     <Compile Include="Assets\Objects\UI\Building\Printer3DInterface.cs" />
@@ -81,16 +89,19 @@
     <Compile Include="Assets\Objects\UI\Building\SpaceShipInterface.cs" />
     <Compile Include="Assets\Objects\UI\Building\StorageInterface.cs" />
     <Compile Include="Assets\Objects\UI\Building\PetrolGeneratorInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\ThermogeneratorInterface.cs" />
     <Compile Include="Assets\Objects\UI\Graphics\Graph.cs" />
     <Compile Include="Assets\Objects\UI\Menus\DeathMenu.cs" />
     <Compile Include="Assets\Objects\UI\Menus\EndMenu.cs" />
     <Compile Include="Assets\Objects\UI\Menus\other\Animation.cs" />
     <Compile Include="Assets\Objects\UI\Menus\other\ButtonMenu.cs" />
+    <Compile Include="Assets\Objects\UI\Menus\PauseMenu.cs" />
     <Compile Include="Assets\Objects\UI\Notification\Notifications.cs" />
     <Compile Include="Assets\Objects\UI\PlayerInventory\UI_PlayerInventory.cs" />
     <Compile Include="Assets\Objects\UI\PlayerInventory\UI_PlayerInventory2.cs" />
     <Compile Include="Assets\Objects\UI\Sliders\Energy\EnergyBar.cs" />
     <Compile Include="Assets\Objects\UI\Sliders\Energy\PowerBar.cs" />
+    <Compile Include="Assets\Objects\UI\Sliders\Health\HealthBar.cs" />
     <Compile Include="Assets\Objects\UI\Sliders\Oxygene\OxygeneBar.cs" />
     <Compile Include="Assets\Objects\UI\Sliders\Petrol\FuelBar.cs" />
     <Compile Include="Assets\Objects\UI\Sliders\Petrol\PetrolBar.cs" />
@@ -130,6 +141,7 @@
     <Compile Include="Assets\Scripts\Objects\StorageItems.cs" />
     <Compile Include="Assets\Scripts\Objects\StorageLiquids.cs" />
     <Compile Include="Assets\Scripts\Objects\Usable.cs" />
+    <Compile Include="Assets\Scripts\Tools\DBConnection.cs" />
     <Compile Include="Assets\Scripts\Tools\Delay.cs" />
     <Compile Include="Assets\Scripts\Tools\Exeception\OutOfBoundsException.cs" />
     <Compile Include="Assets\Scripts\Tools\Exeception\UninitializedException.cs" />
@@ -140,6 +152,7 @@
     <Compile Include="Assets\Scripts\Tools\SavesModels\DataModel.cs" />
     <Compile Include="Assets\Scripts\Tools\ScreenAdapt.cs" />
     <Compile Include="Assets\Scripts\Tools\Sliders\SlideBar.cs" />
+    <Compile Include="Assets\Scripts\Tools\Sounds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

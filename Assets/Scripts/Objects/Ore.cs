@@ -27,13 +27,13 @@ public class Ore
     public static Dictionary<Block.Type, float> probabilities = new Dictionary<Block.Type, float>
     {
         {Block.Type.SonarOre, 0.15f},
-        {Block.Type.OspiritOre, 0.02f}
+        {Block.Type.OspiritOre, 0.06f}
     };
     
     public static Dictionary<Block.Type, int> heights = new Dictionary<Block.Type, int>
     {
         {Block.Type.SonarOre, 15},
-        {Block.Type.OspiritOre, 10}
+        {Block.Type.OspiritOre, 5}
     };
 
 

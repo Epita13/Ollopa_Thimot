@@ -22,10 +22,24 @@ public class Storage : Building
 	//ID de chaque batiment
 	public static int nbStorage = 0;
 
+	
+	/*Structure de sauvegarde*/
+	public struct SaveStruct
+	{
+		public Building.SaveStruct buildingSave;
+	}
 
+	public SaveStruct GetSaveStruct()
+	{
+		SaveStruct s = new SaveStruct();
+		s.buildingSave = GetBuildingSaveStruct();
+		return s;
+	}
+	/*************************/
+	
 
 	//Initialisation
-    public Storage() : base (150, 750.0f)
+    public Storage() : base (150, 350.0f)
     {
     }
 	
@@ -46,6 +60,8 @@ public class Storage : Building
     
     public void _on_Timer_timeout()
     {
+	    if (PlayerState.Is(PlayerState.State.Pause))
+		    return;
 	    TransferToLink(timer.WaitTime);
 	    EmitSignal("EnergyChange", energy, energyMax);
     }

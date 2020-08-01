@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class MenuNewGame : Node2D
 {
 
-    public static int defaultWorldSize = 25;
+    public static int defaultWorldSize = 35;
     
     
     private LineEdit name;
@@ -45,7 +45,7 @@ public class MenuNewGame : Node2D
                 World.SetSeed(Base36ToInt(seed.Text));
             }
             World.SetSize(defaultWorldSize);
-            World.SetSaveName(name.Text);
+            Game.saveName = name.Text;
             GetTree().ChangeScene("res://Assets/Scenes/Jeux/Game.tscn");
         }
 
@@ -58,6 +58,12 @@ public class MenuNewGame : Node2D
         {
             nameState.Visible = true;
             nameState.Text = "The save name can't be empty.";
+            return false;
+        }
+        if (Contains(name.Text, '/'))
+        {
+            nameState.Visible = true;
+            nameState.Text = "The save name can't contains '/'.";
             return false;
         }
         if (strings.Contains(name.Text))
@@ -123,5 +129,20 @@ public class MenuNewGame : Node2D
             return (int)(c - '0');
         }
         return (int)(c - 'A' + 10);
+    }
+
+    private static bool Contains(string s, char c)
+    {
+        bool res = false;
+        int i = 0;
+        int size = s.Length();
+        while (i < size && !res)
+        {
+            if (s[i] == c)
+                res = true;
+            i++;
+        }
+
+        return res;
     }
 }

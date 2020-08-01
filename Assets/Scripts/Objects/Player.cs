@@ -6,41 +6,29 @@ public static class Player
 {
     
 
-    /*Player sounds*/
-    public enum Sounds
-    {
-        PlayerDeath,
-    }
-    public static Dictionary<Sounds, AudioStream> sounds = new Dictionary<Sounds, AudioStream>
-    {
-        {Sounds.PlayerDeath, GD.Load<AudioStream>("res://Assets/Ressources/Sounds/Player/player_death.wav")}
-    };
-    
-    
     
     public static float healthMax = 100.0f;
     public static float health = 100.0f;
 
     public static float oxygeneMax = 100.0f;
-    public static float oxygene = 100.0f;
-    public static float oxygeneLoss = 0.7f;
-    public static float oxygeneDamage = 10.0f;
+    public static float oxygene = 100f;
+    public static float oxygeneLoss = 0.4f;
+    public static float oxygeneDamage = 3.0f;
 
     public static float energyMax = 100.0f;
     public static float energy = 100.0f;
-    public static float energyLoss = 0.4f;
     public static float energyDamage = 0.1f;
 
     // Ex : laser, blocks..
-    private static int inventoryUsablesSize = 100;
+    public static int inventoryUsablesSize = 100;
     public static  StorageUsables inventoryUsables = new StorageUsables(inventoryUsablesSize);
     // Ex : bois, composite (matieres premieres)
-    private static int inventoryItemsSize = 20000;
+    public static int inventoryItemsSize = 20000;
     public static StorageItems inventoryItems = new StorageItems(inventoryItemsSize);
     // Ex : eau, petrole (Liquide)
-    private static float inventoryLiquidsSize = 30.0f;
+    public static float inventoryLiquidsSize = 100.0f;
     public static StorageLiquids inventoryLiquids = new StorageLiquids(inventoryLiquidsSize);
-    private static int inventoryBuildingsSize = 10;
+    public static int inventoryBuildingsSize = 10;
     public static StorageBuildings inventoryBuildings = new StorageBuildings(inventoryBuildingsSize);
 
 
@@ -57,6 +45,7 @@ public static class Player
     /// Enleve de la vie au joueur.
     public static void RemoveHealth(float amount)
     {
+        PlayerMouvements.PlaySound(Sounds.Type.PlayerHurt);
         health -= amount;
         if (health<0)
             health = 0;
@@ -107,24 +96,19 @@ public static class Player
         energy = energyMax;
     }
 
-    public static void PrintEnergy(){
-        GD.Print("Le Joueur a " + energy + "/" + energyMax + " d'energie.");
+    public static void Die()
+    {
+        BuildingInterface.CloseInterface();
+        UI_PlayerInventory2.Close();
+        PlayerState.SetState(PlayerState.State.Dead);
     }
-    public static void PrintOxygene(){
-        GD.Print("Le Joueur a " + oxygene + "/" + oxygeneMax + " d'oxygene.");
-    }
-    public static void PrintHealth(){
-        GD.Print("Le Joueur a " + health + "/" + healthMax + " de santé.");
-    }
-
-
     public static void Revive()
     {
         if (health <= 0)
         {
-            health = healthMax;
-            oxygene = oxygeneMax;
-            energy = energyMax;
+            FillHealth();
+            FillOxygene();
+            FillEnergy();
             inventoryUsables = new StorageUsables(inventoryUsablesSize);
             inventoryItems = new StorageItems(inventoryItemsSize);
             inventoryLiquids = new StorageLiquids(inventoryLiquidsSize);
