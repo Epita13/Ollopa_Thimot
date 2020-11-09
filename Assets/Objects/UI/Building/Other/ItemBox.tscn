@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Ressources/Fonts/F25_Bank_Printer.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/Ressources/Imgs/Items/Composite.png" type="Texture" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 1 )
+
+[node name="ItemBox" type="Control"]
+margin_right = 140.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 140, 140 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="img" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 0.77
+margin_bottom = -0.0999908
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="texte" type="Label" parent="."]
+anchor_top = 0.77
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 0.200012
+margin_bottom = 1.52588e-05
+custom_fonts/font = SubResource( 1 )
+text = "10/50"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

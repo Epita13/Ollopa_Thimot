@@ -1,0 +1,279 @@
+using Godot;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using Directory = System.IO.Directory;
+using File = System.IO.File;
+using Path = System.IO.Path;
+
+public static class Save
+{
+
+
+    public static string savesPath = Path.Combine(OS.GetUserDataDir(), "saves");
+
+    public static void InitDirectoriesSave()
+    {
+        if (!Directory.Exists(savesPath))
+        {
+            Directory.CreateDirectory(savesPath);
+        }
+    }
+
+    public static List<string> GetSaves()
+    {
+        InitDirectoriesSave();
+        List<string> res = new List<string>();
+        foreach (var path in  Directory.GetDirectories(savesPath))
+        {
+            if (File.Exists(Path.Combine(path, "ollopa.save")))
+            {
+                ConfigDataModel conf = GetConfigData(path);
+                if (conf.version == Game.VERSION)
+                {
+                    res.Add(conf.name);
+                }
+            }
+        }
+        return res;
+    }
+    
+    public static void _Save(string saveName)
+    {
+        InitDirectoriesSave();
+        string savePath = Path.Combine(savesPath, saveName);
+        Directory.CreateDirectory(savePath);
+        saveConfig(savePath, saveName);
+        saveEnvironementData(savePath);
+        saveWorldData(savePath);
+        savePlayerData(savePath);
+        saveSpaceShipData(savePath);
+        saveBuildingsData(savePath);
+    }
+    public static void _Load(string saveName)
+    {
+        InitDirectoriesSave();
+        List<string> saves = Save.GetSaves();
+        if (!saves.Contains(saveName))
+        {
+            throw new Exception("errorrrrrr");
+        }
+        LoadEnvironementData(Path.Combine(savesPath, saveName));
+        LoadWorldData(Path.Combine(savesPath, saveName));
+        LoadPlayerData(Path.Combine(savesPath, saveName));
+        LoadSpaceShipData(Path.Combine(savesPath, saveName));
+        LoadBuildingsData(Path.Combine(savesPath, saveName));
+    }
+    
+    
+    
+
+    private static void saveConfig(string path, string name)
+    {
+        string fileName = Path.Combine(path, "ollopa.save");
+        if (File.Exists(fileName))
+        {    
+            File.Delete(fileName);    
+        }
+        ConfigDataModel data = new ConfigDataModel();
+        data.GetValues();
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(name);
+        }
+        string json = JsonConvert.SerializeObject(data);
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(json);
+        }
+    }
+
+    private static ConfigDataModel GetConfigData(string path)
+    {
+        string filePath = Path.Combine(path, "ollopa.save");
+        string jsonString = File.ReadAllText(filePath);
+        ConfigDataModel data = null;
+        try
+        {
+            data = ConfigDataModel.Deserialize(jsonString);
+        }
+        catch
+        {
+            throw new Exception("ConfigDataModel: invalid syntaxe json");
+        }
+        return data;
+    }
+
+
+    public static void DeleteSave(string saveName)
+    {
+        InitDirectoriesSave();
+        string savePath = Path.Combine(savesPath, saveName);
+        if (Directory.Exists(savePath))
+        {
+            Directory.Delete(savePath, true);
+        }
+    }
+    
+    
+    private static void saveWorldData(string path)
+    {
+        string fileName = Path.Combine(path, "World.data");
+        if (File.Exists(fileName))
+        {    
+            File.Delete(fileName);    
+        }
+        WorldDataModel data = new WorldDataModel();
+        data.GetValues();
+        string json = JsonConvert.SerializeObject(data);
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(json);
+        }
+    }
+    private static void LoadWorldData(string path)
+    {
+        string filePath = Path.Combine(path, "World.data");
+        string jsonString = File.ReadAllText(filePath);
+        WorldDataModel data = null;
+        try
+        {
+            data = WorldDataModel.Deserialize(jsonString);
+        }
+        catch
+        {
+            throw new Exception("LoadWorldData: invalid syntaxe json");
+        }
+        data.SetValues();
+    }
+    
+    
+    private static void saveEnvironementData(string path)
+    {
+        string fileName = Path.Combine(path, "Environement.data");
+        if (File.Exists(fileName))
+        {    
+            File.Delete(fileName);    
+        }
+        EnvironementDataModel data = new EnvironementDataModel();
+        data.GetValues();
+        string json = JsonConvert.SerializeObject(data);
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(json);
+        }
+    }
+    private static void LoadEnvironementData(string path)
+    {
+        string filePath = Path.Combine(path, "Environement.data");
+        string jsonString = File.ReadAllText(filePath);
+        EnvironementDataModel data = null;
+        try
+        {
+            data = EnvironementDataModel.Deserialize(jsonString);
+        }
+        catch
+        {
+            throw new Exception("saveEnvironementData: invalid syntaxe json");
+        }
+        data.SetValues();
+    }
+
+
+    private static void savePlayerData(string path)
+    {
+        string fileName = Path.Combine(path, "Player.data");
+        if (File.Exists(fileName))
+        {    
+            File.Delete(fileName);    
+        }
+        PlayerDataModel data = new PlayerDataModel();
+        data.GetValues();
+        string json = JsonConvert.SerializeObject(data);
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(json);
+        }
+    }
+
+    private static void LoadPlayerData(string path)
+    {
+        string filePath = Path.Combine(path, "Player.data");
+        string jsonString = File.ReadAllText(filePath);
+        PlayerDataModel data;
+        try
+        {
+            data = PlayerDataModel.Deserialize(jsonString);
+        }
+        catch
+        {
+            throw new Exception("savePlayerData: invalid syntaxe json");
+        }
+        data.SetValues();
+    }
+    
+    
+    private static void saveSpaceShipData(string path)
+    {
+        string fileName = Path.Combine(path, "Spaceship.data");
+        if (File.Exists(fileName))
+        {    
+            File.Delete(fileName);    
+        }
+        SpaceshipDataModel data = new SpaceshipDataModel();
+        data.GetValues();
+        string json = JsonConvert.SerializeObject(data);
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(json);
+        }
+    }
+    private static void LoadSpaceShipData(string path)
+    {
+        string filePath = Path.Combine(path, "Spaceship.data");
+        string jsonString = File.ReadAllText(filePath);
+        SpaceshipDataModel data = null;
+        try
+        {
+            data = SpaceshipDataModel.Deserialize(jsonString);
+        }
+        catch
+        {
+            throw new Exception("LoadSpaceShipData: invalid syntaxe json");
+        }
+        data.SetValues();
+    }
+    
+    
+    private static void saveBuildingsData(string path)
+    {
+        string fileName = Path.Combine(path, "Buildings.data");
+        if (File.Exists(fileName))
+        {    
+            File.Delete(fileName);    
+        }
+        BuildingsDataModel data = new BuildingsDataModel();
+        data.GetValues();
+        string json = JsonConvert.SerializeObject(data);
+        using (StreamWriter sw = File.CreateText(fileName))
+        {
+            sw.Write(json);
+        }
+    }
+    private static void LoadBuildingsData(string path)
+    {
+        string filePath = Path.Combine(path, "Buildings.data");
+        string jsonString = File.ReadAllText(filePath);
+        BuildingsDataModel data = null;
+        try
+        {
+            data = BuildingsDataModel.Deserialize(jsonString);
+        }
+        catch
+        {
+            throw new Exception("LoadSpaceShipData: invalid syntaxe json");
+        }
+        data.SetValues();
+    }
+}

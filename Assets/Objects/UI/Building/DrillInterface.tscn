@@ -1,0 +1,256 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Inventory/inventoryPanel.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Ressources/Fonts/F25_Bank_Printer.otf" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Drill/forreuse.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Objects/UI/Building/DrillInterface.cs" type="Script" id=4]
+[ext_resource path="res://Assets/Objects/UI/Graphics/Graph.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Inventory/inventoryPanel2.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Objects/UI/Sliders/Energy/EnergyBar.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Objects/UI/Sliders/Energy/PowerInBar.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Assets/Objects/UI/Sliders/Energy/PowerOutBar.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/SolarPanel/SolarPanel.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Ressources/Imgs/Buildings/Storage/Stockage.png" type="Texture" id=13]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 14
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+font_data = ExtResource( 2 )
+
+[node name="Drill" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -600.0
+margin_top = -250.0
+margin_right = 600.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 900, 500 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="back" type="NinePatchRect" parent="."]
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 1.71475
+margin_right = 1.71472
+margin_bottom = 3.05176e-05
+texture = ExtResource( 1 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="Panel" parent="back"]
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.3
+anchor_bottom = 0.35
+margin_bottom = -1.52588e-05
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="back/Image"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -75.0
+margin_top = -75.0
+margin_right = 75.0
+margin_bottom = 75.0
+texture = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSplit" type="VBoxContainer" parent="back"]
+anchor_left = 0.35
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="back/VSplit"]
+margin_right = 330.0
+margin_bottom = 32.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "DRILL"
+align = 1
+valign = 1
+
+[node name="stock" type="ItemList" parent="back"]
+anchor_left = 0.4
+anchor_top = 0.4
+anchor_right = 0.95
+anchor_bottom = 0.95
+items = [ "Solarpanel", ExtResource( 10 ), false, "Storage", ExtResource( 13 ), false ]
+fixed_icon_size = Vector2( 64, 64 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GiveSelected" type="Button" parent="back"]
+visible = false
+anchor_left = 0.05
+anchor_top = 0.65
+anchor_right = 0.05
+anchor_bottom = 0.65
+margin_left = -1.71475
+margin_top = 1.67014
+margin_right = 178.285
+margin_bottom = 46.6701
+custom_fonts/font = SubResource( 2 )
+text = "GIVESELECTED"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GiveAll" type="Button" parent="back"]
+anchor_left = 0.05
+anchor_top = 0.8
+anchor_right = 0.05
+anchor_bottom = 0.8
+margin_left = -1.71475
+margin_right = 178.285
+margin_bottom = 45.0
+custom_fonts/font = SubResource( 2 )
+text = "GIVE ALL"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="id" type="Label" parent="back"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -340.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = 26.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 3 )
+text = "ID : 0"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="back2" type="NinePatchRect" parent="."]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 10.0
+margin_bottom = -10.0
+texture = ExtResource( 6 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Graph" parent="back2" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_right = 0.95
+anchor_bottom = 0.3
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = 6.0
+rect_min_size = Vector2( 250, 140 )
+
+[node name="Graph2" parent="back2" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_top = 0.3
+anchor_right = 0.95
+anchor_bottom = 0.6
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = 6.0
+rect_min_size = Vector2( 250, 140 )
+
+[node name="Graph3" parent="back2" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_top = 0.6
+anchor_right = 0.95
+anchor_bottom = 0.9
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = 6.0
+rect_min_size = Vector2( 250, 140 )
+
+[node name="HSlider" type="HSlider" parent="back2"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = -55.0
+margin_right = -10.0
+margin_bottom = 4.0
+min_value = 0.02
+max_value = 1.0
+step = 0.01
+value = 0.2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnergyBar" parent="back2" instance=ExtResource( 7 )]
+margin_left = 77.4369
+margin_top = 31.9671
+margin_right = -132.563
+margin_bottom = 10.9671
+rect_scale = Vector2( 0.4, 0.4 )
+
+[node name="PowerInBar" parent="back2" instance=ExtResource( 8 )]
+margin_left = 171.194
+margin_top = 266.426
+margin_right = -188.806
+margin_bottom = 134.426
+rect_scale = Vector2( 0.5, 0.5 )
+
+[node name="PowerOutBar" parent="back2" instance=ExtResource( 9 )]
+margin_left = 31.1361
+margin_top = 268.441
+margin_right = -328.864
+margin_bottom = 136.441
+rect_scale = Vector2( 0.5, 0.5 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="TimerEnergy" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+[connection signal="ChangeEnergyBar" from="." to="back2/EnergyBar" method="Change"]
+[connection signal="ChangePowerInBar" from="." to="back2/PowerInBar" method="Change"]
+[connection signal="ChangePowerOutBar" from="." to="back2/PowerOutBar" method="Change"]
+[connection signal="button_down" from="back/GiveSelected" to="." method="_on_GiveSelected_button_down"]
+[connection signal="button_down" from="back/GiveAll" to="." method="_on_GiveAll_button_down"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph" method="_on_HSlider_value_changed"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph3" method="_on_HSlider_value_changed"]
+[connection signal="value_changed" from="back2/HSlider" to="back2/Graph2" method="_on_HSlider_value_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="TimerEnergy" to="." method="_on_TimerEnergy_timeout"]

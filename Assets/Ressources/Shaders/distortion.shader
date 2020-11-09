@@ -1,10 +1,11 @@
 shader_type canvas_item;
 render_mode unshaded;
-// Gonkee's water shader for Godot 3 - full tutorial https://youtu.be/uhMAHpV_cDg
+// Gonkee's water shader for Godot 3
 // If you use this shader, I would prefer if you gave credit to me and my channel
 
 uniform vec4 blue_tint : hint_color;
 uniform sampler2D mask_texture;
+
 
 uniform vec2 sprite_scale;
 uniform float scale_x = 0.67;
@@ -30,8 +31,9 @@ float noise(vec2 coord){
 
 void fragment(){
 	
-	vec2 noisecoord1 = UV * sprite_scale * scale_x;
-	vec2 noisecoord2 = UV * sprite_scale * scale_x + 4.0;
+	vec2 noisecoord1 = SCREEN_UV * sprite_scale * scale_x;
+	vec2 noisecoord2 = SCREEN_UV * sprite_scale * scale_x + 4.0;
+	
 	
 	vec2 motion1 = vec2(TIME * 0.3, TIME * -0.4);
 	vec2 motion2 = vec2(TIME * 0.1, TIME * 0.5);

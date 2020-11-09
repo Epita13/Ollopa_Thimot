@@ -1,54 +1,166 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/Scenes/Menus/MenuPlay.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Scripts/Tools/ScreenAdapt.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Ressources/Fonts/F25_Bank_Printer.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Menus/PlayMenu/background.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Objects/UI/Menus/other/Animation.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Menus/PlayMenu/OllopaLogo.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Menus/PlayMenu/Setting.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Objects/UI/Menus/other/ButtonMenu.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Menus/PlayMenu/NewGame.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Ressources/Imgs/UI/Menus/PlayMenu/LoadGame.png" type="Texture" id=10]
 
-[sub_resource type="DynamicFontData" id=1]
-font_path = "res://Assets/Ressources/Fonts/American Captain.otf"
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
 
-[sub_resource type="DynamicFont" id=2]
-size = 64
-font_data = SubResource( 1 )
+uniform float lod: hint_range(0, 5);
 
-[sub_resource type="Gradient" id=3]
-colors = PoolColorArray( 0.00927734, 0, 0.0625, 1, 0.0158081, 0, 0.289063, 1 )
+void fragment() {
+	COLOR.rgb = textureLod(SCREEN_TEXTURE, SCREEN_UV, lod).rgb;
+}"
 
-[sub_resource type="GradientTexture" id=4]
-gradient = SubResource( 3 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/lod = 1.5
+
+[sub_resource type="DynamicFont" id=3]
+size = 32
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 45
+font_data = ExtResource( 3 )
 
 [node name="MenuPlay" type="Node2D"]
+position = Vector2( -1, 0 )
 script = ExtResource( 1 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Button" type="Button" parent="CanvasLayer"]
-margin_left = 675.0
-margin_top = 394.0
-margin_right = 1125.0
-margin_bottom = 506.0
-rect_min_size = Vector2( 450, 112 )
-hint_tooltip = "
-"
-custom_fonts/font = SubResource( 2 )
-text = "PLAY"
+[node name="back" type="TextureRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( -1794.18, 484.506 )
+texture = ExtResource( 4 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( -72.3728, -16.8008 )
-scale = Vector2( 1, 928.922 )
-texture = SubResource( 4 )
-centered = false
+[node name="Animation" parent="CanvasLayer" instance=ExtResource( 5 )]
 
-[node name="Sprite2" type="Sprite" parent="."]
-position = Vector2( 279.152, -16.801 )
-scale = Vector2( 0.0950882, 928.922 )
-texture = SubResource( 4 )
-centered = false
+[node name="Blur" type="TextureRect" parent="CanvasLayer"]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_right = -0.999878
+texture = ExtResource( 4 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Sprite3" type="Sprite" parent="."]
-position = Vector2( 1315.63, -14.2161 )
-scale = Vector2( 0.0950882, 928.922 )
-texture = SubResource( 4 )
-centered = false
-[connection signal="button_down" from="CanvasLayer/Button" to="." method="Play"]
+[node name="Logo" type="TextureRect" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.15
+anchor_right = 0.5
+anchor_bottom = 0.15
+margin_left = -600.0
+margin_top = -140.0
+margin_right = 600.0
+margin_bottom = 140.0
+texture = ExtResource( 6 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnSettings" parent="CanvasLayer" instance=ExtResource( 8 )]
+anchor_left = 0.75
+anchor_top = 0.67
+anchor_right = 0.75
+anchor_bottom = 0.67
+margin_left = -109.0
+margin_top = -110.6
+margin_right = 109.5
+margin_bottom = 109.4
+texture = ExtResource( 7 )
+coef = 15.0
+
+[node name="BtnNewGame" parent="CanvasLayer" instance=ExtResource( 8 )]
+anchor_left = 0.25
+anchor_top = 0.67
+anchor_right = 0.25
+anchor_bottom = 0.67
+margin_left = -113.35
+margin_top = -110.6
+margin_right = 106.65
+margin_bottom = 109.4
+texture = ExtResource( 9 )
+coef = 15.0
+
+[node name="BtnLoadGame" parent="CanvasLayer" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_top = 0.67
+anchor_right = 0.5
+anchor_bottom = 0.67
+margin_left = -102.283
+margin_top = -110.6
+margin_right = 117.717
+margin_bottom = 109.4
+texture = ExtResource( 10 )
+coef = 15.0
+
+[node name="Texte" type="Panel" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.392
+anchor_right = 0.5
+anchor_bottom = 0.392
+margin_left = -367.871
+margin_top = -52.8538
+margin_right = 373.129
+margin_bottom = 56.1462
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Texte"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1.0
+margin_bottom = 5.0
+custom_fonts/font = SubResource( 3 )
+text = "Beta 1.1"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="labelBtn" type="Label" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.869
+anchor_right = 0.5
+anchor_bottom = 0.869
+margin_left = -313.0
+margin_top = -47.52
+margin_right = 309.0
+margin_bottom = 58.48
+custom_fonts/font = SubResource( 4 )
+text = "Settings"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScreenAjust" type="Node2D" parent="."]
+script = ExtResource( 2 )
+[connection signal="mouse_entered" from="CanvasLayer/BtnSettings" to="." method="_on_BtnSettings_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/BtnSettings" to="." method="_on_Btn_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/BtnNewGame" to="." method="_on_BtnNewGame_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/BtnNewGame" to="." method="_on_Btn_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/BtnLoadGame" to="." method="_on_BtnLoadGame_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/BtnLoadGame" to="." method="_on_Btn_mouse_exited"]

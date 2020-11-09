@@ -10,6 +10,7 @@ public class StorageLiquids
 
     public StorageLiquids(float max)
     {
+        Init();
         this.max = max;
     }
 
@@ -41,7 +42,7 @@ public class StorageLiquids
     /// Verifie si il n'y a pas trop d'items
     public bool CanAdd(Liquid.Type type, float amount)
     {
-        return (GetCount()+amount <= max);
+        return (GetItemCount(type)+amount <= max);
     }
     /// Recupere le nombre d'item du type type dans le stokage
     public float GetItemCount(Liquid.Type type)
@@ -63,7 +64,7 @@ public class StorageLiquids
     private void Init()
     {
         stokage = new Dictionary<Liquid.Type, float>();
-        for (int i = 0; i < Liquid.NbLiquids; i++)
+        for (int i = 0; i < Liquid.nbLiquids; i++)
         {
             stokage.Add((Liquid.Type)i,0);
         }

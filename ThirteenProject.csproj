@@ -8,7 +8,7 @@
     <OutputPath>.mono/temp/bin/$(Configuration)</OutputPath>
     <RootNamespace>ThirteenProject</RootNamespace>
     <AssemblyName>ThirteenProject</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <BaseIntermediateOutputPath>.mono/temp/obj</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)/$(Configuration)</IntermediateOutputPath>
     <ApiConfiguration Condition=" '$(Configuration)' != 'Release' ">Debug</ApiConfiguration>
@@ -48,42 +48,115 @@
       <Private>False</Private>
       <HintPath>$(ProjectDir)/.mono/assemblies/$(ApiConfiguration)/GodotSharpEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Objects\Autres\Grass\Grass.cs" />
+    <Compile Include="Assets\Objects\Autres\Loot.cs" />
+    <Compile Include="Assets\Objects\Autres\Tree\Tree.cs" />
+    <Compile Include="Assets\Objects\Enemy\Enemies.cs" />
+    <Compile Include="Assets\Objects\Enemy\Ennemy_Fly.cs" />
+    <Compile Include="Assets\Objects\Buildings\Barrel\Barrel.cs" />
+    <Compile Include="Assets\Objects\Buildings\Compactor\Compactor.cs" />
+    <Compile Include="Assets\Objects\Buildings\Drill\Drill.cs" />
+    <Compile Include="Assets\Objects\Buildings\Grinder\Grinder.cs" />
+    <Compile Include="Assets\Objects\Buildings\Infirmary\Infirmary.cs" />
+    <Compile Include="Assets\Objects\Buildings\O2Generator\O2Generator.cs" />
+    <Compile Include="Assets\Objects\Buildings\Refinery\Refinery.cs" />
+    <Compile Include="Assets\Objects\Buildings\Printer3D\Printer3D.cs" />
     <Compile Include="Assets\Objects\Buildings\SolarPanel\SolarPanel.cs" />
-    <Compile Include="Assets\Objects\Buildings\Rafinery\Rafinery.cs" />
+    <Compile Include="Assets\Objects\Buildings\Spaceship\SpaceShip.cs" />
     <Compile Include="Assets\Objects\Buildings\Storage\Storage.cs" />
+    <Compile Include="Assets\Objects\Buildings\PetrolGenerator\PetrolGenerator.cs" />
+    <Compile Include="Assets\Objects\Buildings\thermogenerator\Thermogenerator.cs" />
+    <Compile Include="Assets\Objects\Player\PlayerBuildingActions.cs" />
     <Compile Include="Assets\Objects\Player\PlayerInputs.cs" />
     <Compile Include="Assets\Objects\Player\PlayerMouvements.cs" />
+    <Compile Include="Assets\Objects\Player\PlayerZone.cs" />
+    <Compile Include="Assets\Objects\Tools\Raygun\Raygun.cs" />
+    <Compile Include="Assets\Objects\UI\Building\CompactorInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\GrinderInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\DrillInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\InfirmaryInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\O2GeneratorInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\Printer3DInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\RefineryInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\SolarPanelInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\SpaceShipInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\StorageInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\PetrolGeneratorInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Building\ThermogeneratorInterface.cs" />
+    <Compile Include="Assets\Objects\UI\Graphics\Graph.cs" />
+    <Compile Include="Assets\Objects\UI\Menus\DeathMenu.cs" />
+    <Compile Include="Assets\Objects\UI\Menus\EndMenu.cs" />
+    <Compile Include="Assets\Objects\UI\Menus\other\Animation.cs" />
+    <Compile Include="Assets\Objects\UI\Menus\other\ButtonMenu.cs" />
+    <Compile Include="Assets\Objects\UI\Menus\PauseMenu.cs" />
+    <Compile Include="Assets\Objects\UI\Notification\Notifications.cs" />
     <Compile Include="Assets\Objects\UI\PlayerInventory\UI_PlayerInventory.cs" />
+    <Compile Include="Assets\Objects\UI\PlayerInventory\UI_PlayerInventory2.cs" />
+    <Compile Include="Assets\Objects\UI\Sliders\Energy\EnergyBar.cs" />
+    <Compile Include="Assets\Objects\UI\Sliders\Energy\PowerBar.cs" />
+    <Compile Include="Assets\Objects\UI\Sliders\Health\HealthBar.cs" />
+    <Compile Include="Assets\Objects\UI\Sliders\Oxygene\OxygeneBar.cs" />
+    <Compile Include="Assets\Objects\UI\Sliders\Petrol\FuelBar.cs" />
+    <Compile Include="Assets\Objects\UI\Sliders\Petrol\PetrolBar.cs" />
     <Compile Include="Assets\Objects\UI\TestsTemporaire\ValuesPanel.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ItemBox.cs" />
     <Compile Include="Assets\Objects\UI\ToolBar\ToolBar.cs" />
+    <Compile Include="Assets\Scenes\Menus\MenuNewGame.cs" />
+    <Compile Include="Assets\Scenes\Menus\MenuLoadGame.cs" />
+    <Compile Include="Assets\Objects\UI\Menus\other\SaveGameBox.cs" />
+    <Compile Include="Assets\Objects\UI\other\PlayerVariablesShow.cs" />
+    <Compile Include="Assets\Scripts\Objects\Cave.cs" />
+    <Compile Include="Assets\Objects\World\UI_breakingBlocks.cs" />
     <Compile Include="Assets\Scenes\Jeux\Game.cs" />
     <Compile Include="Assets\Scenes\Menus\MenuPlay.cs" />
+    <Compile Include="Assets\Scenes\PlayerTests\LootTest.cs" />
     <Compile Include="Assets\Scenes\SceneGeneration\SceneGenerationScript.cs" />
     <Compile Include="Assets\Scripts/Objects/Block.cs" />
     <Compile Include="Assets\Scripts/Objects/World.cs" />
     <Compile Include="Assets\Scripts/Objects/Chunk.cs" />
+    <Compile Include="Assets\Scripts\Autres\CurrentCamera.cs" />
     <Compile Include="Assets\Scripts\Autres\Environement.cs" />
+    <Compile Include="Assets\Scripts\Autres\Paralax.cs" />
     <Compile Include="Assets\Scripts\Objects\Building.cs" />
-    <Compile Include="Assets\Scripts\Objects\LiquidMove.cs" />
+    <Compile Include="Assets\Scripts\Objects\BuildingInterface.cs" />
+    <Compile Include="Assets\Scripts\Objects\Drop.cs" />
+    <Compile Include="Assets\Scripts\Objects\Link.cs" />
+    <Compile Include="Assets\Scripts\Objects\Ore.cs" />
+    <Compile Include="Assets\Scripts\Objects\StorageBuildings.cs" />
+    <Compile Include="Assets\Scripts\Objects\Structure.cs" />
     <Compile Include="Assets\Scripts\Tools\Convertion.cs" />
     <Compile Include="Assets\Scripts\Objects\Item.cs" />
     <Compile Include="Assets\Scripts\Objects\Liquid.cs" />
+    <Compile Include="Assets\Scripts\Objects\LiquidMove.cs" />
     <Compile Include="Assets\Scripts\Objects\Player.cs" />
     <Compile Include="Assets\Scripts\Objects\PlayerState.cs" />
     <Compile Include="Assets\Scripts\Objects\StorageUsables.cs" />
     <Compile Include="Assets\Scripts\Objects\StorageItems.cs" />
     <Compile Include="Assets\Scripts\Objects\StorageLiquids.cs" />
     <Compile Include="Assets\Scripts\Objects\Usable.cs" />
+    <Compile Include="Assets\Scripts\Tools\DBConnection.cs" />
+    <Compile Include="Assets\Scripts\Tools\Delay.cs" />
     <Compile Include="Assets\Scripts\Tools\Exeception\OutOfBoundsException.cs" />
     <Compile Include="Assets\Scripts\Tools\Exeception\UninitializedException.cs" />
+    <Compile Include="Assets\Scripts\Tools\History.cs" />
     <Compile Include="Assets\Scripts\Tools\PlaceBlock.cs" />
     <Compile Include="Assets\Scripts\Tools\BasicPlacement.cs" />
-    <Compile Include="Assets\Scripts\Tools\SlideBar.cs" />
+    <Compile Include="Assets\Scripts\Tools\Save.cs" />
+    <Compile Include="Assets\Scripts\Tools\SavesModels\DataModel.cs" />
+    <Compile Include="Assets\Scripts\Tools\ScreenAdapt.cs" />
+    <Compile Include="Assets\Scripts\Tools\Sliders\SlideBar.cs" />
+    <Compile Include="Assets\Scripts\Tools\Sounds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

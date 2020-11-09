@@ -19,8 +19,8 @@ public class ValuesPanel : Panel
 
     public override void _Process(float delta)
     {
-      txts[0].Text = "Composite : "+ Player.inventoryItems.GetItemCount(Item.Type.Composite);
-      txts[1].Text = "Wood : "+ Player.inventoryItems.GetItemCount(Item.Type.Wood);
-      txts[2].Text = "Stone : "+ Player.inventoryItems.GetItemCount(Item.Type.Stone);
+      txts[0].Text = "oxygene : "+ Player.oxygene;
+      txts[1].Text = "health : "+ Player.health;
+      txts[2].Text = "energy : "+ Player.energy;
     }
 }

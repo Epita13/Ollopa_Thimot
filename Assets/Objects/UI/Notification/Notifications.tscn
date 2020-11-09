@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Objects/UI/Notification/Notifications.cs" type="Script" id=1]
+
+[node name="Notifications" type="VBoxContainer"]
+margin_right = 150.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 150, 70 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="0" type="Label" parent="."]
+margin_right = 172.0
+margin_bottom = 14.0
+size_flags_vertical = 2
+text = "---------------------------"
+
+[node name="1" type="Label" parent="."]
+margin_top = 18.0
+margin_right = 172.0
+margin_bottom = 32.0
+size_flags_vertical = 2
+text = "---------------------------"
+
+[node name="2" type="Label" parent="."]
+margin_top = 36.0
+margin_right = 172.0
+margin_bottom = 50.0
+size_flags_vertical = 2
+text = "---------------------------"
+
+[node name="3" type="Label" parent="."]
+margin_top = 54.0
+margin_right = 172.0
+margin_bottom = 68.0
+size_flags_vertical = 2
+text = "---------------------------"

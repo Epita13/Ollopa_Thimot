@@ -42,20 +42,31 @@ public static class World
     public static TileMap BackBlockTilemap;
     public static TileMap BlockTilemap;
     public static TileMap UIBlockTilemap;
+    public static TileMap UI2BlockTilemap;
     /*********/
+
+    public static Vector2 spawn;
 
     public static Random random;
 
     // SimplexNoise
     public static OpenSimplexNoise noise = new OpenSimplexNoise();
-    private static int seed;
+    private static int seed=-1;
     private const int octave = 3;
     private const float periode = 20.0f;
     private const float persistence = 0.1f;
     private const float lacunarity = 3.5f;
     
-    public static int size;
-    private static List<Chunk> chunks;
+    public static int size = 10;
+    public static List<Chunk> chunks;
+    public static List<(int,int)> visibleChunks = new List<(int,int)>();
+    
+    
+    public static List<Building> placedBuildings = new List<Building>();
+    public static Dictionary<Chunk, List<Building>> placedBuildingByChunk = new Dictionary<Chunk, List<Building>>();
+    
+    
+    public static List<Tree> trees = new List<Tree>();
 
     private static bool isInit = false;
     public static bool IsInit => isInit;
@@ -63,28 +74,46 @@ public static class World
     {
         if (!isInit)
             throw new UninitializedException(funcName, "World");
-    } 
+    }
 
 
+    public static void SetSize(int size)
+    {
+        World.size = size;
+    }
+
+    public static int GetSeed() => seed;
+    public static void SetSeed(int seed)
+    {
+        World.seed = seed;
+    }
     /// Initialise le monde et le calcule.
-    public static void Init(int size, TileMap BlockTilemap, TileMap UIBlockTilemap, TileMap BackBlockTilemap, int seed = -1)
+    public static void Init(TileMap BlockTilemap, TileMap UIBlockTilemap, TileMap UI2BlockTilemap, TileMap BackBlockTilemap, bool generate = true)
     {
         isInit = true;
+
+        World.BlockTilemap = BlockTilemap;
+        World.UIBlockTilemap = UIBlockTilemap;
+        World.UI2BlockTilemap = UI2BlockTilemap;
+        World.BackBlockTilemap = BackBlockTilemap;
+        
         if (seed==-1){
-            World.random = new Random();
-            World.seed = random.Next();
+            Random r = new Random();
+            World.seed = r.Next(0, 2076782335);
+            World.random = new Random(seed);
         }else{
             World.random = new Random(seed);
             World.seed = seed;
         }
         
-        if (size <= 3)
+        if (!generate)
+            return;
+        
+        
+        if (size < 3)
             throw new OutOfBoundsException1D("Init", size, 3, 9999);
         
-        World.size = size;
-        World.BlockTilemap = BlockTilemap;
-        World.UIBlockTilemap = UIBlockTilemap;
-        World.BackBlockTilemap = BackBlockTilemap;
+
         World.chunks = new List<Chunk>();
 
         // Initialisation du SimplexNoise
@@ -106,7 +135,12 @@ public static class World
         {
             Chunk instance_chunk = new Chunk(x);
             chunks.Add(instance_chunk);
+            placedBuildingByChunk.Add(instance_chunk, new List<Building>());
         }
+        SeasGenerate();
+        CaveGenerate();
+        OreGenerate();
+        GrassGenerate();
     }
 
     /// Affiche tous les Chunks de la map
@@ -119,8 +153,10 @@ public static class World
     /// Cache tous les Chunks de la map
     public static void Hide()
     {
-        foreach (Chunk chunk in chunks)
-            HideChunkc(chunk);
+        while (visibleChunks.Count > 0)
+        {
+            HideChunkc(GetChunkWithID(visibleChunks[0].Item1));
+        }
     }
 
 
@@ -129,8 +165,6 @@ public static class World
     public static Chunk GetChunk(int x)
     {
         IsInitWorldTest("GetChunk");
-        /*if (x<0 || x>=size*Chunk.size)
-            throw new OutOfBoundsException1D("GetChunk", x, 0, size*Chunk.size-1);*/
         if (x < 0)
             x = size * Chunk.size + x;
         else if (x >= size * Chunk.size)
@@ -142,8 +176,6 @@ public static class World
     public static Chunk GetChunkWithID(int id)
     {
         IsInitWorldTest("GetChunkWithID");
-        /*if (id<0 || id>=size)
-            throw new ArgumentException("GetChunkWithID: id is out of bounds.");*/
         if (id < 0)
             id = size + id;
         else if (id >= size)
@@ -173,4 +205,78 @@ public static class World
     {
         c.Draw();
     }
+
+
+    private static void OreGenerate()
+    {
+        for (int x = 0; x < World.size * Chunk.size; x++)
+        {
+            foreach (var ore in Ore.ores)
+            {
+                float p = (float)random.NextDouble();
+                if (p <= Ore.probabilities[ore])
+                {
+                    int height = random.Next(1, Ore.heights[ore] + 1);
+                    if (World.GetBlock(x, height).GetType == Block.Type.Stone)
+                    {
+                        Ore.CreateVein(ore, x, height);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void SeasGenerate()
+    {
+        for (int x = 0; x < World.size * Chunk.size ; x++)
+        {
+            Chunk c = GetChunk(x);
+            int yground = c.GetGroundY(Chunk.GetLocaleX(x));
+            if (yground <= Chunk.seaLevel)
+            {
+                GetChunk(x).AddBlock(Chunk.GetLocaleX(x), yground-1, Block.Type.Dirt);
+            }
+            for (int y = Chunk.seaLevel; y >= yground; y--)
+            {
+                Liquid.PlaceLiquid(x, y, Liquid.Type.Water);
+                GetChunk(x).GetBlock(Chunk.GetLocaleX(x), y).isAutoGenerated = true;
+            }
+        }
+    }
+    
+    private static void CaveGenerate()
+    {
+
+        bool[,] cellmap = Cave.InitCave();
+
+        for (int i = 0; i < World.size * Chunk.size; i++)
+        {
+            for (int j = 0; j < Chunk.maxYGeneration; j++)
+            {
+                if (!(cellmap[i, j]))
+                {
+                    int yWorld = j;
+                    Chunk c = GetChunk(i);
+                    int xChunk = i % Chunk.size;
+                    Block.Type t = World.GetBlock(i, j).GetType;
+                    if (t == Block.Type.Stone)
+                        c.AddBlock(xChunk, yWorld, Block.Type.Air);
+                }
+            }
+        }
+    }
+
+    public static void GrassGenerate()
+    {
+        for (int x = 0; x < World.size * Chunk.size; x++)
+        {
+            Chunk c = GetChunk(x);
+            int yground = c.GetGroundY(Chunk.GetLocaleX(x));
+            if (World.GetBlock(x, yground - 1).GetType == Block.Type.Grass)
+            {
+                Grass.Spawn(x,yground);
+            }
+        }
+    }
+    
 }

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
+<<<<<<< HEAD
     <e p="C:\Users\thimo\AppData\local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
     <e p="C:\Users\thimo\AppData\local\JetBrains\Rider2020.2\resharper-host\local\Transient\Rider\v202\SolutionCaches\_ThirteenProject.-1842856486.00" t="ExcludeRecursive" />
     <e p="D:\thimo\Documents\EPITA\Ollopa\Ollopa_Thimot" t="IncludeRecursive">
+=======
+    <e p="C:\Users\thimo\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\thimo\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_ThirteenProject.289899286.00" t="ExcludeRecursive" />
+    <e p="D:\thimo\Documents\EPITA\Ollopa\Ollopa_main" t="IncludeRecursive">
+>>>>>>> 8803e7c3a1f8689afd1aa184db21d3ad7cef4912
       <e p=".mono\temp\bin" t="ExcludeRecursive" />
       <e p=".mono\temp\obj" t="ExcludeRecursive" />
       <e p="Assets" t="Include">
@@ -57,7 +63,6 @@
             <e p="Chunk.cs" t="Include" />
             <e p="Item.cs" t="Include" />
             <e p="Liquid.cs" t="Include" />
-            <e p="LiquidMove.cs" t="Include" />
             <e p="Player.cs" t="Include" />
             <e p="PlayerState.cs" t="Include" />
             <e p="StorageItems.cs" t="Include" />

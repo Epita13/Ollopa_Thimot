@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class UI_PlayerInventory : Node
+public class UI_PlayerInventory : Control
 {
     /*Le script n'a besoin de rien pour exister mais il le script n'appelle jamais de lui-même Open()*/
     /*Le script change lui-même l'état du joueur en inventaire ou en normal à l'appel de Open et Close*/
@@ -30,9 +30,6 @@ public class UI_PlayerInventory : Node
         btUsable = GetNode("Inventories").GetNode<Button>("Usable");
         btClose = GetNode("Inventories").GetNode<Button>("Close");
 
-        itemList.Visible = false;
-        inventories.Visible = false;
-        
         inventories.RectSize = size;                                                                          //Définit la taille de la barre des boutons et de l'itemListe
         itemList.RectSize = new Vector2(size.x, size.y * 9);
         inventories.RectPosition = pos;
@@ -76,21 +73,23 @@ public class UI_PlayerInventory : Node
         }
         else if (string.Equals(str, "building"))
         {
-            // a faire quand le stockage de batiment existera
+            foreach (Building.Type type in Enum.GetValues(typeof(Building.Type)))
+            {
+                GetInstance().itemList.AddItem(Player.inventoryBuildings.GetItemCount(type).ToString(), Building.textures[type]);
+            }
         }
         else
             throw new Exception("Invalid argument in Open() from UI_PlayerInvventory.cs");
+
+        GetInstance().Visible = true;
         
-        GetInstance().itemList.Visible = true;
-        GetInstance().inventories.Visible = true;
         
         PlayerState.SetState(PlayerState.State.Inventory);
     }
     
     public static void Close()                                        //Ferme l'inventaire
     {
-        GetInstance().itemList.Visible = false;
-        GetInstance().inventories.Visible = false;
+        GetInstance().Visible = false;
         PlayerState.SetState(PlayerState.State.Normal);
     }
 
@@ -106,4 +105,13 @@ public class UI_PlayerInventory : Node
         btBuildings.RectSize = new Vector2((size.x - btClose.RectSize.x) / 3 , btBuildings.RectSize.y);
         btUsable.RectSize = new Vector2((size.x - btClose.RectSize.x) / 3 , btUsable.RectSize.y);*/
     }
+    
+    
+    // On double click 
+    public void _on_List_item_activated(int index)
+    {
+        
+    }
+    
+    
 }

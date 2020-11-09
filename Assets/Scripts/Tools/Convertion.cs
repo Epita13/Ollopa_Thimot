@@ -25,4 +25,21 @@ public static class Convertion
         location *= Block.cellSize;
         return location;
     }
+    
+    /// Convertie une coordonee World quelquonque dans le repere World dans les bornes (World need to be initialised)
+    public static Vector2 World2WorldBorn(Vector2 location)
+    {
+        World.IsInitWorldTest("Convertion/World2WorldBorn");
+        Vector2 res = new Vector2(0,0);
+        if (location.x < 0)
+        {
+            res = new Vector2(location.x % (World.size*Chunk.size) + World.size*Chunk.size, location.y);
+        }
+        else
+        {
+            res = new Vector2(location.x % (World.size*Chunk.size), location.y);
+        }
+
+        return res;
+    }
 }

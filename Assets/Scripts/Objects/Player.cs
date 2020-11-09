@@ -4,26 +4,36 @@ using System.Collections.Generic;
 
 public static class Player
 {
+    
 
-
+    
     public static float healthMax = 100.0f;
     public static float health = 100.0f;
 
     public static float oxygeneMax = 100.0f;
-    public static float oxygene = 100.0f;
+    public static float oxygene = 100f;
+    public static float oxygeneLoss = 0.4f;
+    public static float oxygeneDamage = 3.0f;
 
     public static float energyMax = 100.0f;
     public static float energy = 100.0f;
+    public static float energyDamage = 0.1f;
 
     // Ex : laser, blocks..
-    public static  StorageUsables inventoryUsables = new StorageUsables(30);
+    public static int inventoryUsablesSize = 100;
+    public static  StorageUsables inventoryUsables = new StorageUsables(inventoryUsablesSize);
     // Ex : bois, composite (matieres premieres)
-    public static StorageItems inventoryItems = new StorageItems(200);
+    public static int inventoryItemsSize = 20000;
+    public static StorageItems inventoryItems = new StorageItems(inventoryItemsSize);
     // Ex : eau, petrole (Liquide)
-    public static StorageLiquids inventoryLiquids = new StorageLiquids(30.0f);
+    public static float inventoryLiquidsSize = 100.0f;
+    public static StorageLiquids inventoryLiquids = new StorageLiquids(inventoryLiquidsSize);
+    public static int inventoryBuildingsSize = 10;
+    public static StorageBuildings inventoryBuildings = new StorageBuildings(inventoryBuildingsSize);
 
 
     public static Usable.Type UsableSelected = Usable.Type.Laser;
+    public static Building.Type BuildingSelected = Building.Type.SolarPanel;
 
     /// Ajoute de la vie au joueur. 
     public static void AddHealth(float amount)
@@ -35,6 +45,7 @@ public static class Player
     /// Enleve de la vie au joueur.
     public static void RemoveHealth(float amount)
     {
+        PlayerMouvements.PlaySound(Sounds.Type.PlayerHurt);
         health -= amount;
         if (health<0)
             health = 0;
@@ -85,13 +96,27 @@ public static class Player
         energy = energyMax;
     }
 
-    public static void PrintEnergy(){
-        GD.Print("Le Joueur a " + energy + "/" + energyMax + " d'energie.");
+    public static void Die()
+    {
+        BuildingInterface.CloseInterface();
+        UI_PlayerInventory2.Close();
+        PlayerState.SetState(PlayerState.State.Dead);
     }
-    public static void PrintOxygene(){
-        GD.Print("Le Joueur a " + oxygene + "/" + oxygeneMax + " d'oxygene.");
-    }
-    public static void PrintHealth(){
-        GD.Print("Le Joueur a " + health + "/" + healthMax + " de santé.");
+    public static void Revive()
+    {
+        if (health <= 0)
+        {
+            FillHealth();
+            FillOxygene();
+            FillEnergy();
+            inventoryUsables = new StorageUsables(inventoryUsablesSize);
+            inventoryItems = new StorageItems(inventoryItemsSize);
+            inventoryLiquids = new StorageLiquids(inventoryLiquidsSize);
+            inventoryBuildings = new StorageBuildings(inventoryBuildingsSize);
+            UsableSelected = Usable.Type.Laser;
+            BuildingSelected = Building.Type.SolarPanel;
+            PlayerMouvements.Teleport(World.spawn.x, World.spawn.y);
+            PlayerMouvements.canMove = true;
+        }
     }
 }

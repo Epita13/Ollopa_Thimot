@@ -1,7 +1,7 @@
 [gd_resource type="TileSet" load_steps=5 format=2]
 
-[ext_resource path="res://Assets/Ressources/Imgs/blocks/UI/ui_no.png" type="Texture" id=1]
-[ext_resource path="res://Assets/Ressources/Imgs/blocks/UI/ui_yes.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Ressources/Imgs/Blocks/UI/ui_no.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Ressources/Imgs/Blocks/UI/ui_yes.png" type="Texture" id=2]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;

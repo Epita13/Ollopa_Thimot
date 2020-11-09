@@ -44,13 +44,27 @@ public class StorageItems
     {
         return (GetCount()+amount <= max);
     }
+    public int GetAmountCanAdd(Item.Type type, int amount)
+    {
+        int r = max - GetCount();
+        if (r >= amount)
+            return amount;
+        return r;
+    }
+    public int GetRestCanAdd(Item.Type type, int amount)
+    {
+        int r = max - GetCount();
+        if (r >= amount)
+            return 0;
+        return amount-r;
+    }
     /// Recupere le nombre d'item du type type dans le stokage
     public int GetItemCount(Item.Type type)
     {
         return stokage[type];
     }
     /// Donne le nombre d'items au totale
-    public float GetCount()
+    public int GetCount()
     {
         int sum = 0;
         foreach (var c in stokage)

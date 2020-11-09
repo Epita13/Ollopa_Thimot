@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Ressources/Shaders/outline.shader" type="Shader" id=2]
+[ext_resource path="res://Assets/Objects/UI/Menus/other/ButtonMenu.cs" type="Script" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+shader_param/width = 0.0
+shader_param/outline_color = Color( 1, 0, 0, 1 )
+
+[node name="Button" type="TextureRect"]
+material = SubResource( 1 )
+anchor_right = 0.2
+anchor_bottom = 0.278
+margin_bottom = -0.240021
+expand = true
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
